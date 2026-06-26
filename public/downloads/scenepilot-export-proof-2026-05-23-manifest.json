@@ -1,0 +1,14 @@
+{
+  "ok": true,
+  "project": "ScenePilot Studio",
+  "proofType": "deterministic rendered MP4 export from cut plan",
+  "source": "sites/auto-cut/smoke-out/2026-05-23-export-proof-source.mp4",
+  "plan": "sites/auto-cut/smoke-out/2026-05-23-export-proof-plan.json",
+  "output": "sites/auto-cut/smoke-out/2026-05-23-export-proof.mp4",
+  "publicPortfolioCopy": "repos/portfolioo/public/downloads/scenepilot-export-proof-2026-05-23.mp4",
+  "durationSeconds": 3.6,
+  "sizeBytes": 1800868,
+  "keptSegments": 3,
+  "removedSegments": 2,
+  "verifiedWith": "ffprobe duration/size + render helper exit status"
+}

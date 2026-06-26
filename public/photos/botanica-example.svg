@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="900" viewBox="0 0 1280 900">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#22c55e"/><stop offset="1" stop-color="#14b8a6"/></linearGradient>
+    <radialGradient id="glow" cx="70%" cy="20%" r="65%"><stop offset="0" stop-color="white" stop-opacity=".35"/><stop offset="1" stop-color="white" stop-opacity="0"/></radialGradient>
+    <filter id="blur"><feGaussianBlur stdDeviation="38"/></filter>
+  </defs>
+  <rect width="1280" height="900" fill="#09090b"/>
+  <rect width="1280" height="900" fill="url(#bg)" opacity=".82"/>
+  <rect width="1280" height="900" fill="url(#glow)"/>
+  <circle cx="1120" cy="120" r="230" fill="white" opacity=".12" filter="url(#blur)"/>
+  <circle cx="80" cy="830" r="270" fill="black" opacity=".18" filter="url(#blur)"/>
+  <rect x="54" y="54" width="1172" height="792" rx="54" fill="rgba(9,9,11,.44)" stroke="rgba(255,255,255,.16)"/>
+  <text x="92" y="145" font-size="28" fill="#d4d4d8" font-family="Inter, Arial, sans-serif" letter-spacing="6">PORTFOLIO EXAMPLE</text>
+  <text x="92" y="225" font-size="74" fill="white" font-weight="800" font-family="Inter, Arial, sans-serif">BOTANICA LAB</text>
+  <text x="96" y="282" font-size="30" fill="#e4e4e7" font-family="Inter, Arial, sans-serif">Botanical research intelligence</text>
+  
+        <g transform="translate(120 325)" fill="none" stroke="white" stroke-linecap="round">
+          <path d="M300 300 C 270 120, 350 50, 535 48 C 520 230, 445 320, 300 300 Z" fill="rgba(255,255,255,.12)" stroke-opacity=".55" stroke-width="4"/>
+          <path d="M298 300 C 365 225, 430 155, 535 48" stroke-width="7" opacity=".8"/>
+          <path d="M360 230 L475 230" stroke-width="4" opacity=".35"/>
+          <path d="M395 180 L485 160" stroke-width="4" opacity=".35"/>
+          <rect x="0" y="35" width="270" height="250" rx="28" fill="rgba(255,255,255,.10)" stroke="rgba(255,255,255,.20)"/>
+          <rect x="35" y="75" width="180" height="16" rx="8" fill="white" opacity=".7"/>
+          <rect x="35" y="120" width="210" height="16" rx="8" fill="white" opacity=".35"/>
+          <rect x="35" y="165" width="145" height="16" rx="8" fill="white" opacity=".35"/>
+          <rect x="35" y="210" width="185" height="16" rx="8" fill="white" opacity=".35"/>
+        </g>
+  <rect x="92" y="700" width="350" height="48" rx="24" fill="rgba(255,255,255,.10)" stroke="rgba(255,255,255,.18)"/>
+<text x="114" y="731" font-size="20" fill="#e5e7eb" font-family="Inter, Arial, sans-serif">Research Pulse</text>
+<rect x="460" y="700" width="306" height="48" rx="24" fill="rgba(255,255,255,.10)" stroke="rgba(255,255,255,.18)"/>
+<text x="482" y="731" font-size="20" fill="#e5e7eb" font-family="Inter, Arial, sans-serif">Formula Desk</text>
+<rect x="784" y="700" width="284" height="48" rx="24" fill="rgba(255,255,255,.10)" stroke="rgba(255,255,255,.18)"/>
+<text x="806" y="731" font-size="20" fill="#e5e7eb" font-family="Inter, Arial, sans-serif">Safety Gate</text>
+<rect x="1086" y="700" width="394" height="48" rx="24" fill="rgba(255,255,255,.10)" stroke="rgba(255,255,255,.18)"/>
+<text x="1108" y="731" font-size="20" fill="#e5e7eb" font-family="Inter, Arial, sans-serif">Ingredient Atlas</text>
+
+</svg>
