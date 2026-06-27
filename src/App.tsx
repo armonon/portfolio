@@ -1,5 +1,5 @@
-import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { animate, AnimatePresence, motion, useInView, useScroll, useSpring } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 import { Menu, X, ExternalLink, Code2, Mail, Sparkles, Download, RefreshCw } from "lucide-react";
 import { radarEvidenceLedger, radarIdeaFeed, radarLanes, radarMetrics, radarNextBuildSteps, radarOpportunities, radarSoftwareProjects } from "./productRadarData";
 
@@ -35,6 +35,58 @@ const asNumber = (value: string | number | boolean | undefined, fallback = 0) =>
 const asBoolean = (value: string | number | boolean | undefined) => value === true;
 
 const createDownloadHref = (name: string, content: string) => `data:text/plain;charset=utf-8,${encodeURIComponent(`Product Radar prototype artifact: ${name}\n\n${content}`)}`;
+
+const readinessPhase = (score: number) => {
+  if (score >= 7) return "Live";
+  if (score >= 5) return "Beta";
+  if (score >= 3) return "In development";
+  return "Early build";
+};
+
+function CountUp({ to, suffix = "", duration = 1.6 }: { to: number; suffix?: string; duration?: number }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-40px" });
+  const [value, setValue] = useState(0);
+  useEffect(() => {
+    if (!inView) return;
+    const controls = animate(0, to, {
+      duration,
+      ease: "easeOut",
+      onUpdate: (v) => setValue(Math.round(v)),
+    });
+    return () => controls.stop();
+  }, [inView, to, duration]);
+  return (
+    <span ref={ref}>
+      {value}
+      {suffix}
+    </span>
+  );
+}
+
+function RotatingWord({ words }: { words: string[] }) {
+  const [index, setIndex] = useState(0);
+  useEffect(() => {
+    const timer = setInterval(() => setIndex((prev) => (prev + 1) % words.length), 2200);
+    return () => clearInterval(timer);
+  }, [words.length]);
+  return (
+    <span className="relative inline-grid align-bottom">
+      <AnimatePresence mode="wait">
+        <motion.span
+          key={words[index]}
+          initial={{ y: "0.6em", opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: "-0.6em", opacity: 0 }}
+          transition={{ duration: 0.35, ease: "easeOut" }}
+          className="col-start-1 row-start-1 whitespace-nowrap bg-gradient-to-r from-cyan-300 via-violet-300 to-fuchsia-300 bg-clip-text text-transparent"
+        >
+          {words[index]}
+        </motion.span>
+      </AnimatePresence>
+    </span>
+  );
+}
 
 const buildPrototypeScenario = (softwareId: string): PrototypeScenario => {
   switch (softwareId) {
@@ -232,7 +284,7 @@ const buildPrototypeScenario = (softwareId: string): PrototypeScenario => {
         generate: (values) => {
           const score = asNumber(values.readiness, 45);
           return {
-            headline: `Prototype readiness: ${score}%`,
+            headline: `Product readiness: ${score}%`,
             summary: asString(values.scenario, "Test the product flow."),
             score,
             cards: [
@@ -241,7 +293,7 @@ const buildPrototypeScenario = (softwareId: string): PrototypeScenario => {
               { label: "Proof", value: asBoolean(values.needsDownload) ? "Needed" : "Optional", detail: "Attach a demo, export, report, or build artifact." },
               { label: "Next", value: "Tighten", detail: "Turn the weakest part into the next build task." },
             ],
-            steps: ["Define scenario", "Run page flow", "Record blocker", "Attach proof", "Pick next build"],
+            steps: ["Define scenario", "Run page flow", "Note what's next", "Attach proof", "Pick next build"],
             artifact: `Generic Radar test: readiness=${score}, scenario=${values.scenario}`,
           };
         },
@@ -408,11 +460,13 @@ function ProductRadarPage({ onHome }: { onHome: () => void }) {
   const [selectedSoftwareId, setSelectedSoftwareId] = useState(() => readRadarRoute().softwareId);
   const [isSweepRunning, setIsSweepRunning] = useState(false);
   const [sweepMessage, setSweepMessage] = useState("Ready to request a protected full-system sweep.");
-  const hasExternalLiveLink = (project: (typeof radarSoftwareProjects)[number]) => Boolean(project.live?.href.startsWith("http"));
+  const hasExternalLiveLink = (project: (typeof radarSoftwareProjects)[number]) => Boolean(project.live?.href.startsWith("http") || project.repo?.href.startsWith("http"));
   const radarSoftwareDisplayOrder = new Map([
-    ["librarian-atlas", 0],
-    ["botanica-lab", 1],
-    ["trader-oracle", 2],
+    ["entropy", 0],
+    ["model-studio", 1],
+    ["librarian-atlas", 2],
+    ["botanica-lab", 3],
+    ["trader-oracle", 4],
     ["market", 98],
     ["now-suite", 99],
   ]);
@@ -424,6 +478,7 @@ function ProductRadarPage({ onHome }: { onHome: () => void }) {
   const selectedLane = radarLanes.find((lane) => lane.id === selectedLaneId);
   const selectedSoftware = liveLinkedRadarSoftwareProjects.find((project) => project.id === selectedSoftwareId);
   const linkTarget = (href: string) => href.startsWith("http") ? "_blank" : undefined;
+  const showAdminSweep = typeof window !== "undefined" && new URLSearchParams(window.location.search).has("admin");
   const openLane = (laneId: string) => {
     setSelectedLaneId(laneId);
     setSelectedSoftwareId(null);
@@ -566,7 +621,9 @@ function ProductRadarPage({ onHome }: { onHome: () => void }) {
               </div>
             </section>
 
-            <InteractivePrototypeLab key={selectedSoftware.id} softwareId={selectedSoftware.id} />
+            {!["entropy", "model-studio"].includes(selectedSoftware.id) && (
+              <InteractivePrototypeLab key={selectedSoftware.id} softwareId={selectedSoftware.id} />
+            )}
 
             <section className="mt-8 grid grid-cols-1 gap-4 lg:grid-cols-[0.85fr_1.15fr]">
               <aside className="space-y-4">
@@ -584,7 +641,7 @@ function ProductRadarPage({ onHome }: { onHome: () => void }) {
                       </a>
                     )) : (
                       <p className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm leading-relaxed text-zinc-400">
-                        No download yet. This product currently has a browser-testable Radar prototype page.
+                        No download pack yet — use the source and live links to explore this product.
                       </p>
                     )}
                   </div>
@@ -709,7 +766,7 @@ function ProductRadarPage({ onHome }: { onHome: () => void }) {
                 <p className="mt-3 leading-relaxed text-zinc-300">{selectedLane.nextAction}</p>
               </div>
               <div className="rounded-3xl border border-zinc-800 bg-zinc-900/60 p-6 backdrop-blur md:p-8">
-                <h2 className="text-2xl font-bold tracking-tight">Current blocker</h2>
+                <h2 className="text-2xl font-bold tracking-tight">On the roadmap</h2>
                 <p className="mt-3 leading-relaxed text-zinc-400">{selectedLane.blocker}</p>
               </div>
             </section>
@@ -719,13 +776,13 @@ function ProductRadarPage({ onHome }: { onHome: () => void }) {
             <section className="overflow-hidden rounded-[2rem] border border-zinc-800 bg-zinc-900/60 p-7 shadow-2xl shadow-black/30 backdrop-blur md:p-10 lg:p-12">
               <div className="max-w-4xl">
                 <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-zinc-300">
-                  <Sparkles size={16} /> Build OS for products, apps, and ideas
+                  <Sparkles size={16} /> Live products · apps · plugins · tools
                 </div>
                 <h1 className="text-5xl font-black tracking-tight md:text-7xl">
-                  Product Radar is now the software testing directory.
+                  Product Radar — every live product in one place.
                 </h1>
                 <p className="mt-6 max-w-3xl text-lg leading-relaxed text-zinc-300 md:text-xl">
-                  A living portfolio hub for live, publicly reachable software projects. Open a product, use its live link, read the clear description, download any available test pack, and use the full page as the checklist for testing.
+                  A live directory of working software: apps, plugins, dashboards, and creator tools. Open any product for a clear overview, its live link or source, downloads, and exactly how to try it.
                 </p>
               </div>
 
@@ -739,6 +796,7 @@ function ProductRadarPage({ onHome }: { onHome: () => void }) {
               </div>
             </section>
 
+            {showAdminSweep && (
             <section className="mt-8 overflow-hidden rounded-[2rem] border border-emerald-400/30 bg-emerald-950/20 p-6 shadow-2xl shadow-emerald-950/20 backdrop-blur md:p-8">
               <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
                 <div className="max-w-3xl">
@@ -777,33 +835,34 @@ function ProductRadarPage({ onHome }: { onHome: () => void }) {
                 </div>
               </div>
             </section>
+            )}
 
             <section className="mt-8 rounded-[2rem] border border-zinc-800 bg-zinc-900/60 p-6 shadow-2xl shadow-black/20 backdrop-blur md:p-8">
               <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
                 <div>
                   <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-zinc-300">
-                    <Sparkles size={16} /> Evidence ledger + priority order
+                    <Sparkles size={16} /> Product ledger · ranked by proof
                   </div>
-                  <h2 className="text-3xl font-black tracking-tight md:text-5xl">What has proof, what is blocked, and what ships next.</h2>
+                  <h2 className="text-3xl font-black tracking-tight md:text-5xl">What's live, what's proven, and what ships next.</h2>
                   <p className="mt-3 max-w-3xl leading-relaxed text-zinc-400">
-                    Radar now ranks the current NOW/Sattari projects by proof and usefulness. Each row shows the latest verified proof, current blocker, next tiny build step, and revenue path.
+                    Every live product, ranked by proof and usefulness. Each row shows the latest proof, the next roadmap milestone, what ships next, and the revenue path.
                   </p>
                 </div>
                 <div className="rounded-full border border-white/10 bg-black/20 px-4 py-2 text-sm font-semibold text-zinc-300">
-                  {liveLinkedRadarEvidence.length} live evidence rows
+                  {liveLinkedRadarEvidence.length} live products
                 </div>
               </div>
 
               <div className="mt-7 grid grid-cols-1 gap-4 lg:grid-cols-2">
-                {liveLinkedRadarEvidence.map((item) => (
+                {liveLinkedRadarEvidence.map((item, index) => (
                   <article key={item.projectName} className="rounded-3xl border border-white/10 bg-black/20 p-5">
                     <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                       <div>
-                        <div className="text-xs font-black uppercase tracking-[0.18em] text-zinc-500">Priority {item.priority}</div>
+                        <div className="text-xs font-black uppercase tracking-[0.18em] text-zinc-500">Rank {index + 1}</div>
                         <h3 className="mt-1 text-2xl font-bold tracking-tight text-white">{item.projectName}</h3>
                       </div>
                       <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-2 text-sm font-black text-white">
-                        {item.readinessScore}/10
+                        {readinessPhase(item.readinessScore)}
                       </div>
                     </div>
                     <p className="mt-4 text-sm leading-relaxed text-zinc-300">{item.promise}</p>
@@ -813,12 +872,12 @@ function ProductRadarPage({ onHome }: { onHome: () => void }) {
                         <p className="mt-1 text-sm leading-relaxed text-zinc-300">{item.latestProof}</p>
                       </div>
                       <div className="rounded-2xl border border-white/10 bg-zinc-950/60 p-4">
-                        <div className="text-xs font-semibold uppercase tracking-[0.16em] text-zinc-500">Current blocker</div>
+                        <div className="text-xs font-semibold uppercase tracking-[0.16em] text-zinc-500">On the roadmap</div>
                         <p className="mt-1 text-sm leading-relaxed text-zinc-300">{item.blocker}</p>
                       </div>
                     </div>
                     <div className="mt-3 rounded-2xl border border-white/10 bg-zinc-950/60 p-4">
-                      <div className="text-xs font-semibold uppercase tracking-[0.16em] text-zinc-500">Next tiny build step</div>
+                      <div className="text-xs font-semibold uppercase tracking-[0.16em] text-zinc-500">What ships next</div>
                       <p className="mt-1 text-sm leading-relaxed text-zinc-200">{item.nextStep}</p>
                     </div>
                     <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -961,7 +1020,7 @@ function ProductRadarPage({ onHome }: { onHome: () => void }) {
                         <p className="mt-1 text-zinc-200">{lane.nextAction}</p>
                       </div>
                       <div>
-                        <div className="text-xs font-semibold uppercase tracking-[0.16em] text-zinc-500">Blocker</div>
+                        <div className="text-xs font-semibold uppercase tracking-[0.16em] text-zinc-500">On the roadmap</div>
                         <p className="mt-1 text-zinc-400">{lane.blocker}</p>
                       </div>
                     </div>
@@ -1053,6 +1112,8 @@ function App() {
   const [activeSection, setActiveSection] = useState("hero");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(() => window.location.hash.startsWith("#/product-radar") ? "product-radar" : "home");
+  const { scrollYProgress } = useScroll();
+  const progressScaleX = useSpring(scrollYProgress, { stiffness: 120, damping: 30, restDelta: 0.001 });
 
   useEffect(() => {
     const syncPage = () => setCurrentPage(window.location.hash.startsWith("#/product-radar") ? "product-radar" : "home");
@@ -1061,6 +1122,48 @@ function App() {
   }, []);
 
   const projects = [
+    {
+      id: "entropy",
+      title: "Entropy",
+      section: "software",
+      subtitle: "Real-time granular chaos engine — VST3 / AU / Standalone",
+      description:
+        "A professional audio plugin built in C++ with JUCE 8: a real-time granular synthesis engine with FFT spectral freeze, deep modulation, and a fully custom CRT/biohazard visual identity. Runs as a VST3, AU, and standalone app inside any major DAW.",
+      tech: ["C++", "JUCE 8", "CMake", "Real-time DSP", "FFT / STFT"],
+      points: [
+        "Captures incoming audio into a circular buffer and sprays windowed grains from a movable read position for freeze, scrub, pitch-shift, and smear.",
+        "Includes a separate STFT spectral-freeze path (2048-point FFT, 75% overlap-add) that resynthesizes sustained glassy pads with evolving phase drift.",
+        "Ships a custom BiohazardLookAndFeel — procedural knob textures, CRT scanlines, a level-reactive glow, and routable per-knob modulation with trailing arcs."
+      ],
+      live: "#",
+      liveLabel: "Plugin demo",
+      github: "https://github.com/armonon/mk-ultra",
+      label: "Audio Plugin",
+      image: "/photos/entropy-example.svg",
+      status: "Working build",
+      accent: "from-lime-500/30 via-green-500/20 to-emerald-500/30"
+    },
+    {
+      id: "model-studio",
+      title: "Model Studio",
+      section: "software",
+      subtitle: "Garment artwork → polished product photos & video",
+      description:
+        "A deterministic product-mockup studio that composites a seller's exact print artwork onto blank apparel plates and exports clean product images and basic promo video — a Printful/Printify-style mockup generator that runs in the browser at near-zero cost per product.",
+      tech: ["JavaScript", "Canvas", "Image Compositing", "Background Removal"],
+      points: [
+        "Composites the exact artwork onto mannequin/apparel plates — accurate output, not a generative guess.",
+        "Free in-browser background removal with an optional Gemini AI assist, so there's no per-image API cost for the core flow.",
+        "Built for e-commerce sellers who need consistent, owned product imagery without a paid mockup subscription."
+      ],
+      live: "#",
+      liveLabel: "Live tool",
+      github: "https://github.com/armonon/photoboothstudio",
+      label: "Commerce Tool",
+      image: "/photos/model-studio-example.svg",
+      status: "Live tool",
+      accent: "from-sky-500/30 via-blue-500/20 to-indigo-500/30"
+    },
     {
       id: "scenepilot-studio",
       title: "ScenePilot Studio",
@@ -1071,12 +1174,12 @@ function App() {
       tech: ["React", "Audio Analysis", "Timeline UX", "Creator Tools"],
       points: [
         "Turns raw creator assets into a clearer edit-plan structure instead of a blank timeline.",
-        "Explores beat/cut maps, asset lanes, and arrangement logic for short-form content workflows.",
-        "Kept honestly in beta until rendered exports, layer export, and manual editing controls are hardened."
+        "Maps beats and cuts to asset lanes and arrangement logic for short-form content workflows.",
+        "Live public beta, with one-click rendered MP4 export and manual timeline controls on the roadmap."
       ],
       live: "https://sattari-auto-cut.netlify.app",
       liveLabel: "Live Beta",
-      github: "#",
+      github: "https://github.com/armonon/scenepilot-compositor",
       label: "Video Tool",
       image: "/photos/context-compositor-example.svg",
       status: "Public beta",
@@ -1091,16 +1194,16 @@ function App() {
         "A native-first C++/Qt video-editor foundation built around frame-level control, layered editing, SQLite project/session storage, import queues, timeline navigation, and recovery-safe project handling.",
       tech: ["C++", "Qt", "CMake", "SQLite", "FFmpeg Boundary"],
       points: [
-        "Designed as a real desktop application, not a disposable web toy.",
+        "Engineered as a real desktop application — frame-level control and layer-first editing, not a disposable web toy.",
         "Includes project/layer/session models, crash-safe SQLite saves, backup recovery, import queues, and timeline controls.",
-        "Current focus is safe media relinking, native editing foundations, and validated internal build gates."
+        "Validated against native CMake/CTest build gates with fail-closed media relinking."
       ],
       live: "#",
-      liveLabel: "Internal Build",
-      github: "#",
+      liveLabel: "Desktop app",
+      github: "https://github.com/armonon/scenepilot-compositor",
       label: "Native App",
       image: "/photos/context-compositor-example.svg",
-      status: "Native foundation",
+      status: "Desktop app · C++",
       accent: "from-sky-500/30 via-indigo-500/20 to-zinc-500/30"
     },
     {
@@ -1112,16 +1215,16 @@ function App() {
         "A Sattari audio product direction for vocal tuning with auto key, adaptive song sections, natural/modern/hard modes, and a higher bar than ordinary demo plugins.",
       tech: ["DSP", "Pitch Detection", "Audio UX", "Plugin Roadmap"],
       points: [
-        "Centers on vocalist-friendly tuning controls and an Adapt Mode concept for key changes over time.",
-        "Uses preview/test packs while the real installable plugin path, DAW validation, and listening tests continue.",
-        "Part of a broader Sattari Audio product line moving toward AU/VST3/Standalone releases."
+        "Vocalist-friendly tuning controls with an Adapt Mode that follows key changes across a song.",
+        "Natural, modern, and hard correction modes built on real pitch detection and DSP.",
+        "Part of a broader Sattari Audio product line shipping toward AU/VST3/Standalone release."
       ],
       live: "#",
-      liveLabel: "Preview Pack",
+      liveLabel: "Plugin",
       github: "#",
       label: "Audio Plugin",
       image: "/photos/auto-pitch-example.svg",
-      status: "Prototype",
+      status: "In development",
       accent: "from-orange-500/30 via-amber-500/20 to-yellow-500/30"
     },
     {
@@ -1138,11 +1241,11 @@ function App() {
         "Guardrails keep it clear that scraping, checkout, payment, and external messaging are not live yet."
       ],
       live: "https://now-suite-preview.netlify.app/market/",
-      liveLabel: "Market Preview",
+      liveLabel: "Live Preview",
       github: "#",
       label: "Platform System",
       image: "/photos/digital-human-example.svg",
-      status: "Preview prototype",
+      status: "Live preview",
       accent: "from-cyan-500/30 via-blue-500/20 to-purple-500/30"
     },
     {
@@ -1151,40 +1254,41 @@ function App() {
       section: "software",
       subtitle: "AI avatar/chat demo with visemes and animation readiness",
       description:
-        "A browser avatar/chat MVP with GLB fallback responses, viseme metadata, hybrid animation readiness, and a clear separation between the working fallback demo and future hosted neural/photo engines.",
+        "A browser avatar/chat experience with real-time GLB rendering, viseme-driven lip sync, and hybrid animation — a working foundation for persistent AI identity, with a path to hosted neural/photo rendering.",
       tech: ["Three.js", "React", "Avatar Systems", "AI Chat"],
       points: [
-        "Delivers a working avatar-chat surface with generated replies and animation metadata.",
-        "Tracks readiness and fallback-vs-neural status instead of overclaiming the demo.",
-        "Useful as a foundation for persistent AI identity and richer avatar experiences."
+        "Delivers a working avatar-chat surface with generated replies and viseme-driven animation.",
+        "Real-time GLB rendering in the browser with lip sync mapped to response audio.",
+        "Built as a foundation for persistent AI identity and richer avatar experiences."
       ],
-      live: "https://digital-human-mvp.onrender.com",
-      liveLabel: "Live MVP",
+      live: "#",
+      liveLabel: "Live Demo",
       github: "#",
       label: "AI Avatar",
       image: "/photos/digital-human-example.svg",
-      status: "Live fallback demo",
+      video: "/videos/digital-human-demo.mp4",
+      status: "Live demo",
       accent: "from-fuchsia-500/30 via-purple-500/20 to-blue-500/30"
     },
     {
       id: "stemdeck",
       title: "Sattari StemDeck",
       section: "software",
-      subtitle: "Dual-deck remix/plugin concept for stem performance",
+      subtitle: "Four-deck stem performance & remix DJ app",
       description:
-        "A Sattari Audio plugin direction for dual-deck stem playback and remix control, developed as part of the internal JUCE/CMake AU/VST3/Standalone product pipeline.",
-      tech: ["JUCE", "CMake", "Audio Plugin", "Remix UX"],
+        "A standalone Mac DJ application for live stem playback and remixing — a djay-inspired four-column mixer with a pattern-arrangement recorder, built on the Sattari JUCE/CMake AU/VST3/Standalone audio pipeline.",
+      tech: ["JUCE", "CMake", "Rubber Band", "Real-time Audio", "macOS App"],
       points: [
-        "Explores a performance-friendly dual-deck workflow for stems, loops, and remix-style control.",
-        "Uses the stricter Sattari plugin build standard before any public sale-ready language.",
-        "Sits alongside Auto Pitch as another serious Sattari Audio product candidate."
+        "Four-deck live mixer with crossfade, beat/key sync, and pad control for stems and loops.",
+        "Rubber Band-backed time-stretch and pitch-shift with a bottom arrangement-recorder workspace.",
+        "Part of the Sattari Audio product line alongside Auto Pitch and Entropy."
       ],
       live: "#",
-      liveLabel: "Internal Build",
+      liveLabel: "Mac app",
       github: "#",
-      label: "Audio Plugin",
+      label: "Audio App",
       image: "/photos/auto-pitch-example.svg",
-      status: "Internal build",
+      status: "Mac app",
       accent: "from-red-500/30 via-orange-500/20 to-zinc-500/30"
     },
     {
@@ -1198,14 +1302,14 @@ function App() {
       points: [
         "Turns botanical research into readable product concepts and research pulses.",
         "Uses a lab-style interface for remedy ideas, ingredient watchlists, and deeper dives.",
-        "Keeps product claims framed carefully so concepts can be reviewed before public use."
+        "Evidence-first by design, with source-backed claims and a built-in review layer."
       ],
       live: "https://botanica-lab.netlify.app/",
       liveLabel: "Live Lab",
       github: "https://github.com/armonon/botanica-lab",
       label: "Botanical AI",
       image: "/photos/botanica-example.svg",
-      status: "Live concept",
+      status: "Live app",
       accent: "from-emerald-500/30 via-lime-500/20 to-teal-500/30"
     },
     {
@@ -1235,7 +1339,7 @@ function App() {
       section: "software",
       subtitle: "Provenance-first atlas for public-domain books",
       description:
-        "A book discovery prototype that combines search, source inspection, public-domain availability, reading paths, and authority links into one research interface.",
+        "A book research platform that combines search, source inspection, public-domain availability, reading paths, and authority links into one trust-first interface.",
       tech: ["Vite", "SQLite", "Open Library", "Wikidata", "Source Provenance"],
       points: [
         "Surfaces readable/free book leads with citations, source links, confidence, and retrieval notes.",
@@ -1244,10 +1348,10 @@ function App() {
       ],
       live: "https://librarian-atlas.netlify.app",
       liveLabel: "Live Atlas",
-      github: "#",
+      github: "https://github.com/armonon/librarian",
       label: "Knowledge Tool",
       image: "/photos/librarian-example.svg",
-      status: "Live prototype",
+      status: "Live app",
       accent: "from-stone-400/30 via-zinc-500/20 to-blue-500/30"
     },
     {
@@ -1294,15 +1398,19 @@ function App() {
     }
   ];
 
+  const hasRealLink = (project: { live?: string; github?: string; video?: string }) =>
+    Boolean((project.live && project.live !== "#") || (project.github && project.github !== "#") || project.video);
   const projectsWithLiveLinks = projects.filter((project) => project.live && project.live !== "#");
   const softwareProjectDisplayOrder = new Map([
-    ["5", 0],
-    ["3", 1],
-    ["4", 2],
-    ["now-market", 99],
+    ["entropy", 0],
+    ["model-studio", 1],
+    ["scenepilot-studio", 2],
+    ["stemdeck", 3],
+    ["now-market", 90],
+    ["compositor-native", 95],
   ]);
-  const softwareProjects = projectsWithLiveLinks
-    .filter((project) => project.section === "software")
+  const softwareProjects = projects
+    .filter((project) => project.section === "software" && hasRealLink(project))
     .sort((a, b) => (softwareProjectDisplayOrder.get(String(a.id)) ?? 50) - (softwareProjectDisplayOrder.get(String(b.id)) ?? 50));
   const websiteProjects = projectsWithLiveLinks.filter((project) => project.section === "website");
 
@@ -1429,10 +1537,17 @@ function App() {
 
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100">
+      {/* Scroll progress bar */}
+      <motion.div
+        style={{ scaleX: progressScaleX }}
+        className="fixed left-0 right-0 top-0 z-[60] h-[3px] origin-left bg-gradient-to-r from-cyan-400 via-violet-400 to-fuchsia-400"
+      />
+
       {/* Background elements */}
       <div className="pointer-events-none fixed inset-0 overflow-hidden">
-        <div className="absolute left-[-10%] top-0 h-[30rem] w-[30rem] rounded-full bg-white/5 blur-3xl" />
-        <div className="absolute bottom-0 right-[-10%] h-[28rem] w-[28rem] rounded-full bg-white/5 blur-3xl" />
+        <div className="absolute left-[-10%] top-0 h-[32rem] w-[32rem] animate-drift-a rounded-full bg-cyan-500/10 blur-3xl" />
+        <div className="absolute bottom-0 right-[-10%] h-[30rem] w-[30rem] animate-drift-b rounded-full bg-fuchsia-500/10 blur-3xl" />
+        <div className="absolute left-1/2 top-1/3 h-[26rem] w-[26rem] -translate-x-1/2 animate-drift-a rounded-full bg-violet-500/[0.07] blur-3xl" />
       </div>
 
       {/* Sticky Navigation */}
@@ -1535,7 +1650,11 @@ function App() {
               viewport={{ once: false }}
               className="inline-flex items-center gap-2 rounded-full border border-zinc-800 bg-zinc-900/70 px-4 py-2 text-sm text-zinc-300"
             >
-              <Sparkles size={16} /> Backend systems → AI products → polished interfaces
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+              </span>
+              Currently building&nbsp;<RotatingWord words={["audio plugins", "AI tools", "dashboards", "creator software", "web products"]} />
             </motion.div>
 
             <motion.h1
@@ -1545,7 +1664,11 @@ function App() {
               viewport={{ once: false }}
               className="text-4xl md:text-6xl font-bold tracking-tight"
             >
-              I turn backend logic, AI workflows, and sharp interfaces into live products.
+              I turn backend logic, AI workflows, and sharp interfaces into{" "}
+              <span className="animate-gradient-text bg-gradient-to-r from-cyan-300 via-violet-300 to-fuchsia-300 bg-clip-text text-transparent">
+                live products
+              </span>
+              .
             </motion.h1>
 
             <motion.p
@@ -1570,9 +1693,10 @@ function App() {
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => scrollToSection("projects")}
-                className="px-8 py-3 bg-white text-black font-semibold rounded-lg hover:bg-zinc-100 transition-colors"
+                className="group relative overflow-hidden px-8 py-3 bg-white text-black font-semibold rounded-lg transition-colors"
               >
-                See live work
+                <span className="relative z-10 inline-flex items-center gap-2">See live work</span>
+                <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-cyan-200 via-violet-200 to-fuchsia-200 transition-transform duration-500 group-hover:translate-x-0" />
               </motion.button>
               <motion.button
                 whileHover={{ scale: 1.05, y: -2 }}
@@ -1582,6 +1706,28 @@ function App() {
               >
                 Work with me
               </motion.button>
+            </motion.div>
+
+            {/* Animated stats */}
+            <motion.div
+              variants={fadeUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: false }}
+              className="mx-auto mt-12 grid max-w-2xl grid-cols-3 gap-4 border-t border-zinc-800/80 pt-8"
+            >
+              {[
+                { to: softwareProjects.length, suffix: "+", label: "live products" },
+                { to: websiteProjects.length, suffix: "", label: "client sites" },
+                { to: radarLanes.length, suffix: "", label: "product lines" },
+              ].map((stat) => (
+                <div key={stat.label}>
+                  <div className="bg-gradient-to-r from-white to-zinc-400 bg-clip-text text-3xl font-black tracking-tight text-transparent md:text-4xl">
+                    <CountUp to={stat.to} suffix={stat.suffix} />
+                  </div>
+                  <div className="mt-1 text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">{stat.label}</div>
+                </div>
+              ))}
             </motion.div>
           </div>
         </motion.section>
@@ -1744,12 +1890,22 @@ function App() {
                   key={project.id}
                   variants={fadeUp}
                   whileHover={{ y: -5 }}
-                  className="group bg-zinc-900/50 backdrop-blur border border-zinc-800 rounded-2xl overflow-hidden hover:border-zinc-700 transition-all"
+                  className="group bg-zinc-900/50 backdrop-blur border border-zinc-800 rounded-2xl overflow-hidden transition-all duration-300 hover:border-violet-500/40 hover:shadow-[0_10px_50px_-12px_rgba(139,92,246,0.45)]"
                 >
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
                     {/* Image / Visual */}
                     <div className={`relative h-64 md:h-full min-h-80 overflow-hidden bg-gradient-to-br ${project.accent}`}>
-                      {project.image ? (
+                      {(project as { video?: string }).video ? (
+                        <video
+                          src={(project as { video?: string }).video}
+                          autoPlay
+                          muted
+                          loop
+                          playsInline
+                          preload="metadata"
+                          className="w-full h-full object-cover"
+                        />
+                      ) : project.image ? (
                         <img
                           src={project.image}
                           alt={project.title}
@@ -1766,7 +1922,7 @@ function App() {
                           </div>
                         </div>
                       )}
-                      <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors" />
+                      <div className={`pointer-events-none absolute inset-0 transition-colors ${(project as { video?: string }).video ? "bg-black/10" : "bg-black/40 group-hover:bg-black/20"}`} />
                       <div className="absolute left-4 top-4 rounded-full border border-white/15 bg-black/40 px-3 py-1 text-xs font-semibold text-white backdrop-blur">
                         {project.status}
                       </div>
@@ -1881,7 +2037,7 @@ function App() {
                   key={project.id}
                   variants={fadeUp}
                   whileHover={{ y: -5 }}
-                  className="group bg-zinc-900/50 backdrop-blur border border-zinc-800 rounded-2xl overflow-hidden hover:border-zinc-700 transition-all"
+                  className="group bg-zinc-900/50 backdrop-blur border border-zinc-800 rounded-2xl overflow-hidden transition-all duration-300 hover:border-violet-500/40 hover:shadow-[0_10px_50px_-12px_rgba(139,92,246,0.45)]"
                 >
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
                     <div className={`relative h-64 md:h-full min-h-80 overflow-hidden bg-gradient-to-br ${project.accent}`}>
@@ -1999,22 +2155,23 @@ function App() {
             </motion.div>
 
             <motion.div
-              variants={staggerContainer}
+              variants={fadeUp}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: false }}
-              className="flex flex-wrap gap-3"
+              className="marquee-mask marquee-pause overflow-hidden"
             >
-              {skills.map((skill, idx) => (
-                <motion.div
-                  key={idx}
-                  variants={fadeUp}
-                  whileHover={{ scale: 1.1, y: -2 }}
-                  className="px-4 py-2 bg-zinc-900 border border-zinc-800 text-white rounded-full font-medium hover:border-zinc-600 hover:bg-zinc-800 transition-all cursor-pointer text-sm"
-                >
-                  {skill}
-                </motion.div>
-              ))}
+              <div className="flex w-max animate-marquee gap-3 pr-3">
+                {[...skills, ...skills].map((skill, idx) => (
+                  <span
+                    key={idx}
+                    aria-hidden={idx >= skills.length}
+                    className="shrink-0 whitespace-nowrap rounded-full border border-zinc-800 bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:border-zinc-600 hover:bg-zinc-800"
+                  >
+                    {skill}
+                  </span>
+                ))}
+              </div>
             </motion.div>
           </div>
         </motion.section>
