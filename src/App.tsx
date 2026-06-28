@@ -1652,18 +1652,19 @@ function App() {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: false }}
-              className="mx-auto mt-12 grid max-w-2xl grid-cols-3 gap-4 border-t border-zinc-800/80 pt-8"
+              className="mx-auto mt-12 grid max-w-3xl grid-cols-2 gap-x-4 gap-y-6 border-t border-zinc-800/80 pt-8 sm:grid-cols-4"
             >
               {[
-                { to: softwareProjects.length, suffix: "+", label: "live products" },
-                { to: websiteProjects.length, suffix: "", label: "client sites" },
-                { to: radarLanes.length, suffix: "", label: "product lines" },
+                { to: 20, suffix: "+", value: "", label: "live deployments" },
+                { to: 0, suffix: "", value: "C++ · TS · Python", label: "core stack" },
+                { to: 0, suffix: "", value: "Web · macOS · Plugins", label: "shipped across" },
+                { to: 0, suffix: "", value: "AI · Audio · Fintech", label: "domains" },
               ].map((stat) => (
                 <div key={stat.label}>
-                  <div className="bg-gradient-to-r from-white to-zinc-400 bg-clip-text text-3xl font-black tracking-tight text-transparent md:text-4xl">
-                    <CountUp to={stat.to} suffix={stat.suffix} />
+                  <div className="bg-gradient-to-r from-white to-zinc-400 bg-clip-text text-xl font-black tracking-tight text-transparent md:text-2xl">
+                    {stat.value ? stat.value : <CountUp to={stat.to} suffix={stat.suffix} />}
                   </div>
-                  <div className="mt-1 text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">{stat.label}</div>
+                  <div className="mt-1 text-xs font-semibold uppercase tracking-[0.16em] text-zinc-500">{stat.label}</div>
                 </div>
               ))}
             </motion.div>
