@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0c1f33"/><stop offset="1" stop-color="#070a14"/></linearGradient>
+    <style>
+      @keyframes pop { 0% { opacity:0; transform: scale(.9) translateY(16px) } 100% { opacity:1; transform: scale(1) translateY(0) } }
+      @keyframes scanline { 0% { transform: translateX(0) } 100% { transform: translateX(1040px) } }
+      @keyframes blip { 0%,100% { opacity:.4 } 50% { opacity:1 } }
+      .tile { animation: pop .7s ease-out both; transform-origin: center; }
+      .scan { animation: scanline 3.5s ease-in-out infinite; }
+      .blip { animation: blip 1.4s ease-in-out infinite; }
+      @media (prefers-reduced-motion: reduce){ .tile,.scan,.blip{ animation:none } }
+    </style>
+  </defs>
+  <rect width="1280" height="720" fill="url(#bg)"/>
+  <rect x="40" y="40" width="1200" height="640" rx="26" fill="rgba(7,10,20,.6)" stroke="rgba(56,189,248,.25)"/>
+  <text x="80" y="116" font-size="40" font-weight="800" fill="#e0f2fe" font-family="Inter,Arial,sans-serif">NOW · Market</text>
+  <g class="blip"><circle cx="378" cy="100" r="7" fill="#22d3ee"/></g>
+  <text x="82" y="150" font-size="19" fill="#7dd3fc" font-family="Inter,Arial,sans-serif" letter-spacing="2">PROFILE-BACKED MARKETPLACE</text>
+  <!-- search -->
+  <rect x="80" y="188" width="800" height="56" rx="28" fill="rgba(255,255,255,.05)" stroke="rgba(56,189,248,.3)"/>
+  <circle cx="116" cy="216" r="10" fill="none" stroke="#7dd3fc" stroke-width="3"/><line x1="123" y1="223" x2="132" y2="232" stroke="#7dd3fc" stroke-width="3"/>
+  <text x="156" y="224" font-size="20" fill="#e2e8f0" font-family="Inter,Arial,sans-serif">search every listing · all tenants</text>
+  <rect class="scan" x="80" y="186" width="60" height="60" rx="28" fill="rgba(56,189,248,.12)"/>
+  <rect x="906" y="188" width="294" height="56" rx="12" fill="rgba(56,189,248,.14)" stroke="rgba(56,189,248,.35)"/><text x="1053" y="224" font-size="18" fill="#bae6fd" text-anchor="middle" font-family="Inter,Arial,sans-serif">▦ seller profiles</text>
+  <!-- listing grid -->
+  <g font-family="Inter,Arial,sans-serif">
+    <g class="tile" style="animation-delay:.1s"><rect x="80" y="290" width="266" height="340" rx="14" fill="rgba(255,255,255,.05)" stroke="rgba(56,189,248,.2)"/><rect x="80" y="290" width="266" height="170" rx="14" fill="rgba(56,189,248,.18)"/><circle cx="213" cy="370" r="38" fill="rgba(255,255,255,.15)"/><text x="104" y="500" font-size="20" font-weight="700" fill="#f1f5f9">Studio gear</text><text x="104" y="528" font-size="15" fill="#94a3b8">verified seller</text><rect x="104" y="548" width="100" height="34" rx="17" fill="rgba(34,211,238,.18)"/><text x="120" y="571" font-size="16" fill="#67e8f9">$240</text></g>
+    <g class="tile" style="animation-delay:.4s"><rect x="372" y="290" width="266" height="340" rx="14" fill="rgba(255,255,255,.05)" stroke="rgba(56,189,248,.2)"/><rect x="372" y="290" width="266" height="170" rx="14" fill="rgba(99,102,241,.22)"/><circle cx="505" cy="370" r="38" fill="rgba(255,255,255,.15)"/><text x="396" y="500" font-size="20" font-weight="700" fill="#f1f5f9">Apparel drop</text><text x="396" y="528" font-size="15" fill="#94a3b8">verified seller</text><rect x="396" y="548" width="100" height="34" rx="17" fill="rgba(34,211,238,.18)"/><text x="412" y="571" font-size="16" fill="#67e8f9">$58</text></g>
+    <g class="tile" style="animation-delay:.7s"><rect x="664" y="290" width="266" height="340" rx="14" fill="rgba(255,255,255,.05)" stroke="rgba(56,189,248,.2)"/><rect x="664" y="290" width="266" height="170" rx="14" fill="rgba(168,85,247,.2)"/><circle cx="797" cy="370" r="38" fill="rgba(255,255,255,.15)"/><text x="688" y="500" font-size="20" font-weight="700" fill="#f1f5f9">Service slot</text><text x="688" y="528" font-size="15" fill="#94a3b8">verified seller</text><rect x="688" y="548" width="100" height="34" rx="17" fill="rgba(34,211,238,.18)"/><text x="704" y="571" font-size="16" fill="#67e8f9">$120</text></g>
+    <g class="tile" style="animation-delay:1s"><rect x="956" y="290" width="244" height="340" rx="14" fill="rgba(56,189,248,.08)" stroke="rgba(56,189,248,.3)"/><text x="980" y="330" font-size="15" fill="#7dd3fc" letter-spacing="2">NOW PROFILE</text><circle cx="1078" cy="400" r="42" fill="rgba(56,189,248,.2)" stroke="#38bdf8" stroke-width="2"/><text x="1078" y="410" font-size="30" fill="#e0f2fe" text-anchor="middle">◎</text><text x="1078" y="478" font-size="18" fill="#f1f5f9" text-anchor="middle">Identity-linked</text><text x="1078" y="504" font-size="15" fill="#94a3b8" text-anchor="middle">seller card</text><rect x="980" y="540" width="196" height="40" rx="20" fill="rgba(34,211,238,.16)"/><text x="1078" y="566" font-size="15" fill="#67e8f9" text-anchor="middle">save · inquire</text></g>
+  </g>
+</svg>

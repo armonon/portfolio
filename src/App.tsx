@@ -1139,7 +1139,7 @@ function App() {
       liveLabel: "Plugin demo",
       github: "https://github.com/armonon/mk-ultra",
       label: "Audio Plugin",
-      image: "/photos/entropy-example.svg",
+      image: "/photos/entropy-clip.svg",
       status: "Working build",
       accent: "from-lime-500/30 via-green-500/20 to-emerald-500/30"
     },
@@ -1156,34 +1156,34 @@ function App() {
         "Free in-browser background removal with an optional Gemini AI assist, so there's no per-image API cost for the core flow.",
         "Built for e-commerce sellers who need consistent, owned product imagery without a paid mockup subscription."
       ],
-      live: "#",
+      live: "https://garment-photo-studio.netlify.app",
       liveLabel: "Live tool",
       github: "https://github.com/armonon/photoboothstudio",
       label: "Commerce Tool",
-      image: "/photos/model-studio-example.svg",
+      image: "/photos/model-studio-clip.svg",
       status: "Live tool",
       accent: "from-sky-500/30 via-blue-500/20 to-indigo-500/30"
     },
     {
-      id: "scenepilot-studio",
-      title: "ScenePilot Studio",
+      id: "sattari-suite",
+      title: "Sattari Suite",
       section: "software",
-      subtitle: "Beat-aware creator workflow and auto-arranged edit plans",
+      subtitle: "Installer + plugin suite for music production",
       description:
-        "A public beta for creator kits: logos, voiceovers, clips, and effects can be organized into beat-aware arrangement plans for faster video assembly.",
-      tech: ["React", "Audio Analysis", "Timeline UX", "Creator Tools"],
+        "A one-download Sattari Hub that installs and updates the full Sattari Audio line — the Entropy granular engine, Auto Pitch vocal tuning, and the StemDeck DJ app — as AU, VST3, and standalone builds, with an over-the-air update feed.",
+      tech: ["JUCE 8", "C++", "AU / VST3", "macOS", "Auto-updater"],
       points: [
-        "Turns raw creator assets into a clearer edit-plan structure instead of a blank timeline.",
-        "Maps beats and cuts to asset lanes and arrangement logic for short-form content workflows.",
-        "Live public beta, with one-click rendered MP4 export and manual timeline controls on the roadmap."
+        "One Hub installs and updates every Sattari plugin and app from a single place.",
+        "Bundles the Entropy granular engine, Auto Pitch vocal tuning, and the StemDeck DJ app.",
+        "Ships AU/VST3/standalone builds with an over-the-air Product Radar update feed."
       ],
-      live: "https://sattari-auto-cut.netlify.app",
-      liveLabel: "Live Beta",
-      github: "https://github.com/armonon/scenepilot-compositor",
-      label: "Video Tool",
-      image: "/photos/context-compositor-example.svg",
-      status: "Public beta",
-      accent: "from-violet-500/30 via-fuchsia-500/20 to-sky-500/30"
+      live: "https://sattari.netlify.app",
+      liveLabel: "Live Site",
+      github: "#",
+      label: "Audio Suite",
+      image: "/photos/sattari-suite-clip.svg",
+      status: "Live · installer",
+      accent: "from-orange-500/30 via-amber-500/20 to-lime-500/30"
     },
     {
       id: "compositor-native",
@@ -1202,7 +1202,7 @@ function App() {
       liveLabel: "Desktop app",
       github: "https://github.com/armonon/scenepilot-compositor",
       label: "Native App",
-      image: "/photos/context-compositor-example.svg",
+      image: "/photos/compositor-clip.svg",
       status: "Desktop app · C++",
       accent: "from-sky-500/30 via-indigo-500/20 to-zinc-500/30"
     },
@@ -1226,27 +1226,6 @@ function App() {
       image: "/photos/auto-pitch-example.svg",
       status: "In development",
       accent: "from-orange-500/30 via-amber-500/20 to-yellow-500/30"
-    },
-    {
-      id: "now-market",
-      title: "NOW + Market",
-      section: "software",
-      subtitle: "Identity hub and universal marketplace prototype",
-      description:
-        "A platform-system direction where NOW becomes the profile/identity hub and Market becomes the first service: search listings, connect seller profiles, and prototype marketplace flows safely.",
-      tech: ["JavaScript", "Netlify Functions", "Auth Contracts", "Marketplace UX"],
-      points: [
-        "NOW models profiles, vaults, identity data, permissions, and safe public/private boundaries.",
-        "Market prototypes tenant-aware listing surfaces, source readiness, seller cards, saved items, and inquiry flows.",
-        "Guardrails keep it clear that scraping, checkout, payment, and external messaging are not live yet."
-      ],
-      live: "https://now-suite-preview.netlify.app/market/",
-      liveLabel: "Live Preview",
-      github: "#",
-      label: "Platform System",
-      image: "/photos/digital-human-example.svg",
-      status: "Live preview",
-      accent: "from-cyan-500/30 via-blue-500/20 to-purple-500/30"
     },
     {
       id: "digital-human-mvp",
@@ -1292,48 +1271,6 @@ function App() {
       accent: "from-red-500/30 via-orange-500/20 to-zinc-500/30"
     },
     {
-      id: 3,
-      title: "Botanica Lab",
-      section: "software",
-      subtitle: "Botanical R&D and formulation-intelligence site",
-      description:
-        "A living research lab for botanical product concepts, ingredient signals, formula exploration, and safe wellness-product ideation.",
-      tech: ["AI Research", "Netlify", "Data Design", "Compliance-Aware UX"],
-      points: [
-        "Turns botanical research into readable product concepts and research pulses.",
-        "Uses a lab-style interface for remedy ideas, ingredient watchlists, and deeper dives.",
-        "Evidence-first by design, with source-backed claims and a built-in review layer."
-      ],
-      live: "https://botanica-lab.netlify.app/",
-      liveLabel: "Live Lab",
-      github: "https://github.com/armonon/botanica-lab",
-      label: "Botanical AI",
-      image: "/photos/botanica-example.svg",
-      status: "Live app",
-      accent: "from-emerald-500/30 via-lime-500/20 to-teal-500/30"
-    },
-    {
-      id: 4,
-      title: "Stock Trader Oracle",
-      section: "software",
-      subtitle: "Market-intelligence dashboard for watchlists and catalysts",
-      description:
-        "A stock research dashboard that turns a watchlist into market radar, ticker news, scenario-based trade ideas, and risk-aware research briefs.",
-      tech: ["Market APIs", "Netlify Functions", "AI Analysis", "Research UX"],
-      points: [
-        "Tracks company watchlists, catalysts, headlines, and adjacent market themes.",
-        "Frames plays as research scenarios with risks and invalidation instead of guarantees.",
-        "Includes an analyst-style chat/API layer for faster ticker exploration."
-      ],
-      live: "https://armon-trader.netlify.app",
-      liveLabel: "Live Dashboard",
-      github: "#",
-      label: "Fintech Research",
-      image: "/photos/trader-oracle-example.svg",
-      status: "Live beta",
-      accent: "from-amber-500/30 via-orange-500/20 to-red-500/30"
-    },
-    {
       id: 5,
       title: "Librarian",
       section: "software",
@@ -1350,7 +1287,7 @@ function App() {
       liveLabel: "Live Atlas",
       github: "https://github.com/armonon/librarian",
       label: "Knowledge Tool",
-      image: "/photos/librarian-example.svg",
+      image: "/photos/librarian-clip.svg",
       status: "Live app",
       accent: "from-stone-400/30 via-zinc-500/20 to-blue-500/30"
     },
@@ -1403,10 +1340,10 @@ function App() {
   const projectsWithLiveLinks = projects.filter((project) => project.live && project.live !== "#");
   const softwareProjectDisplayOrder = new Map([
     ["entropy", 0],
-    ["model-studio", 1],
-    ["scenepilot-studio", 2],
-    ["stemdeck", 3],
-    ["now-market", 90],
+    ["sattari-suite", 1],
+    ["model-studio", 2],
+    ["digital-human-mvp", 3],
+    ["5", 4],
     ["compositor-native", 95],
   ]);
   const softwareProjects = projects

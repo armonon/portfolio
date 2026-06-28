@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0b1b33"/><stop offset="1" stop-color="#070910"/></linearGradient>
+    <style>
+      @keyframes scrub { 0% { transform: translateX(0) } 100% { transform: translateX(900px) } }
+      @keyframes layerin { 0% { opacity:0; transform: translateX(-20px) } 100% { opacity:1; transform: translateX(0) } }
+      @keyframes save { 0%,92%,100% { opacity:.3 } 96% { opacity:1 } }
+      .play { animation: scrub 6s linear infinite; }
+      .layer { animation: layerin .7s ease-out both; }
+      .saved { animation: save 4s ease-in-out infinite; }
+      @media (prefers-reduced-motion: reduce){ .play,.layer,.saved{ animation:none } }
+    </style>
+  </defs>
+  <rect width="1280" height="720" fill="url(#bg)"/>
+  <rect x="40" y="40" width="1200" height="640" rx="26" fill="rgba(7,9,16,.6)" stroke="rgba(99,102,241,.25)"/>
+  <text x="80" y="116" font-size="40" font-weight="800" fill="#e0e7ff" font-family="Inter,Arial,sans-serif">COMPOSITOR</text>
+  <text x="82" y="150" font-size="19" fill="#a5b4fc" font-family="Inter,Arial,sans-serif" letter-spacing="2">NATIVE FRAME / LAYER EDITOR · C++ / Qt</text>
+  <g class="saved" font-family="Inter,Arial,sans-serif"><rect x="1010" y="86" width="170" height="40" rx="20" fill="rgba(52,211,153,.16)" stroke="rgba(52,211,153,.4)"/><text x="1095" y="112" font-size="16" fill="#6ee7b7" text-anchor="middle">● project saved</text></g>
+  <!-- canvas -->
+  <rect x="80" y="190" width="780" height="290" rx="12" fill="rgba(0,0,0,.4)" stroke="rgba(99,102,241,.22)"/>
+  <rect x="120" y="220" width="700" height="230" rx="8" fill="rgba(99,102,241,.12)"/>
+  <rect x="180" y="270" width="240" height="150" rx="6" fill="rgba(56,189,248,.3)"/>
+  <rect x="460" y="250" width="300" height="180" rx="6" fill="rgba(168,85,247,.3)"/>
+  <text x="120" y="210" font-size="14" fill="#a5b4fc" font-family="Inter,Arial,sans-serif">FRAME 0428 · 1920×1080</text>
+  <!-- layers panel -->
+  <g font-family="Inter,Arial,sans-serif">
+    <rect x="890" y="190" width="310" height="290" rx="12" fill="rgba(255,255,255,.04)" stroke="rgba(99,102,241,.2)"/>
+    <text x="912" y="222" font-size="15" fill="#a5b4fc" letter-spacing="2">LAYERS</text>
+    <g class="layer" style="animation-delay:.1s"><rect x="910" y="238" width="270" height="48" rx="8" fill="rgba(56,189,248,.15)"/><rect x="922" y="250" width="24" height="24" rx="4" fill="#38bdf8"/><text x="958" y="268" font-size="17" fill="#e0e7ff">Foreground</text></g>
+    <g class="layer" style="animation-delay:.4s"><rect x="910" y="294" width="270" height="48" rx="8" fill="rgba(168,85,247,.15)"/><rect x="922" y="306" width="24" height="24" rx="4" fill="#a855f7"/><text x="958" y="324" font-size="17" fill="#e0e7ff">Subject</text></g>
+    <g class="layer" style="animation-delay:.7s"><rect x="910" y="350" width="270" height="48" rx="8" fill="rgba(99,102,241,.15)"/><rect x="922" y="362" width="24" height="24" rx="4" fill="#6366f1"/><text x="958" y="380" font-size="17" fill="#e0e7ff">Background</text></g>
+    <g class="layer" style="animation-delay:1s"><rect x="910" y="406" width="270" height="48" rx="8" fill="rgba(255,255,255,.05)"/><rect x="922" y="418" width="24" height="24" rx="4" fill="#475569"/><text x="958" y="436" font-size="17" fill="#94a3b8">Audio</text></g>
+  </g>
+  <!-- timeline -->
+  <g font-family="Inter,Arial,sans-serif">
+    <rect x="80" y="510" width="1120" height="120" rx="12" fill="rgba(255,255,255,.04)" stroke="rgba(99,102,241,.18)"/>
+    <g stroke="rgba(165,180,252,.18)"><line x1="180" y1="510" x2="180" y2="630"/><line x1="380" y1="510" x2="380" y2="630"/><line x1="580" y1="510" x2="580" y2="630"/><line x1="780" y1="510" x2="780" y2="630"/><line x1="980" y1="510" x2="980" y2="630"/></g>
+    <rect x="120" y="528" width="360" height="26" rx="5" fill="#38bdf8"/>
+    <rect x="200" y="562" width="500" height="26" rx="5" fill="#a855f7"/>
+    <rect x="120" y="596" width="800" height="20" rx="5" fill="#6366f1" opacity=".7"/>
+    <g class="play"><rect x="118" y="510" width="3" height="120" fill="#f0abfc"/><polygon points="111,510 128,510 119,522" fill="#f0abfc"/></g>
+  </g>
+</svg>

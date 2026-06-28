@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1c1917"/><stop offset="1" stop-color="#0a0a0a"/></linearGradient>
+    <style>
+      @keyframes caret { 0%,100% { opacity:1 } 50% { opacity:0 } }
+      @keyframes flipin { 0% { opacity:0; transform: translateY(22px) rotateX(20deg) } 100% { opacity:1; transform: translateY(0) rotateX(0) } }
+      @keyframes dash { to { stroke-dashoffset: -40 } }
+      .caret { animation: caret 1s steps(1) infinite; }
+      .book { animation: flipin .8s ease-out both; }
+      .link { stroke-dasharray: 8 8; animation: dash 1.2s linear infinite; }
+      @media (prefers-reduced-motion: reduce){ .caret,.book,.link{ animation:none } }
+    </style>
+  </defs>
+  <rect width="1280" height="720" fill="url(#bg)"/>
+  <rect x="40" y="40" width="1200" height="640" rx="26" fill="rgba(10,10,10,.6)" stroke="rgba(96,165,250,.25)"/>
+  <text x="80" y="116" font-size="40" font-weight="800" fill="#f5f5f4" font-family="Inter,Arial,sans-serif">Librarian</text>
+  <text x="82" y="150" font-size="19" fill="#93c5fd" font-family="Inter,Arial,sans-serif" letter-spacing="2">PROVENANCE-FIRST BOOK ATLAS</text>
+  <!-- search bar -->
+  <rect x="80" y="186" width="1120" height="60" rx="30" fill="rgba(255,255,255,.05)" stroke="rgba(96,165,250,.3)"/>
+  <circle cx="118" cy="216" r="11" fill="none" stroke="#93c5fd" stroke-width="3"/><line x1="126" y1="224" x2="136" y2="234" stroke="#93c5fd" stroke-width="3"/>
+  <text x="160" y="225" font-size="22" fill="#e7e5e4" font-family="Inter,Arial,sans-serif">public-domain philosophy, source-verified</text>
+  <rect class="caret" x="720" y="202" width="3" height="28" fill="#93c5fd"/>
+  <!-- book results -->
+  <g font-family="Inter,Arial,sans-serif">
+    <g class="book" style="animation-delay:.2s">
+      <rect x="80" y="290" width="350" height="340" rx="14" fill="rgba(255,255,255,.05)" stroke="rgba(96,165,250,.2)"/>
+      <rect x="104" y="314" width="120" height="170" rx="8" fill="#3b82f6"/><rect x="112" y="322" width="104" height="6" rx="3" fill="rgba(255,255,255,.5)"/>
+      <text x="104" y="520" font-size="20" font-weight="700" fill="#f5f5f4">Meditations</text>
+      <text x="104" y="548" font-size="15" fill="#a8a29e">Marcus Aurelius</text>
+      <rect x="104" y="566" width="150" height="28" rx="14" fill="rgba(52,211,153,.16)"/><text x="120" y="586" font-size="13" fill="#6ee7b7">public domain ✓</text>
+      <line class="link" x1="270" y1="580" x2="406" y2="580" stroke="#60a5fa" stroke-width="2"/><text x="270" y="616" font-size="13" fill="#93c5fd">source: 3 authorities</text>
+    </g>
+    <g class="book" style="animation-delay:.6s">
+      <rect x="460" y="290" width="350" height="340" rx="14" fill="rgba(255,255,255,.05)" stroke="rgba(96,165,250,.2)"/>
+      <rect x="484" y="314" width="120" height="170" rx="8" fill="#6366f1"/><rect x="492" y="322" width="104" height="6" rx="3" fill="rgba(255,255,255,.5)"/>
+      <text x="484" y="520" font-size="20" font-weight="700" fill="#f5f5f4">The Republic</text>
+      <text x="484" y="548" font-size="15" fill="#a8a29e">Plato</text>
+      <rect x="484" y="566" width="150" height="28" rx="14" fill="rgba(52,211,153,.16)"/><text x="500" y="586" font-size="13" fill="#6ee7b7">public domain ✓</text>
+      <line class="link" x1="650" y1="580" x2="786" y2="580" stroke="#60a5fa" stroke-width="2"/><text x="650" y="616" font-size="13" fill="#93c5fd">source: 5 authorities</text>
+    </g>
+    <g class="book" style="animation-delay:1s">
+      <rect x="840" y="290" width="360" height="340" rx="14" fill="rgba(96,165,250,.08)" stroke="rgba(96,165,250,.3)"/>
+      <text x="864" y="330" font-size="16" fill="#93c5fd" letter-spacing="2">READING PATH</text>
+      <circle cx="884" cy="380" r="9" fill="#60a5fa"/><circle cx="884" cy="440" r="9" fill="#60a5fa"/><circle cx="884" cy="500" r="9" fill="#60a5fa"/>
+      <line class="link" x1="884" y1="389" x2="884" y2="431" stroke="#60a5fa" stroke-width="2"/>
+      <line class="link" x1="884" y1="449" x2="884" y2="491" stroke="#60a5fa" stroke-width="2"/>
+      <text x="910" y="386" font-size="17" fill="#e7e5e4">Stoic foundations</text>
+      <text x="910" y="446" font-size="17" fill="#e7e5e4">Ethics &amp; virtue</text>
+      <text x="910" y="506" font-size="17" fill="#e7e5e4">Political philosophy</text>
+    </g>
+  </g>
+</svg>

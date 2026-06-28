@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0c2233"/><stop offset="1" stop-color="#0a0a14"/></linearGradient>
+    <clipPath id="plate"><path d="M520 250 L600 226 L646 270 L706 300 L676 360 L636 340 L636 600 L406 600 L406 340 L366 360 L336 300 L396 270 L442 226 Z"/></clipPath>
+    <style>
+      @keyframes drop { 0% { opacity:0; transform: translateY(-120px) scale(.6) } 60% { opacity:1; transform: translateY(0) scale(1) } 100% { opacity:1; transform: translateY(0) scale(1) } }
+      @keyframes sweep { 0% { transform: translateX(-260px) } 100% { transform: translateX(320px) } }
+      @keyframes exportpop { 0%,40% { opacity:0; transform: translateX(20px) } 60%,100% { opacity:1; transform: translateX(0) } }
+      @keyframes loop6 { 0%,100% { opacity:1 } }
+      .art { animation: drop 4s ease-in-out infinite; }
+      .sweep { animation: sweep 4s ease-in-out infinite; }
+      .ex1 { animation: exportpop 4s ease-in-out infinite; }
+      .ex2 { animation: exportpop 4s ease-in-out infinite .3s; }
+      @media (prefers-reduced-motion: reduce){ .art,.sweep,.ex1,.ex2{ animation:none; opacity:1 } }
+    </style>
+  </defs>
+  <rect width="1280" height="720" fill="url(#bg)"/>
+  <rect x="40" y="40" width="1200" height="640" rx="26" fill="rgba(10,10,20,.6)" stroke="rgba(56,189,248,.25)"/>
+  <text x="80" y="116" font-size="40" font-weight="800" fill="#e0f2fe" font-family="Inter,Arial,sans-serif">Model Studio</text>
+  <text x="82" y="150" font-size="19" fill="#7dd3fc" font-family="Inter,Arial,sans-serif" letter-spacing="2">ARTWORK → PRODUCT PHOTOS &amp; VIDEO</text>
+  <!-- garment plate -->
+  <path d="M520 250 L600 226 L646 270 L706 300 L676 360 L636 340 L636 600 L406 600 L406 340 L366 360 L336 300 L396 270 L442 226 Z"
+        fill="rgba(255,255,255,.12)" stroke="rgba(255,255,255,.45)" stroke-width="3"/>
+  <!-- composited artwork dropping on chest -->
+  <g class="art">
+    <rect x="466" y="360" width="110" height="110" rx="10" fill="rgba(99,102,241,.6)" stroke="white" stroke-opacity=".7" stroke-width="2"/>
+    <circle cx="521" cy="415" r="30" fill="none" stroke="white" stroke-width="6"/><path d="M506 415 H536 M521 400 V430" stroke="white" stroke-width="6"/>
+  </g>
+  <!-- background-removal sweep over the plate -->
+  <g clip-path="url(#plate)"><rect class="sweep" x="300" y="226" width="80" height="380" fill="rgba(56,189,248,.35)"/></g>
+  <text x="521" y="640" font-size="16" fill="#7dd3fc" text-anchor="middle" font-family="Inter,Arial,sans-serif">background removed · composited</text>
+  <!-- arrow -->
+  <g transform="translate(740 400)"><line x1="0" y1="0" x2="90" y2="0" stroke="#7dd3fc" stroke-width="6"/><path d="M90 0 L72 -14 M90 0 L72 14" stroke="#7dd3fc" stroke-width="6" fill="none"/></g>
+  <!-- export outputs -->
+  <g font-family="Inter,Arial,sans-serif">
+    <g class="ex1"><rect x="880" y="250" width="300" height="150" rx="14" fill="rgba(255,255,255,.06)" stroke="rgba(56,189,248,.3)"/><rect x="904" y="274" width="120" height="86" rx="8" fill="rgba(56,189,248,.25)"/><circle cx="934" cy="304" r="12" fill="#bae6fd"/><path d="M912 350 L948 320 L978 344 L1010 322" stroke="#bae6fd" stroke-width="4" fill="none"/><text x="1044" y="306" font-size="20" font-weight="700" fill="#e0f2fe" text-anchor="middle">product</text><text x="1044" y="334" font-size="20" font-weight="700" fill="#e0f2fe" text-anchor="middle">.png</text></g>
+    <g class="ex2"><rect x="880" y="420" width="300" height="150" rx="14" fill="rgba(255,255,255,.06)" stroke="rgba(56,189,248,.3)"/><rect x="904" y="444" width="120" height="86" rx="8" fill="rgba(99,102,241,.3)"/><polygon points="944,470 944,504 978,487" fill="#e0f2fe"/><text x="1044" y="476" font-size="20" font-weight="700" fill="#e0f2fe" text-anchor="middle">promo</text><text x="1044" y="504" font-size="20" font-weight="700" fill="#e0f2fe" text-anchor="middle">.mp4</text></g>
+  </g>
+</svg>
