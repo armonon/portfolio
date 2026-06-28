@@ -1288,6 +1288,7 @@ function App() {
       github: "https://github.com/armonon/librarian",
       label: "Knowledge Tool",
       image: "/photos/librarian-clip.svg",
+      video: "/videos/librarian-demo.mp4",
       status: "Live app",
       accent: "from-stone-400/30 via-zinc-500/20 to-blue-500/30"
     },
@@ -1820,18 +1821,18 @@ function App() {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: false }}
-              className="space-y-8"
+              className="grid grid-cols-1 gap-6 md:grid-cols-2"
             >
               {softwareProjects.map((project) => (
                 <motion.div
                   key={project.id}
                   variants={fadeUp}
                   whileHover={{ y: -5 }}
-                  className="group bg-zinc-900/50 backdrop-blur border border-zinc-800 rounded-2xl overflow-hidden transition-all duration-300 hover:border-violet-500/40 hover:shadow-[0_10px_50px_-12px_rgba(139,92,246,0.45)]"
+                  className="group flex flex-col bg-zinc-900/50 backdrop-blur border border-zinc-800 rounded-2xl overflow-hidden transition-all duration-300 hover:border-violet-500/40 hover:shadow-[0_10px_50px_-12px_rgba(139,92,246,0.45)]"
                 >
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
-                    {/* Image / Visual */}
-                    <div className={`relative h-64 md:h-full min-h-80 overflow-hidden bg-gradient-to-br ${project.accent}`}>
+                  <div className="flex flex-1 flex-col">
+                    {/* Media banner (16:9 — clips fit exactly) */}
+                    <div className="relative aspect-video w-full overflow-hidden border-b border-zinc-800 bg-zinc-950">
                       {(project as { video?: string }).video ? (
                         <video
                           src={(project as { video?: string }).video}
@@ -1859,14 +1860,14 @@ function App() {
                           </div>
                         </div>
                       )}
-                      <div className={`pointer-events-none absolute inset-0 transition-colors ${(project as { video?: string }).video ? "bg-black/10" : "bg-black/40 group-hover:bg-black/20"}`} />
+                      <div className="pointer-events-none absolute inset-0 bg-black/5 transition-colors group-hover:bg-black/0" />
                       <div className="absolute left-4 top-4 rounded-full border border-white/15 bg-black/40 px-3 py-1 text-xs font-semibold text-white backdrop-blur">
                         {project.status}
                       </div>
                     </div>
 
                     {/* Content */}
-                    <div className="p-6 md:p-8 flex flex-col justify-between">
+                    <div className="p-6 md:p-7 flex flex-1 flex-col justify-between">
                       <div>
                         <span className="inline-block text-xs font-semibold text-zinc-400 mb-3 px-3 py-1 bg-zinc-800 rounded-full">
                           {project.label}
