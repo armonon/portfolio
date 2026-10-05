@@ -11,8 +11,8 @@
       @keyframes grain { 0% { opacity:0; transform: translateY(0) } 30% { opacity:.95 } 100% { opacity:0; transform: translateY(-46px) } }
       @keyframes meter { 0%,100% { height:18px; y:0 } 50% { height:74px } }
       .scopeline { animation: scopeScroll 3.4s linear infinite; }
-      .knob { animation: spin 6s linear infinite; transform-origin: center; }
-      .knob2 { animation: spin 9s linear infinite reverse; transform-origin: center; }
+      .knob { animation: spin 6s linear infinite; transform-box: fill-box; transform-origin: center; }
+      .knob2 { animation: spin 9s linear infinite reverse; transform-box: fill-box; transform-origin: center; }
       .glow { animation: glowPulse 2.6s ease-in-out infinite; }
       .scan { animation: scan 5s linear infinite; }
       .g { animation: grain 2.4s ease-out infinite; }

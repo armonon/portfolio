@@ -2,7 +2,7 @@
 
 Standalone React/Vite source for Armon Nasiri's public portfolio and Product Radar site.
 
-Live site: https://armonnasiri.netlify.app/
+Live site: https://armonnasiri.com — also features [thecreateco](https://thecreatingco.com).
 
 ## Local Development
 

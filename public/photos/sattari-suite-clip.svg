@@ -12,7 +12,7 @@
       .play { animation: sweep 4s linear infinite; }
       .snap { animation: snap 3s ease-in-out infinite; }
       .lit { animation: litlane 3s ease-in-out infinite; }
-      .knob { animation: spin 7s linear infinite; transform-origin: center; }
+      .knob { animation: spin 7s linear infinite; transform-box: fill-box; transform-origin: center; }
       .blink { animation: blink 1.4s ease-in-out infinite; }
       @media (prefers-reduced-motion: reduce){ .corrected,.play,.snap,.lit,.knob,.blink{ animation:none; stroke-dashoffset:0 } .snap{ transform:translateY(0) } }
     </style>

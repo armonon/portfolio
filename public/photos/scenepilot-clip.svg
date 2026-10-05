@@ -8,7 +8,7 @@
       @keyframes pulseGlow { 0%,100% { opacity:.4 } 50% { opacity:.9 } }
       .playhead { animation: play 5s linear infinite; }
       .clip { animation: slidein .7s ease-out both; }
-      .beatbar { transform-origin: center bottom; }
+      .beatbar { transform-box: fill-box; transform-origin: center bottom; }
       .glow { animation: pulseGlow 2.4s ease-in-out infinite; }
       @media (prefers-reduced-motion: reduce){ .playhead,.clip,.glow,.beatbar > *{ animation:none } }
     </style>

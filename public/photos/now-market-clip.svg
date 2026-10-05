@@ -5,7 +5,7 @@
       @keyframes pop { 0% { opacity:0; transform: scale(.9) translateY(16px) } 100% { opacity:1; transform: scale(1) translateY(0) } }
       @keyframes scanline { 0% { transform: translateX(0) } 100% { transform: translateX(1040px) } }
       @keyframes blip { 0%,100% { opacity:.4 } 50% { opacity:1 } }
-      .tile { animation: pop .7s ease-out both; transform-origin: center; }
+      .tile { animation: pop .7s ease-out both; transform-box: fill-box; transform-origin: center; }
       .scan { animation: scanline 3.5s ease-in-out infinite; }
       .blip { animation: blip 1.4s ease-in-out infinite; }
       @media (prefers-reduced-motion: reduce){ .tile,.scan,.blip{ animation:none } }

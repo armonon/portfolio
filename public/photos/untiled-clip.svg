@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="ubg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#160b12"/><stop offset="1" stop-color="#080507"/></linearGradient>
+    <linearGradient id="art" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fb7185"/><stop offset=".55" stop-color="#e879f9"/><stop offset="1" stop-color="#818cf8"/></linearGradient>
+    <clipPath id="seekclip"><rect x="470" y="606" width="470" height="8" rx="4"/></clipPath>
+    <style>
+      @keyframes seek { 0% { transform: translateX(-330px) } 100% { transform: translateX(0) } }
+      @keyframes bar { 0%,100% { transform: scaleY(.25) } 50% { transform: scaleY(1) } }
+      @keyframes spin2 { to { transform: rotate(360deg) } }
+      @keyframes glow3 { 0%,100% { opacity:.14 } 50% { opacity:.32 } }
+      .seek { animation: seek 12s linear infinite; }
+      .bar { transform-origin: 50% 100%; animation: bar 1.1s ease-in-out infinite; }
+      /* fill-box so the disc spins on its own centre, not the viewport centre */
+      .disc { animation: spin2 14s linear infinite; transform-box: fill-box; transform-origin: center; }
+      .glow3 { animation: glow3 6s ease-in-out infinite; }
+      @media (prefers-reduced-motion: reduce){ .seek,.bar,.disc,.glow3 { animation:none; transform:none } }
+    </style>
+  </defs>
+
+  <rect width="1280" height="720" fill="url(#ubg2)"/>
+  <g class="glow3"><ellipse cx="700" cy="300" rx="500" ry="250" fill="#e879f9" opacity=".22"/></g>
+
+  <!-- sidebar -->
+  <rect x="0" y="0" width="248" height="720" fill="rgba(255,255,255,.03)"/>
+  <line x1="248" y1="0" x2="248" y2="720" stroke="rgba(255,255,255,.08)"/>
+  <g font-family="Inter,Arial,sans-serif">
+    <text x="32" y="58" font-size="24" font-weight="800" fill="#fbcfe8" letter-spacing="1">Untiled</text>
+    <text x="32" y="80" font-size="12" fill="rgba(255,255,255,.3)">the files you own</text>
+    <g font-size="15">
+      <rect x="20" y="106" width="208" height="38" rx="9" fill="rgba(232,121,249,.16)" stroke="rgba(232,121,249,.34)"/>
+      <text x="42" y="131" fill="#f5d0fe">Songs</text>
+      <text x="42" y="177" fill="rgba(255,255,255,.5)">Albums</text>
+      <text x="42" y="219" fill="rgba(255,255,255,.5)">Artists</text>
+      <text x="42" y="261" fill="rgba(255,255,255,.5)">Playlists</text>
+    </g>
+    <line x1="20" y1="288" x2="228" y2="288" stroke="rgba(255,255,255,.08)"/>
+    <text x="32" y="316" font-size="11" fill="rgba(255,255,255,.28)" letter-spacing="2">PLAYLISTS</text>
+    <g font-size="14" fill="rgba(255,255,255,.45)">
+      <text x="42" y="348">Late night</text><text x="42" y="384">Rips &amp; b-sides</text><text x="42" y="420">Studio loop</text>
+    </g>
+  </g>
+
+  <!-- album grid -->
+  <g font-family="Inter,Arial,sans-serif">
+    <text x="292" y="58" font-size="12" fill="rgba(255,255,255,.3)" letter-spacing="2">ALBUMS</text>
+    <g>
+      <rect x="292" y="76" width="128" height="128" rx="10" fill="url(#art)" opacity=".85"/>
+      <rect x="440" y="76" width="128" height="128" rx="10" fill="#3f2a4d"/>
+      <rect x="588" y="76" width="128" height="128" rx="10" fill="#4a2440"/>
+      <rect x="736" y="76" width="128" height="128" rx="10" fill="#2f2a52"/>
+      <rect x="884" y="76" width="128" height="128" rx="10" fill="#512a3a"/>
+      <rect x="1032" y="76" width="128" height="128" rx="10" fill="#33304f"/>
+    </g>
+    <g font-size="12" fill="rgba(255,255,255,.42)">
+      <text x="292" y="224">Volume One</text><text x="440" y="224">Nightdrive</text><text x="588" y="224">Raw Tape</text>
+      <text x="736" y="224">Blue Hour</text><text x="884" y="224">Static</text><text x="1032" y="224">Interlude</text>
+    </g>
+  </g>
+
+  <!-- track list -->
+  <g font-family="Inter,Arial,sans-serif" font-size="14">
+    <line x1="292" y1="266" x2="1224" y2="266" stroke="rgba(255,255,255,.08)"/>
+    <g fill="rgba(255,255,255,.28)" font-size="11" letter-spacing="2">
+      <text x="292" y="290">#</text><text x="344" y="290">TITLE</text><text x="760" y="290">ARTIST</text><text x="1180" y="290">TIME</text>
+    </g>
+    <rect x="284" y="302" width="948" height="38" rx="8" fill="rgba(232,121,249,.12)"/>
+    <g fill="#f5d0fe"><text x="292" y="327">1</text><text x="344" y="327">Spirit Coins</text><text x="760" y="327">MNR</text><text x="1188" y="327" text-anchor="end">3:42</text></g>
+    <g fill="rgba(255,255,255,.55)">
+      <text x="292" y="371">2</text><text x="344" y="371">Long Way Down</text><text x="760" y="371">Sattari</text><text x="1188" y="371" text-anchor="end">4:08</text>
+      <text x="292" y="411">3</text><text x="344" y="411">Break Thy Rule</text><text x="760" y="411">BTR</text><text x="1188" y="411" text-anchor="end">2:55</text>
+      <text x="292" y="451">4</text><text x="344" y="451">Grain Cloud</text><text x="760" y="451">Entropy</text><text x="1188" y="451" text-anchor="end">5:20</text>
+      <text x="292" y="491">5</text><text x="344" y="491">Downbeat</text><text x="760" y="491">ScenePilot</text><text x="1188" y="491" text-anchor="end">3:11</text>
+    </g>
+  </g>
+
+  <!-- now playing bar -->
+  <line x1="248" y1="556" x2="1280" y2="556" stroke="rgba(255,255,255,.08)"/>
+  <g class="disc"><circle cx="330" cy="628" r="46" fill="url(#art)"/><circle cx="330" cy="628" r="11" fill="#160b12"/></g>
+  <g font-family="Inter,Arial,sans-serif">
+    <text x="396" y="608" font-size="18" fill="#fce7f3">Spirit Coins</text>
+    <text x="396" y="632" font-size="13" fill="rgba(255,255,255,.4)">MNR · Volume One</text>
+
+    <!-- seek -->
+    <rect x="470" y="606" width="470" height="8" rx="4" fill="rgba(255,255,255,.1)"/>
+    <g clip-path="url(#seekclip)"><rect class="seek" x="470" y="606" width="470" height="8" rx="4" fill="#e879f9"/></g>
+    <text x="962" y="614" font-size="12" fill="rgba(255,255,255,.35)">3:42</text>
+
+    <!-- dB fader -->
+    <text x="1040" y="590" font-size="11" fill="rgba(255,255,255,.3)" letter-spacing="2">dB</text>
+    <rect x="1040" y="604" width="170" height="6" rx="3" fill="rgba(255,255,255,.1)"/>
+    <rect x="1040" y="604" width="120" height="6" rx="3" fill="#fb7185"/>
+    <circle cx="1160" cy="607" r="8" fill="#fecdd3"/>
+    <text x="1218" y="612" font-size="12" fill="rgba(255,255,255,.4)" text-anchor="end">+3.0</text>
+
+    <!-- level meter -->
+    <g fill="#f0abfc">
+      <rect class="bar" x="396" y="656" width="5" height="26" rx="2"/>
+      <rect class="bar" x="408" y="656" width="5" height="26" rx="2" style="animation-delay:.12s"/>
+      <rect class="bar" x="420" y="656" width="5" height="26" rx="2" style="animation-delay:.24s"/>
+      <rect class="bar" x="432" y="656" width="5" height="26" rx="2" style="animation-delay:.36s"/>
+      <rect class="bar" x="444" y="656" width="5" height="26" rx="2" style="animation-delay:.48s"/>
+      <rect class="bar" x="456" y="656" width="5" height="26" rx="2" style="animation-delay:.6s"/>
+    </g>
+    <text x="1218" y="672" font-size="12" fill="rgba(255,255,255,.3)" text-anchor="end">macOS · iOS</text>
+  </g>
+</svg>
