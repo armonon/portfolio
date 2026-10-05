@@ -961,17 +961,10 @@ export const radarDirectory: DirectoryEntry[] = [
   // ---- Products ----
   {
     name: "thecreateco",
-    blurb: "Independent creative software studio I founded — the Momentium Suite (Form, Luma, StemDeck, ScenePilot) plus Ghost Studio, Librarian, Reclaim and Bounce.",
+    blurb: "Independent creative software studio I founded — the Momentium Suite (Form, Luma, StemDeck, ScenePilot) plus Ghost Studio, Librarian and Bounce.",
     group: "Products",
     stack: "Studio · web alphas · native in development",
     live: "https://thecreatingco.com",
-  },
-  {
-    name: "Reclaim",
-    blurb: "Read-only browser companion for reviewing files, spotting identical copies and keeping the evidence. Part of thecreateco.",
-    group: "Products",
-    stack: "Browser · file review",
-    live: "https://reclaim.thecreatingco.com",
   },
   {
     name: "Ghost Studio",

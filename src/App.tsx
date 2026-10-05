@@ -1401,27 +1401,6 @@ const projects: Project[] = [
     status: "macOS build"
   },
   {
-    id: "reclaim",
-    title: "Reclaim",
-    section: "software",
-    subtitle: "Know what's taking up space — without deleting a thing",
-    description:
-      "A read-only file review companion. Select files or a folder and Reclaim compares sizes, finds byte-identical copies with a real SHA-256 content check (not filename matching), and exports a review report — so you can decide what to clean up with the evidence in hand. Your source files are never changed.",
-    tech: ["TypeScript", "SHA-256", "File System Access", "Local-first"],
-    points: [
-      "Matches duplicates by content hash, so two files named notes.txt with different contents are never confused.",
-      "Strictly read-only: the review leaves every source file untouched and records what it found.",
-      "Runs in the browser today, with a native Mac edition in development under thecreateco."
-    ],
-    live: "https://reclaim.thecreatingco.com",
-    liveLabel: "Open Reclaim",
-    github: "#",
-    label: "Read & organize",
-    image: "/photos/reclaim-shot.jpg",
-    status: "Public testing",
-    studio: true
-  },
-  {
     id: "model-studio",
     title: "Photobooth Studio",
     section: "software",
@@ -1566,7 +1545,6 @@ const STUDIO_URL = "https://thecreatingco.com";
 const studioApps = [
   { name: "Ghost Studio", kind: "Design", line: "Explore a garment from every side.", href: "https://ghost.thecreatingco.com/" },
   { name: "Librarian", kind: "Read & organize", line: "Gather your PDFs and stay with an idea.", href: "https://librarian.thecreatingco.com/" },
-  { name: "Reclaim", kind: "Read & organize", line: "Review files and spot identical copies.", href: "https://reclaim.thecreatingco.com/browser/" },
   { name: "Bounce", kind: "Sound", line: "A listening queue with EQ, in the browser.", href: "https://bounce.thecreatingco.com/browser/" },
   { name: "Sattari Audio", kind: "Native audio", line: "The plugin suite: Entropy, Auto Pitch & more.", href: "https://sattari-audio-suite.netlify.app/" }
 ];
@@ -1579,7 +1557,7 @@ const capabilities = [
 ];
 
 const experience = [
-  { role: "Founder", org: "thecreateco", href: STUDIO_URL, body: "Building an independent creative software studio: the Momentium Suite (Form, Luma, StemDeck, ScenePilot) and four companion apps, with free Lite editions and Pro desktop builds in development.", tags: ["Product", "Engineering", "Design", "Launch"] },
+  { role: "Founder", org: "thecreateco", href: STUDIO_URL, body: "Building an independent creative software studio: the Momentium Suite (Form, Luma, StemDeck, ScenePilot) and its companion apps, with free Lite editions and Pro desktop builds in development.", tags: ["Product", "Engineering", "Design", "Launch"] },
   { role: "Backend Developer", org: "Softech", body: "Built backend systems, APIs, automation, data flows, and production-facing web infrastructure.", tags: ["APIs & services", "Database workflows", "Client constraints"] },
   { role: "AI Engineering", org: "Applied AI training", body: "Applied AI workflows, agent patterns, automation, and product-minded implementation.", tags: ["AI prototyping", "LLM workflows", "Automation"] }
 ];
