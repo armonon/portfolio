@@ -1933,7 +1933,7 @@ function App() {
       <main className="relative">
         {/* ── HERO ─────────────────────────────────────────── */}
         <section id="hero" className="px-5 sm:px-8">
-          <div className="mx-auto grid max-w-[1320px] grid-cols-1 gap-12 pb-16 pt-16 md:pt-24 lg:grid-cols-[1.45fr_0.75fr] lg:items-end lg:gap-16 lg:pb-24">
+          <div className="mx-auto max-w-[1320px] pb-16 pt-16 md:pt-24 lg:pb-24">
             <div>
               <motion.a
                 href={STUDIO_URL}
@@ -1993,26 +1993,6 @@ function App() {
               </motion.div>
             </div>
 
-            <motion.figure
-              initial={{ opacity: 0, scale: 0.96, rotate: 2 }}
-              animate={{ opacity: 1, scale: 1, rotate: 1.5 }}
-              transition={{ duration: 1, delay: 0.2, ease: EASE }}
-              className="relative mx-auto w-full max-w-[22rem] lg:mx-0 lg:max-w-none"
-            >
-              <div className="overflow-hidden rounded-[28px] border border-line bg-surface p-2.5 shadow-[0_40px_80px_-40px_rgba(0,0,0,0.45)]">
-                <img src="/photos/armon-portrait.jpg" alt="Armon Nasiri" width={1000} height={1333} className="aspect-[4/5] w-full rounded-[20px] object-cover object-[50%_35%]" />
-                <figcaption className="flex items-center justify-between px-2 pb-1 pt-3">
-                  <span className="text-[14px] font-medium text-ink">Armon Nasiri</span>
-                  <span className="flex items-center gap-2 font-mono text-[10.5px] uppercase tracking-[0.12em] text-faint">
-                    <span className="relative flex h-1.5 w-1.5">
-                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-80" />
-                      <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#7fb800]" />
-                    </span>
-                    Available
-                  </span>
-                </figcaption>
-              </div>
-            </motion.figure>
           </div>
 
           {/* stat strip */}
@@ -2020,10 +2000,9 @@ function App() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.45 }}
-            className="mx-auto grid max-w-[1320px] grid-cols-2 gap-px border-y border-line bg-line md:grid-cols-4"
+            className="mx-auto grid max-w-[1320px] grid-cols-1 gap-px border-y border-line bg-line sm:grid-cols-3"
           >
             {[
-              { k: "Projects shipped", v: <><CountUp to={radarDirectory.length} />+</> },
               { k: "Live right now", v: <CountUp to={liveCount} /> },
               { k: "Core stack", v: "C++ · Rust · TS" },
               { k: "Platforms", v: "Web · macOS · iOS" }
@@ -2356,16 +2335,40 @@ function App() {
 
       {/* ── FOOTER ───────────────────────────────────────── */}
       <footer className="px-5 py-10 sm:px-8">
-        <div className="mx-auto flex max-w-[1320px] flex-col gap-4 text-[13px] text-faint sm:flex-row sm:items-center sm:justify-between">
-          <span>
-            <span className="text-ink">Armon Nasiri</span> — Software developer, AI engineer &amp; founder of{" "}
-            <a href={STUDIO_URL} target="_blank" rel="noreferrer" className="text-ink hover:underline">thecreateco</a>
-          </span>
-          <div className="flex flex-wrap gap-5">
-            <a href={STUDIO_URL} target="_blank" rel="noreferrer" className="hover:text-ink">thecreatingco.com</a>
-            <a href="#/product-radar" className="hover:text-ink">Product Radar</a>
-            <a href="https://github.com/armonon" target="_blank" rel="noreferrer" className="hover:text-ink">GitHub</a>
-            <span>© 2026</span>
+        <div className="mx-auto max-w-[1320px]">
+          <motion.figure
+            initial={{ opacity: 0, scale: 0.96 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.8, ease: EASE }}
+            className="mx-auto mb-10 w-full max-w-[18rem]"
+          >
+            <div className="overflow-hidden rounded-[28px] border border-line bg-surface p-2.5 shadow-[0_40px_80px_-40px_rgba(0,0,0,0.45)]">
+              <img src="/photos/armon-portrait.jpg" alt="Armon Nasiri" width={1000} height={1333} className="aspect-[4/5] w-full rounded-[20px] object-cover object-[50%_35%]" />
+              <figcaption className="flex items-center justify-between px-2 pb-1 pt-3">
+                <span className="text-[14px] font-medium text-ink">Armon Nasiri</span>
+                <span className="flex items-center gap-2 font-mono text-[10.5px] uppercase tracking-[0.12em] text-faint">
+                  <span className="relative flex h-1.5 w-1.5">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-80" />
+                    <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#7fb800]" />
+                  </span>
+                  Available
+                </span>
+              </figcaption>
+            </div>
+          </motion.figure>
+
+          <div className="flex flex-col gap-4 text-[13px] text-faint sm:flex-row sm:items-center sm:justify-between">
+            <span>
+              <span className="text-ink">Armon Nasiri</span> — Software developer, AI engineer &amp; founder of{" "}
+              <a href={STUDIO_URL} target="_blank" rel="noreferrer" className="text-ink hover:underline">thecreateco</a>
+            </span>
+            <div className="flex flex-wrap gap-5">
+              <a href={STUDIO_URL} target="_blank" rel="noreferrer" className="hover:text-ink">thecreatingco.com</a>
+              <a href="#/product-radar" className="hover:text-ink">Product Radar</a>
+              <a href="https://github.com/armonon" target="_blank" rel="noreferrer" className="hover:text-ink">GitHub</a>
+              <span>© 2026</span>
+            </div>
           </div>
         </div>
       </footer>
