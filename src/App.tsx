@@ -1,4 +1,4 @@
-import { AnimatePresence, animate, motion, useInView, useScroll, useSpring, useTransform } from "framer-motion";
+import { AnimatePresence, motion, useInView, useScroll, useSpring, useTransform } from "framer-motion";
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { Menu, X, ExternalLink, Code2, Mail, Sparkles, Download, RefreshCw, ArrowUpRight, ArrowDown } from "lucide-react";
 import { radarDirectory, radarDirectoryGroups, radarEvidenceLedger, radarIdeaFeed, radarLanes, radarMetrics, radarNextBuildSteps, radarOpportunities, radarSoftwareProjects } from "./productRadarData";
@@ -42,27 +42,6 @@ const readinessPhase = (score: number) => {
   if (score >= 3) return "In development";
   return "Early build";
 };
-
-function CountUp({ to, suffix = "", duration = 1.6 }: { to: number; suffix?: string; duration?: number }) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-40px" });
-  const [value, setValue] = useState(0);
-  useEffect(() => {
-    if (!inView) return;
-    const controls = animate(0, to, {
-      duration,
-      ease: "easeOut",
-      onUpdate: (v) => setValue(Math.round(v)),
-    });
-    return () => controls.stop();
-  }, [inView, to, duration]);
-  return (
-    <span ref={ref}>
-      {value}
-      {suffix}
-    </span>
-  );
-}
 
 function LazyVideo({ src, className }: { src: string; autoPlay?: boolean; muted?: boolean; loop?: boolean; playsInline?: boolean; className?: string }) {
   const ref = useRef<HTMLVideoElement>(null);
@@ -1546,7 +1525,67 @@ const studioApps = [
   { name: "Ghost Studio", kind: "Design", line: "Explore a garment from every side.", href: "https://ghost.thecreatingco.com/" },
   { name: "Librarian", kind: "Read & organize", line: "Gather your PDFs and stay with an idea.", href: "https://librarian.thecreatingco.com/" },
   { name: "Bounce", kind: "Sound", line: "A listening queue with EQ, in the browser.", href: "https://bounce.thecreatingco.com/browser/" },
+  { name: "Void Studio", kind: "Experimental", line: "A darker lab for unreleased interfaces, visual systems and new tools.", href: "#void-studio" },
   { name: "Sattari Audio", kind: "Native audio", line: "The plugin suite: Entropy, Auto Pitch & more.", href: "https://sattari-audio-suite.netlify.app/" }
+];
+
+const studioSuiteExamples = [
+  {
+    name: "Form",
+    kind: "3D / CAD",
+    href: "https://form.thecreatingco.com",
+    line: "Start with a sketch or prompt, then move into precise objects, jewelry, fixtures and garment forms.",
+    examples: ["Sketch a pendant", "Draw a garment", "Preview Cast"]
+  },
+  {
+    name: "Luma",
+    kind: "Image",
+    href: "https://luma.thecreatingco.com",
+    line: "Build campaign visuals in the browser with layers, type, print experiments, mockups and font play.",
+    examples: ["Signature prints", "Type through photos", "Mockup + Glyph"]
+  },
+  {
+    name: "StemDeck",
+    kind: "Music",
+    href: "https://stemdeck.thecreatingco.com",
+    line: "Shape stems, arrange edits, split songs, check key and BPM, and turn performance into a real project.",
+    examples: ["Stem shaping", "Replay edits", "Sattari Labs"]
+  },
+  {
+    name: "ScenePilot",
+    kind: "Film",
+    href: "https://scenepilot.thecreatingco.com",
+    line: "Blend scenes, find a film's feeling, build boards, caption edits and grade footage inside one flow.",
+    examples: ["AutoCut", "Captions", "Board + Grade"]
+  }
+];
+
+const studioToolExamples = [
+  {
+    name: "Focused creative tools",
+    kind: "Across the suite",
+    body: "The studio is expanding beyond the four core apps into smaller tools for mockups, type, reads, listening queues, sessions and exports.",
+    example: "Mockups, Glyph, Librarian, Bounce, Sessions and Locker all sit around the main suite."
+  },
+  {
+    name: "Sattari Labs",
+    kind: "Audio utility belt",
+    body: "StemDeck connects into a deeper music toolkit for splitting stems, finding key and BPM, vocal experiments, visual canvases and press-ready assets.",
+    example: "Split, Key & BPM, Vox, Canvas, Pocket and Press are framed as practical tools for artists."
+  },
+  {
+    name: "Film tools",
+    kind: "ScenePilot system",
+    body: "ScenePilot is not just one editor; it branches into browser-first tools for cutting, captioning, storyboarding and grading footage fast.",
+    example: "AutoCut, Captions, Board and Grade turn a song or clip folder into publishable motion."
+  },
+  {
+    id: "void-studio",
+    name: "Void Studio",
+    kind: "Experimental lab",
+    body: "A darker experimental studio for unreleased interfaces, visual worlds, strange prototype tools and the ideas that do not fit neatly into the main suite yet.",
+    example: "Prototype visual systems, interface drops and exploratory tools live here before graduating into the main suite."
+  }
 ];
 
 const capabilities = [
@@ -1557,7 +1596,7 @@ const capabilities = [
 ];
 
 const experience = [
-  { role: "Founder", org: "thecreateco", href: STUDIO_URL, body: "Building an independent creative software studio: the Momentium Suite (Form, Luma, StemDeck, ScenePilot) and its companion apps, with free Lite editions and Pro desktop builds in development.", tags: ["Product", "Engineering", "Design", "Launch"] },
+  { role: "Founder", org: "thecreateco", href: STUDIO_URL, body: "Building an independent creative software studio around Form, Luma, StemDeck and ScenePilot, plus focused tools, Sattari Labs utilities and Void Studio experiments. Lite editions stay free, with Pro desktop builds in development.", tags: ["Product", "Engineering", "Design", "Launch"] },
   { role: "Backend Developer", org: "Softech", body: "Built backend systems, APIs, automation, data flows, and production-facing web infrastructure.", tags: ["APIs & services", "Database workflows", "Client constraints"] },
   { role: "AI Engineering", org: "Applied AI training", body: "Applied AI workflows, agent patterns, automation, and product-minded implementation.", tags: ["AI prototyping", "LLM workflows", "Automation"] }
 ];
@@ -2000,10 +2039,9 @@ function App() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.45 }}
-            className="mx-auto grid max-w-[1320px] grid-cols-1 gap-px border-y border-line bg-line sm:grid-cols-3"
+            className="mx-auto grid max-w-[1320px] grid-cols-1 gap-px border-y border-line bg-line sm:grid-cols-2"
           >
             {[
-              { k: "Live right now", v: <CountUp to={liveCount} /> },
               { k: "Core stack", v: "C++ · Rust · TS" },
               { k: "Platforms", v: "Web · macOS · iOS" }
             ].map((row) => (
@@ -2071,25 +2109,88 @@ function App() {
               </div>
             </div>
 
+            {/* Suite examples */}
+            <div className="border-t border-band-line px-6 py-10 sm:px-10 lg:px-14">
+              <div className="grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:items-start">
+                <div>
+                  <Kicker className="text-band-muted">Inside thecreatingco.com</Kicker>
+                  <h3 className="mt-4 max-w-[13ch] text-[clamp(2rem,4vw,3.6rem)] font-semibold leading-[0.95] tracking-[-0.04em]">
+                    Form to Luma to StemDeck to ScenePilot.
+                  </h3>
+                  <p className="mt-5 max-w-[32rem] text-[15px] leading-relaxed text-band-muted">
+                    The studio is framed as a free creative toolset for 3D, images, music and film: core apps with
+                    Lite editions, focused companion tools, and a bigger desktop Pro track coming behind them.
+                  </p>
+                </div>
+
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {studioSuiteExamples.map((item) => (
+                    <a
+                      key={item.name}
+                      href={item.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="group min-h-[220px] border border-band-line bg-band-fg/[0.03] p-5 transition-colors hover:border-band-fg/45"
+                    >
+                      <div className="flex items-start justify-between gap-4">
+                        <div>
+                          <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-band-muted">{item.kind}</p>
+                          <h4 className="mt-3 text-2xl font-semibold tracking-[-0.03em]">{item.name}</h4>
+                        </div>
+                        <ArrowUpRight size={16} className="mt-1 shrink-0 text-band-muted transition-colors group-hover:text-band-fg" />
+                      </div>
+                      <p className="mt-4 text-[14px] leading-relaxed text-band-muted">{item.line}</p>
+                      <div className="mt-5 flex flex-wrap gap-2">
+                        {item.examples.map((example) => (
+                          <span key={example} className="border border-band-line px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.12em] text-band-muted">
+                            {example}
+                          </span>
+                        ))}
+                      </div>
+                    </a>
+                  ))}
+                </div>
+              </div>
+
+              <div className="mt-9 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+                {studioToolExamples.map((tool) => (
+                  <article
+                    key={tool.name}
+                    id={"id" in tool ? tool.id : undefined}
+                    className="min-h-[230px] border border-band-line p-5 transition-colors hover:border-band-fg/40"
+                  >
+                    <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-accent">{tool.kind}</p>
+                    <h4 className="mt-3 text-xl font-semibold tracking-[-0.025em]">{tool.name}</h4>
+                    <p className="mt-4 text-[14px] leading-relaxed text-band-muted">{tool.body}</p>
+                    <p className="mt-5 border-t border-band-line pt-4 font-mono text-[11px] uppercase leading-relaxed tracking-[0.12em] text-band-muted">{tool.example}</p>
+                  </article>
+                ))}
+              </div>
+            </div>
+
             {/* More from the studio */}
             <div className="border-t border-band-line px-6 py-10 sm:px-10 lg:px-14">
               <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
                 <Kicker className="shrink-0 text-band-muted lg:w-40">More from the studio</Kicker>
                 <div className="flex flex-wrap gap-2">
-                  {studioApps.map((app) => (
-                    <a
-                      key={app.name}
-                      href={app.href}
-                      target="_blank"
-                      rel="noreferrer"
-                      title={app.line}
-                      className="group inline-flex items-center gap-2 rounded-full border border-band-line px-4 py-2 text-[14px] transition-colors hover:border-band-fg/50"
-                    >
-                      <span className="font-medium">{app.name}</span>
-                      <span className="text-band-muted">· {app.kind}</span>
-                      <ArrowUpRight size={13} className="text-band-muted transition-colors group-hover:text-band-fg" />
-                    </a>
-                  ))}
+                  {studioApps.map((app) => {
+                    const isInternal = app.href.startsWith("#");
+
+                    return (
+                      <a
+                        key={app.name}
+                        href={app.href}
+                        target={isInternal ? undefined : "_blank"}
+                        rel={isInternal ? undefined : "noreferrer"}
+                        title={app.line}
+                        className="group inline-flex items-center gap-2 rounded-full border border-band-line px-4 py-2 text-[14px] transition-colors hover:border-band-fg/50"
+                      >
+                        <span className="font-medium">{app.name}</span>
+                        <span className="text-band-muted">· {app.kind}</span>
+                        <ArrowUpRight size={13} className="text-band-muted transition-colors group-hover:text-band-fg" />
+                      </a>
+                    );
+                  })}
                 </div>
               </div>
             </div>
