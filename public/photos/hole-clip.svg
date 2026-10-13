@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1a1230"/><stop offset="1" stop-color="#08060f"/></linearGradient>
+    <style>
+      @keyframes dash { to { stroke-dashoffset: -40 } }
+      @keyframes caret { 0%,100% { opacity:1 } 50% { opacity:0 } }
+      .trail { stroke-dasharray: 8 8; animation: dash 1.2s linear infinite; }
+      .caret { animation: caret 1s steps(1) infinite; }
+      @media (prefers-reduced-motion: reduce){ .trail,.caret{ animation:none } }
+    </style>
+  </defs>
+  <rect width="1280" height="720" fill="url(#bg)"/>
+  <rect x="40" y="40" width="1200" height="640" rx="26" fill="rgba(8,6,15,.6)" stroke="rgba(167,139,250,.25)"/>
+  <text x="80" y="116" font-size="40" font-weight="800" fill="#f5f5f4" font-family="Inter,Arial,sans-serif">HOLE</text>
+  <text x="82" y="150" font-size="19" fill="#c4b5fd" font-family="Inter,Arial,sans-serif" letter-spacing="2">FOLLOW YOUR CURIOSITY · KEEP A TRAIL</text>
+  <!-- search bar -->
+  <rect x="80" y="186" width="1120" height="60" rx="30" fill="rgba(255,255,255,.05)" stroke="rgba(167,139,250,.35)"/>
+  <circle cx="118" cy="216" r="11" fill="none" stroke="#c4b5fd" stroke-width="3"/><line x1="126" y1="224" x2="134" y2="232" stroke="#c4b5fd" stroke-width="3" stroke-linecap="round"/>
+  <text x="152" y="224" font-size="22" fill="#e7e5e4" font-family="Inter,Arial,sans-serif">independent web archives</text><rect class="caret" x="408" y="204" width="2" height="26" fill="#c4b5fd"/>
+  <!-- source chips -->
+  <g font-family="Inter,Arial,sans-serif" font-size="15" fill="#c4b5fd">
+    <rect x="80" y="268" width="64" height="30" rx="15" fill="rgba(167,139,250,.18)"/><text x="112" y="289" text-anchor="middle">Web</text>
+    <rect x="154" y="268" width="130" height="30" rx="15" fill="rgba(255,255,255,.06)"/><text x="219" y="289" text-anchor="middle" fill="#a8a29e">Independent</text>
+    <rect x="294" y="268" width="92" height="30" rx="15" fill="rgba(255,255,255,.06)"/><text x="340" y="289" text-anchor="middle" fill="#a8a29e">Archives</text>
+    <rect x="396" y="268" width="92" height="30" rx="15" fill="rgba(255,255,255,.06)"/><text x="442" y="289" text-anchor="middle" fill="#a8a29e">Libraries</text>
+    <rect x="498" y="268" width="72" height="30" rx="15" fill="rgba(255,255,255,.06)"/><text x="534" y="289" text-anchor="middle" fill="#a8a29e">Circle</text>
+  </g>
+  <!-- results with homepage thumbnails -->
+  <g font-family="Inter,Arial,sans-serif">
+    <rect x="80" y="324" width="640" height="104" rx="14" fill="rgba(255,255,255,.04)" stroke="rgba(167,139,250,.2)"/>
+    <rect x="100" y="340" width="120" height="72" rx="8" fill="rgba(167,139,250,.2)"/>
+    <text x="240" y="366" font-size="20" font-weight="600" fill="#f5f5f4">A small-web directory worth browsing</text>
+    <text x="240" y="394" font-size="15" fill="#a8a29e">Homepage preview beside every result</text>
+    <rect x="80" y="440" width="640" height="104" rx="14" fill="rgba(255,255,255,.04)" stroke="rgba(167,139,250,.2)"/>
+    <rect x="100" y="456" width="120" height="72" rx="8" fill="rgba(56,189,248,.2)"/>
+    <text x="240" y="482" font-size="20" font-weight="600" fill="#f5f5f4">Snapshot from the Internet Archive</text>
+    <text x="240" y="510" font-size="15" fill="#a8a29e">Dates by publication or archive capture</text>
+    <rect x="80" y="556" width="640" height="104" rx="14" fill="rgba(255,255,255,.04)" stroke="rgba(167,139,250,.2)"/>
+    <rect x="100" y="572" width="120" height="72" rx="8" fill="rgba(251,191,36,.2)"/>
+    <text x="240" y="598" font-size="20" font-weight="600" fill="#f5f5f4">Open Library &amp; Crossref records</text>
+    <text x="240" y="626" font-size="15" fill="#a8a29e">Books and research in one search</text>
+  </g>
+  <!-- trail -->
+  <rect x="780" y="324" width="420" height="336" rx="18" fill="rgba(167,139,250,.07)" stroke="rgba(167,139,250,.3)"/>
+  <text x="808" y="364" font-size="22" font-weight="700" fill="#f5f5f4" font-family="Inter,Arial,sans-serif">Trail · small web</text>
+  <path class="trail" d="M840 420 C 940 420 900 500 1000 500 S 1060 580 1140 580" stroke="#a78bfa" stroke-width="3" fill="none"/>
+  <circle cx="840" cy="420" r="12" fill="#c4b5fd"/><circle cx="1000" cy="500" r="12" fill="#c4b5fd"/><circle cx="1140" cy="580" r="12" fill="#c4b5fd"/>
+  <text x="808" y="644" font-size="15" fill="#a8a29e" font-family="Inter,Arial,sans-serif">Saved on this device</text>
+</svg>

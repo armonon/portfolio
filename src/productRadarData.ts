@@ -961,7 +961,7 @@ export const radarDirectory: DirectoryEntry[] = [
   // ---- Products ----
   {
     name: "thecreateco",
-    blurb: "Independent creative software studio I founded — the Momentium Suite (Form, Luma, StemDeck, ScenePilot) plus Ghost Studio, Librarian and Bounce.",
+    blurb: "Independent creative software studio I founded — the Momentium Suite (Form, Luma, StemDeck, ScenePilot) plus Ghost Studio, Reclaim, Split, HOLE, Librarian and Bounce.",
     group: "Products",
     stack: "Studio · web alphas · native in development",
     live: "https://thecreatingco.com",
@@ -972,6 +972,48 @@ export const radarDirectory: DirectoryEntry[] = [
     group: "Products",
     stack: "Web studio · garment imaging",
     live: "https://ghost.thecreatingco.com",
+  },
+  {
+    name: "Reclaim",
+    blurb: "Free Mac storage review: cleanup categories, duplicate candidates, and a recoverable quarantine with restore. Public alpha for macOS 13+.",
+    group: "Products",
+    stack: "macOS · Apple Silicon + Intel · notarized",
+    live: "https://thecreatingco.com/products/reclaim/",
+  },
+  {
+    name: "Split",
+    blurb: "Separate a song into vocals, drums, bass and other stems in the browser, with the model running on your device. Hands off to StemDeck.",
+    group: "Products",
+    stack: "Web alpha · on-device separation",
+    live: "https://sattarimusic.com/studio/split",
+  },
+  {
+    name: "Vox",
+    blurb: "Scale-based pitch correction and a generated third or fifth harmony for a clean solo vocal, exported as WAV.",
+    group: "Products",
+    stack: "Web alpha · offline processing",
+    live: "https://sattarimusic.com/studio/vox",
+  },
+  {
+    name: "HOLE",
+    blurb: "Visual search with homepage previews, advanced filters, six connected public indexes, and Trails to keep what you find.",
+    group: "Products",
+    stack: "Web search · open archives · Trails",
+    live: "https://thecreatingco.com/community/hole",
+  },
+  {
+    name: "The Circle",
+    blurb: "Community feed combining Circle, Instagram, X and YouTube posts with profiles, projects, collections and discussions.",
+    group: "Products",
+    stack: "Community platform",
+    live: "https://thecreatingco.com/community/network",
+  },
+  {
+    name: "NOW Messenger",
+    blurb: "Public and invite-only rooms, group video, message timers and a PictoChat-style drawing chat. Guests can join without an email.",
+    group: "Products",
+    stack: "Messaging · web alpha",
+    live: "https://thecreatingco.com/products/now/",
   },
   {
     name: "Momentous",

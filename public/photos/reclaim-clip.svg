@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#10201c"/><stop offset="1" stop-color="#070b0a"/></linearGradient>
+    <style>
+      @keyframes grow { 0% { transform: scaleX(0) } 100% { transform: scaleX(1) } }
+      @keyframes pulse { 0%,100% { opacity:.55 } 50% { opacity:1 } }
+      .bar { transform-origin: 0 50%; animation: grow 1.4s cubic-bezier(.16,1,.3,1) both; }
+      .restore { animation: pulse 2.2s ease-in-out infinite; }
+      @media (prefers-reduced-motion: reduce){ .bar,.restore{ animation:none } }
+    </style>
+  </defs>
+  <rect width="1280" height="720" fill="url(#bg)"/>
+  <rect x="40" y="40" width="1200" height="640" rx="26" fill="rgba(7,11,10,.6)" stroke="rgba(52,211,153,.25)"/>
+  <text x="80" y="116" font-size="40" font-weight="800" fill="#f5f5f4" font-family="Inter,Arial,sans-serif">Reclaim</text>
+  <text x="82" y="150" font-size="19" fill="#6ee7b7" font-family="Inter,Arial,sans-serif" letter-spacing="2">MAC STORAGE REVIEW · QUARANTINE · RESTORE</text>
+  <!-- capacity bar -->
+  <rect x="80" y="192" width="1120" height="34" rx="17" fill="rgba(255,255,255,.06)"/>
+  <rect class="bar" x="80" y="192" width="520" height="34" rx="17" fill="#34d399"/>
+  <rect class="bar" x="600" y="192" width="230" height="34" fill="#38bdf8" style="animation-delay:.15s"/>
+  <rect class="bar" x="830" y="192" width="120" height="34" fill="#fbbf24" style="animation-delay:.3s"/>
+  <text x="80" y="262" font-size="16" fill="#a8a29e" font-family="Inter,Arial,sans-serif">Capacity · used · available — folder-level map of the biggest consumers</text>
+  <!-- category rows -->
+  <g font-family="Inter,Arial,sans-serif" font-size="20" fill="#e7e5e4">
+    <rect x="80" y="300" width="760" height="76" rx="14" fill="rgba(255,255,255,.04)" stroke="rgba(52,211,153,.2)"/>
+    <rect x="104" y="326" width="24" height="24" rx="6" fill="#34d399"/><path d="M110 338l5 5 9-11" stroke="#052e1f" stroke-width="3" fill="none"/>
+    <text x="148" y="345">Caches &amp; temporary files</text><text x="740" y="345" fill="#6ee7b7">12.4 GB</text>
+    <rect x="80" y="392" width="760" height="76" rx="14" fill="rgba(255,255,255,.04)" stroke="rgba(52,211,153,.2)"/>
+    <rect x="104" y="418" width="24" height="24" rx="6" fill="#34d399"/><path d="M110 430l5 5 9-11" stroke="#052e1f" stroke-width="3" fill="none"/>
+    <text x="148" y="437">Duplicate candidates</text><text x="748" y="437" fill="#6ee7b7">5.1 GB</text>
+    <rect x="80" y="484" width="760" height="76" rx="14" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.1)"/>
+    <rect x="104" y="510" width="24" height="24" rx="6" fill="none" stroke="#78716c" stroke-width="2"/>
+    <text x="148" y="529">Old installers &amp; disk images</text><text x="748" y="529" fill="#a8a29e">3.8 GB</text>
+  </g>
+  <!-- quarantine panel -->
+  <rect x="880" y="300" width="320" height="260" rx="18" fill="rgba(52,211,153,.07)" stroke="rgba(52,211,153,.35)"/>
+  <text x="908" y="344" font-size="22" font-weight="700" fill="#f5f5f4" font-family="Inter,Arial,sans-serif">Quarantine</text>
+  <text x="908" y="376" font-size="16" fill="#a8a29e" font-family="Inter,Arial,sans-serif">Recoverable holding area</text>
+  <rect x="908" y="400" width="264" height="48" rx="24" fill="#34d399"/>
+  <text x="1040" y="431" font-size="18" font-weight="700" text-anchor="middle" fill="#052e1f" font-family="Inter,Arial,sans-serif">Move selected</text>
+  <rect class="restore" x="908" y="464" width="264" height="48" rx="24" fill="none" stroke="#6ee7b7" stroke-width="2"/>
+  <text x="1040" y="495" font-size="18" font-weight="600" text-anchor="middle" fill="#6ee7b7" font-family="Inter,Arial,sans-serif">Restore</text>
+  <text x="80" y="622" font-size="16" fill="#78716c" font-family="Inter,Arial,sans-serif">Permanent deletion is off by default · macOS 13+ · Apple Silicon &amp; Intel</text>
+</svg>

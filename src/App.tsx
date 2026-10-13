@@ -1445,6 +1445,69 @@ const projects: Project[] = [
     studio: true
   },
   {
+    id: "reclaim",
+    title: "Reclaim",
+    section: "software",
+    subtitle: "Mac storage review with a recoverable quarantine",
+    description:
+      "A free Mac app for seeing where your storage went and cleaning it up without regret. Reclaim groups items into cleanup categories, finds duplicate candidates, and moves what you approve into a quarantine you can restore from — nothing is permanently deleted unless you turn that on and confirm it.",
+    tech: ["macOS 13+", "Apple Silicon + Intel", "Developer ID signed", "Apple-notarized"],
+    points: [
+      "Review capacity, used and available space, and a folder-level map of the biggest consumers before touching anything.",
+      "Quarantine instead of delete: restore any item, set how long quarantined files are kept, and empty it only after confirmation.",
+      "Automatic permanent deletion is off by default, and permission and Full Disk Access limits are explained in the app."
+    ],
+    live: "https://thecreatingco.com/products/reclaim/",
+    liveLabel: "Get Reclaim",
+    github: "#",
+    label: "Mac utility",
+    image: "/photos/reclaim-clip.svg",
+    status: "Mac public alpha",
+    studio: true
+  },
+  {
+    id: "split",
+    title: "Split",
+    section: "software",
+    subtitle: "Separate any song into four stems in your browser",
+    description:
+      "A web stem separator that splits a recording into vocals, drums, bass and everything else for remix exploration. The separation model runs on your device after a one-time download, so there is nothing to install — preview each stem, download WAVs, or hand the result straight to StemDeck.",
+    tech: ["Browser app", "On-device separation", "WAV export", "StemDeck handoff"],
+    points: [
+      "Four stems — vocals, drums, bass and other — each previewable in the browser before you export.",
+      "Separation runs locally after a first-run model download, so source audio stays with the person who loaded it.",
+      "Exports WAV stems and opens them in StemDeck, alongside Vox for vocal pitch and harmony and Key & BPM for tempo and key."
+    ],
+    live: "https://sattarimusic.com/studio/split",
+    liveLabel: "Open Split",
+    github: "#",
+    label: "Stems",
+    image: "/photos/split-clip.svg",
+    status: "Public web alpha",
+    studio: true
+  },
+  {
+    id: "hole",
+    title: "HOLE",
+    section: "software",
+    subtitle: "Visual search that keeps your discoveries in Trails",
+    description:
+      "A research and discovery search that puts a homepage preview beside every result, then lets you follow related ideas and save what you find in named Trails kept on your device. It searches the open web alongside independent sites, archives, libraries and public Circle conversations.",
+    tech: ["Web search", "Tavily / Brave Search", "Internet Archive", "Open Library", "Crossref"],
+    points: [
+      "Advanced search with exact phrases, exclusions, file and content-type filters, language, and date ranges by publication, archive capture or library item date.",
+      "Six connected public indexes — Arquivo.pt, Internet Archive, Wiby, Library of Congress, Open Library and Crossref — with source status shown when one is unavailable.",
+      "A Discovery sort that favors independent and unusual sources, and a cap of one result per hostname to keep results varied."
+    ],
+    live: "https://thecreatingco.com/community/hole",
+    liveLabel: "Open HOLE",
+    github: "#",
+    label: "Search",
+    image: "/photos/hole-clip.svg",
+    status: "Free to explore",
+    studio: true
+  },
+  {
     id: "digital-human-mvp",
     title: "Digital Human",
     section: "software",
@@ -1481,6 +1544,38 @@ const projects: Project[] = [
     video: "/videos/momentous-demo.mp4",
     image: "/photos/momentous-shot.png",
     status: "Live platform"
+  },
+  {
+    id: "the-circle",
+    title: "The Circle",
+    section: "website",
+    subtitle: "Profiles, projects and discussions in one community feed",
+    description:
+      "The community layer of thecreateco: profiles, projects, collections and discussions, with Circle, Instagram, X and YouTube posts gathered into a single feed.",
+    tech: ["Community", "Profiles", "Feeds"],
+    points: [],
+    live: "https://thecreatingco.com/community/network",
+    liveLabel: "Live site",
+    github: "#",
+    label: "Community",
+    image: "/photos/circle-clip.svg",
+    status: "Live community"
+  },
+  {
+    id: "now-messenger",
+    title: "NOW Messenger",
+    section: "website",
+    subtitle: "Rooms, group video and PictoChat-style drawing chat",
+    description:
+      "The messaging side of thecreateco's community: public and invite-only rooms, group cameras, message timers, and a drawing chat. Guests can join without an email.",
+    tech: ["Messaging", "Rooms", "Video", "PictoChat"],
+    points: [],
+    live: "https://thecreatingco.com/products/now/",
+    liveLabel: "Live site",
+    github: "#",
+    label: "Messaging",
+    image: "/photos/now-messenger-clip.svg",
+    status: "Public web alpha"
   },
   {
     id: "sattari-music",
@@ -1525,6 +1620,12 @@ const studioApps = [
   { name: "Ghost Studio", kind: "Design", line: "Explore a garment from every side.", href: "https://ghost.thecreatingco.com/" },
   { name: "Librarian", kind: "Read & organize", line: "Gather your PDFs and stay with an idea.", href: "https://librarian.thecreatingco.com/" },
   { name: "Bounce", kind: "Sound", line: "A listening queue with EQ, in the browser.", href: "https://bounce.thecreatingco.com/browser/" },
+  { name: "Vox", kind: "Vocals", line: "Scale-based pitch correction and a generated harmony for a clean solo vocal.", href: "https://sattarimusic.com/studio/vox" },
+  { name: "Key & BPM", kind: "Sound", line: "Find the key and tempo of a track.", href: "https://sattarimusic.com/studio/keybpm" },
+  { name: "Cutout", kind: "Image", line: "Remove backgrounds and refine transparent images.", href: "https://luma.thecreatingco.com/cutout" },
+  { name: "Cast", kind: "3D / jewelry", line: "Jewelry casting checks inside Form. Estimates, not manufacturing certification.", href: "https://form.thecreatingco.com/studio" },
+  { name: "Glyph Studio", kind: "Type", line: "Draw your own font.", href: "https://glyph-studio-610.netlify.app/studio" },
+  { name: "Converter", kind: "Files", line: "Convert documents, images and audio in your browser.", href: "https://thecreatingco.com/forma/" },
   { name: "Void Studio", kind: "Experimental", line: "A darker lab for unreleased interfaces, visual systems and new tools.", href: "#void-studio" },
   { name: "Sattari Audio", kind: "Native audio", line: "The plugin suite: Entropy, Auto Pitch & more.", href: "https://sattari-audio-suite.netlify.app/" }
 ];

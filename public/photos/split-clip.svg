@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2a1708"/><stop offset="1" stop-color="#0a0806"/></linearGradient>
+    <style>
+      @keyframes scan { 0% { transform: translateX(0) } 100% { transform: translateX(1000px) } }
+      .playhead { animation: scan 6s linear infinite; }
+      @media (prefers-reduced-motion: reduce){ .playhead{ animation:none } }
+    </style>
+  </defs>
+  <rect width="1280" height="720" fill="url(#bg)"/>
+  <rect x="40" y="40" width="1200" height="640" rx="26" fill="rgba(10,8,6,.6)" stroke="rgba(251,146,60,.25)"/>
+  <text x="80" y="116" font-size="40" font-weight="800" fill="#f5f5f4" font-family="Inter,Arial,sans-serif">Split</text>
+  <text x="82" y="150" font-size="19" fill="#fdba74" font-family="Inter,Arial,sans-serif" letter-spacing="2">STEM SEPARATION · RUNS ON YOUR DEVICE</text>
+  <!-- source track -->
+  <rect x="80" y="184" width="1120" height="84" rx="14" fill="rgba(255,255,255,.05)"/>
+  <g stroke="#a8a29e" stroke-width="4" stroke-linecap="round" opacity=".8">
+    <path d="M104 226v0M120 214v24M136 200v52M152 210v32M168 192v68M184 206v40M200 196v60M216 214v24M232 188v76M248 204v44M264 196v60M280 212v28M296 190v72M312 206v40M328 198v56M344 214v24M360 186v80M376 204v44M392 196v60M408 210v32M424 192v68M440 206v40M456 200v52M472 216v20M488 188v76M504 204v44M520 196v60M536 212v28M552 190v72M568 208v36M584 198v56M600 214v24M616 186v80M632 204v44M648 196v60M664 210v32M680 192v68M696 206v40M712 200v52M728 216v20M744 188v76M760 204v44M776 196v60M792 212v28M808 190v72M824 208v36M840 198v56M856 214v24M872 186v80M888 204v44M904 196v60M920 210v32M936 192v68M952 206v40M968 200v52M984 216v20M1000 188v76M1016 204v44M1032 196v60M1048 212v28M1064 190v72M1080 208v36M1096 198v56M1112 214v24M1128 186v80M1144 204v44M1160 196v60M1176 210v32"/>
+  </g>
+  <rect class="playhead" x="100" y="180" width="3" height="92" fill="#fb923c"/>
+  <!-- stems -->
+  <g font-family="Inter,Arial,sans-serif" font-size="18" font-weight="600">
+    <rect x="80" y="304" width="1120" height="76" rx="12" fill="rgba(251,146,60,.08)" stroke="rgba(251,146,60,.3)"/>
+    <text x="104" y="350" fill="#fdba74">Vocals</text>
+    <path d="M240 342h60M308 330v24M324 322v40M340 334v16M356 326v32M372 338v8M388 328v28M404 320v44M420 332v20M436 340v6M452 326v32M468 336v12M484 324v40M500 334v16M516 328v28M532 340v8M548 322v36M564 332v20M580 338v8M596 326v30M612 334v14M628 320v44M644 336v10M660 328v28" stroke="#fb923c" stroke-width="5" stroke-linecap="round" fill="none"/>
+    <rect x="80" y="396" width="1120" height="76" rx="12" fill="rgba(56,189,248,.07)" stroke="rgba(56,189,248,.28)"/>
+    <text x="104" y="442" fill="#7dd3fc">Drums</text>
+    <path d="M240 420v44M276 428v28M312 420v44M348 430v24M384 420v44M420 428v28M456 420v44M492 430v24M528 420v44M564 428v28M600 420v44M636 430v24M672 420v44M708 428v28M744 420v44M780 430v24M816 420v44M852 428v28M888 420v44M924 430v24M960 420v44" stroke="#38bdf8" stroke-width="7" stroke-linecap="round" fill="none"/>
+    <rect x="80" y="488" width="1120" height="76" rx="12" fill="rgba(167,139,250,.07)" stroke="rgba(167,139,250,.28)"/>
+    <text x="104" y="534" fill="#c4b5fd">Bass</text>
+    <path d="M240 526c40-30 80 30 120 0s80-30 120 0 80 30 120 0 80-30 120 0 80 30 120 0 80-30 120 0" stroke="#a78bfa" stroke-width="5" stroke-linecap="round" fill="none"/>
+    <rect x="80" y="580" width="1120" height="76" rx="12" fill="rgba(52,211,153,.07)" stroke="rgba(52,211,153,.28)"/>
+    <text x="104" y="626" fill="#6ee7b7">Other</text>
+    <path d="M240 626c30-24 60-24 90 0s60 24 90 0 60-24 90 0 60 24 90 0 60-24 90 0 60 24 90 0 60-24 90 0 60 24 90 0" stroke="#34d399" stroke-width="4" stroke-linecap="round" fill="none"/>
+  </g>
+  <text x="1200" y="116" font-size="16" fill="#a8a29e" text-anchor="end" font-family="Inter,Arial,sans-serif">Preview · WAV download · hand off to StemDeck</text>
+</svg>
