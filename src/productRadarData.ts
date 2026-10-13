@@ -961,7 +961,7 @@ export const radarDirectory: DirectoryEntry[] = [
   // ---- Products ----
   {
     name: "thecreateco",
-    blurb: "Independent creative software studio I founded — the Momentium Suite (Form, Luma, StemDeck, ScenePilot) plus Ghost Studio, Reclaim, Split, HOLE, Librarian and Bounce.",
+    blurb: "Independent creative software studio I founded — the Momentium Suite (Form, Luma, StemDeck, ScenePilot) plus Ghost Studio, Reclaim, Converter, HOLE, Librarian and Bounce.",
     group: "Products",
     stack: "Studio · web alphas · native in development",
     live: "https://thecreatingco.com",
@@ -981,11 +981,11 @@ export const radarDirectory: DirectoryEntry[] = [
     live: "https://thecreatingco.com/products/reclaim/",
   },
   {
-    name: "Split",
-    blurb: "Separate a song into vocals, drums, bass and other stems in the browser, with the model running on your device. Hands off to StemDeck.",
+    name: "Converter",
+    blurb: "Free file converter for images, PDFs, spreadsheets, audio, video and archives. Runs in the browser or desktop app, and files stay on your device.",
     group: "Products",
-    stack: "Web alpha · on-device separation",
-    live: "https://sattarimusic.com/studio/split",
+    stack: "Browser + desktop · local processing",
+    live: "https://thecreatingco.com/forma/",
   },
   {
     name: "Vox",

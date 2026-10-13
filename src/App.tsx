@@ -1466,24 +1466,24 @@ const projects: Project[] = [
     studio: true
   },
   {
-    id: "split",
-    title: "Split",
+    id: "converter",
+    title: "Converter",
     section: "software",
-    subtitle: "Separate any song into four stems in your browser",
+    subtitle: "Give your files a new format, without uploading them",
     description:
-      "A web stem separator that splits a recording into vocals, drums, bass and everything else for remix exploration. The separation model runs on your device after a one-time download, so there is nothing to install — preview each stem, download WAVs, or hand the result straight to StemDeck.",
-    tech: ["Browser app", "On-device separation", "WAV export", "StemDeck handoff"],
+      "A free file converter that runs in the browser or as a desktop app, with no account. Queue up to 100 files — images, PDFs, spreadsheets, audio, video and archives — and convert them one by one or all at once. Conversions happen on your device, so nothing is sent to a cloud service.",
+    tech: ["Browser app", "Desktop app", "FFmpeg (desktop)", "Local processing"],
     points: [
-      "Four stems — vocals, drums, bass and other — each previewable in the browser before you export.",
-      "Separation runs locally after a first-run model download, so source audio stays with the person who loaded it.",
-      "Exports WAV stems and opens them in StemDeck, alongside Vox for vocal pitch and harmony and Key & BPM for tempo and key."
+      "Covers images (PNG, JPG, WebP), PDF to text with English OCR, PDF to XLSX/CSV, DOCX to PDF, spreadsheets, audio, video and ZIP/TAR archives.",
+      "Batch queue with per-file or Convert all, then download individually or collect everything into one ZIP.",
+      "Editable table review for extracted tables and a print preview for spreadsheet-to-PDF, with files processed locally rather than uploaded."
     ],
-    live: "https://sattarimusic.com/studio/split",
-    liveLabel: "Open Split",
+    live: "https://thecreatingco.com/forma/",
+    liveLabel: "Open Converter",
     github: "#",
-    label: "Stems",
-    image: "/photos/split-clip.svg",
-    status: "Public web alpha",
+    label: "File tools",
+    image: "/photos/converter-clip.svg",
+    status: "New · free in browser",
     studio: true
   },
   {
@@ -1625,7 +1625,6 @@ const studioApps = [
   { name: "Cutout", kind: "Image", line: "Remove backgrounds and refine transparent images.", href: "https://luma.thecreatingco.com/cutout" },
   { name: "Cast", kind: "3D / jewelry", line: "Jewelry casting checks inside Form. Estimates, not manufacturing certification.", href: "https://form.thecreatingco.com/studio" },
   { name: "Glyph Studio", kind: "Type", line: "Draw your own font.", href: "https://glyph-studio-610.netlify.app/studio" },
-  { name: "Converter", kind: "Files", line: "Convert documents, images and audio in your browser.", href: "https://thecreatingco.com/forma/" },
   { name: "Void Studio", kind: "Experimental", line: "A darker lab for unreleased interfaces, visual systems and new tools.", href: "#void-studio" },
   { name: "Sattari Audio", kind: "Native audio", line: "The plugin suite: Entropy, Auto Pitch & more.", href: "https://sattari-audio-suite.netlify.app/" }
 ];
