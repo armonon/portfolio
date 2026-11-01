@@ -1,7 +1,8 @@
 import { AnimatePresence, motion, useInView, useMotionTemplate, useMotionValue, useScroll, useSpring, useTransform } from "framer-motion";
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
-import { Menu, X, ExternalLink, Code2, Mail, Sparkles, Download, RefreshCw, ArrowUpRight, ArrowDown, Check, Bot, Search, Upload, ShieldCheck } from "lucide-react";
+import { Menu, X, ExternalLink, Code2, Mail, Sparkles, Download, RefreshCw, ArrowUpRight, ArrowDown, Check, Bot, Search, Upload, ShieldCheck, CornerDownLeft, Play, Pause } from "lucide-react";
 import { appCatalogue, appCategories, flagships, fullApps, heroWords, sattariCase, siteShowcases, toolbox, type Flagship, type SiteShowcase, type Tool } from "./showcase";
+import { caseBySlug, caseStudies, showreelChapters, type CaseStudy, type Step } from "./cases";
 import { agentOffer, artPieces, engagementTypes, inquiryOptions, process, services } from "./services";
 import { radarDirectory, radarDirectoryGroups, radarEvidenceLedger, radarIdeaFeed, radarLanes, radarMetrics, radarNextBuildSteps, radarOpportunities, radarSoftwareProjects } from "./productRadarData";
 
@@ -2248,9 +2249,16 @@ function SiteWalkthrough({ site, index }: { site: SiteShowcase; index: number })
             </li>
           ))}
         </ul>
-        <a href={site.url} target="_blank" rel="noreferrer" className="mt-8 inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3 text-[14px] font-medium text-bg transition-opacity hover:opacity-85">
-          Walk through it live <ArrowUpRight size={15} />
-        </a>
+        <div className="mt-8 flex flex-wrap gap-3">
+          <a href={site.url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3 text-[14px] font-medium text-bg transition-opacity hover:opacity-85">
+            Walk through it live <ArrowUpRight size={15} />
+          </a>
+          {siteSlug[site.id] && (
+            <a href={`/work/${siteSlug[site.id]}`} className="inline-flex items-center gap-2 rounded-full border border-line px-6 py-3 text-[14px] font-medium text-ink transition-colors hover:border-ink">
+              Case study
+            </a>
+          )}
+        </div>
       </div>
     </motion.article>
   );
@@ -2419,11 +2427,15 @@ function FlagshipCard({ item, index, span, onOpenProject, onAnchor }: { item: Fl
               {item.liveLabel ?? "Try it live"} <ArrowUpRight size={14} />
             </a>
           )}
-          {item.project && (
+          {flagshipSlug[item.title] ? (
+            <a href={`/work/${flagshipSlug[item.title]}`} className="inline-flex items-center gap-1.5 rounded-full border border-line px-5 py-2.5 text-[13.5px] font-medium text-ink transition-colors hover:border-ink">
+              Walkthrough
+            </a>
+          ) : item.project ? (
             <button onClick={() => onOpenProject(item.project!)} className="inline-flex items-center gap-1.5 rounded-full border border-line px-5 py-2.5 text-[13.5px] font-medium text-ink transition-colors hover:border-ink">
               Case study
             </button>
-          )}
+          ) : null}
           {item.anchor && (
             <button onClick={() => onAnchor(item.anchor!)} className="inline-flex items-center gap-1.5 rounded-full border border-line px-5 py-2.5 text-[13.5px] font-medium text-ink transition-colors hover:border-ink">
               {item.anchor === "agents" ? "Get one set up" : "See the walkthrough"} <ArrowDown size={14} />
@@ -2570,7 +2582,8 @@ function ToolboxSection() {
               }}
               placeholder="What do you need to do?"
               aria-label="What do you need to do?"
-              className="w-full bg-transparent text-[16px] text-ink placeholder:text-faint focus:outline-none focus-visible:outline-none"
+              style={{ outline: "none", boxShadow: "none" }}
+                className="w-full bg-transparent text-[16px] text-ink placeholder:text-faint focus:outline-none focus-visible:outline-none"
             />
           </label>
           <button
@@ -2630,15 +2643,17 @@ function ToolboxSection() {
 function DeviceVideo({ src, poster, className = "" }: { src: string; poster?: string; className?: string }) {
   const ref = useRef<HTMLVideoElement>(null);
   const inView = useInView(ref, { margin: "100px" });
+  const [armed, setArmed] = useState(false);
+  if (inView && !armed) setArmed(true);
   useEffect(() => {
     const el = ref.current;
-    if (!el) return;
+    if (!el || !armed) return;
     el.muted = true;
     el.playsInline = true;
     if (inView) el.play().catch(() => {});
     else el.pause();
-  }, [inView, src]);
-  return <video ref={ref} key={src} src={src} poster={poster} muted loop playsInline preload="metadata" className={className} />;
+  }, [inView, src, armed]);
+  return <video ref={ref} key={src} src={armed ? src : undefined} poster={poster} muted loop playsInline preload="none" className={className} />;
 }
 
 function LaptopFrame({ children, url }: { children: ReactNode; url?: string }) {
@@ -2823,6 +2838,11 @@ function FullAppsSection() {
                 <a href={app.live} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-[14.5px] font-medium text-[#111110] transition-transform hover:-translate-y-0.5">
                   Open {app.name} <ArrowUpRight size={15} />
                 </a>
+                {fullAppSlug[app.id] && (
+                  <a href={`/work/${fullAppSlug[app.id]}`} className="inline-flex items-center gap-2 rounded-full border border-band-line px-6 py-3 text-[14.5px] font-medium text-band-fg transition-colors hover:border-band-fg/50">
+                    Full walkthrough
+                  </a>
+                )}
                 <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-band-muted">{app.platforms}</span>
               </div>
             </div>
@@ -2905,6 +2925,9 @@ function SattariSection({ onInquire }: { onInquire: () => void }) {
               <div className="mt-8 flex flex-wrap gap-3">
                 <a href={t.link.href} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3 text-[14px] font-medium text-bg transition-opacity hover:opacity-85">
                   {t.link.label} <ArrowUpRight size={15} />
+                </a>
+                <a href="/work/sattari" className="inline-flex items-center gap-2 rounded-full border border-line px-6 py-3 text-[14px] font-medium text-ink transition-colors hover:border-ink">
+                  Full case study
                 </a>
                 <button onClick={onInquire} className="inline-flex items-center gap-2 rounded-full border border-line px-6 py-3 text-[14px] font-medium text-ink transition-colors hover:border-ink">
                   Build this for my brand
@@ -3176,261 +3199,474 @@ function InquiryBuilder() {
 const bentoSpans = ["lg:col-span-4", "lg:col-span-2", "lg:col-span-2", "lg:col-span-4", "lg:col-span-3", "lg:col-span-3"];
 const spanFor = (i: number, total: number) => (i === total - 1 && total % 2 === 1 ? "lg:col-span-6" : bentoSpans[i % bentoSpans.length]);
 
-function App() {
-  const [activeSection, setActiveSection] = useState("hero");
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [currentPage, setCurrentPage] = useState(() => window.location.hash.startsWith("#/product-radar") ? "product-radar" : "home");
-  const [indexFilter, setIndexFilter] = useState<string>("All");
-  const [openProject, setOpenProject] = useState<Project | null>(null);
-  const closeProject = useCallback(() => setOpenProject(null), []);
-  const openProjectById = useCallback((id: string) => {
-    const project = projects.find((p) => p.id === id);
-    if (project) setOpenProject(project);
-  }, []);
-  const { scrollYProgress } = useScroll();
-  const progressScaleX = useSpring(scrollYProgress, { stiffness: 120, damping: 30, restDelta: 0.001 });
+const readRoute = () => {
+  if (window.location.hash.startsWith("#/product-radar")) return "product-radar";
+  const p = window.location.pathname.replace(/\/+$/, "");
+  return p === "" ? "/" : p;
+};
 
-  useEffect(() => {
-    const syncPage = () => setCurrentPage(window.location.hash.startsWith("#/product-radar") ? "product-radar" : "home");
-    window.addEventListener("hashchange", syncPage);
-    return () => window.removeEventListener("hashchange", syncPage);
-  }, []);
+const flagshipSlug: Record<string, string> = { "Luma Studio": "luma-studio", "Form Studio": "form-studio", "ScenePilot × Sattari ad": "sattari", "BREAKTHYRULE Eden": "breakthyrule-eden" };
+const fullAppSlug: Record<string, string> = { librarian: "librarian", form: "form-studio", luma: "luma-studio", hole: "hole", stemdeck: "stemdeck" };
+const siteSlug: Record<string, string> = { eden: "breakthyrule-eden", synthesis: "synthesis" };
 
-  // Highlight the nav item for whichever section is crossing the upper third of the viewport
-  useEffect(() => {
-    if (currentPage !== "home") return;
-    const observer = new IntersectionObserver(
-      (entries) => entries.forEach((e) => e.isIntersecting && setActiveSection(e.target.id)),
-      { rootMargin: "-30% 0px -60% 0px" }
-    );
-    ["hero", ...navItems.map((n) => n.id)].forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
-    return () => observer.disconnect();
-  }, [currentPage]);
-
-  const navigateToHash = (hash: string) => {
-    window.history.pushState(null, "", hash);
-    window.dispatchEvent(new HashChangeEvent("hashchange"));
-  };
-
-  const scrollToSection = (id: string) => {
-    if (currentPage !== "home") {
-      navigateToHash("#");
-      setCurrentPage("home");
-      setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" }), 0);
-    } else {
-      document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-    }
-    setActiveSection(id);
-    setMobileMenuOpen(false);
-  };
-
-  if (currentPage === "product-radar") {
-    return <ProductRadarPage onHome={() => scrollToSection("hero")} />;
-  }
-
-  const liveCount = radarDirectory.filter((d) => d.live).length;
-
+function CaseCard({ c }: { c: CaseStudy }) {
   return (
-    <div className="grain min-h-screen bg-bg text-ink antialiased">
-      <motion.div style={{ scaleX: progressScaleX }} className="fixed left-0 right-0 top-0 z-[60] h-[2px] origin-left bg-accent" />
+    <a href={`/work/${c.slug}`} className="group flex h-full flex-col overflow-hidden rounded-[22px] border border-line bg-surface transition-[transform,box-shadow] duration-300 hover:-translate-y-1 hover:shadow-[0_30px_60px_-30px_rgba(0,0,0,0.4)]">
+      <div className="relative aspect-[16/10] overflow-hidden bg-[#0d0d0c]">
+        <img src={c.hero.image} alt="" loading="lazy" className="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.04]" />
+        <span className="absolute left-3 top-3 rounded-full bg-black/60 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.1em] text-white backdrop-blur">{c.steps.length} steps{c.footage.length ? ` · ${c.footage.length} clips` : ""}</span>
+      </div>
+      <div className="flex flex-1 flex-col p-5">
+        <Kicker className="text-accent-ink">{c.kind}</Kicker>
+        <h3 className="mt-2 text-[1.35rem] font-semibold tracking-[-0.02em] text-ink">{c.title}</h3>
+        <p className="mt-1.5 line-clamp-2 text-[14px] leading-snug text-muted">{c.summary}</p>
+        <span className="mt-auto pt-4 text-[13.5px] font-medium text-ink">See the walkthrough →</span>
+      </div>
+    </a>
+  );
+}
 
-      {/* ── NAV ──────────────────────────────────────────── */}
-      <nav className="sticky top-0 z-50 px-3 pt-3 sm:px-6">
-        <div className="mx-auto flex h-14 max-w-[1320px] items-center justify-between rounded-full border border-line bg-bg/75 pl-5 pr-2 backdrop-blur-xl">
-          <button onClick={() => scrollToSection("hero")} className="flex items-center gap-2.5 text-[15px] font-semibold tracking-[-0.01em] text-ink">
-            <span className="grid h-7 w-7 place-items-center rounded-full bg-ink font-serif text-[15px] italic text-bg">a</span>
-            Armon Nasiri
-          </button>
-
-          <div className="hidden items-center gap-1 md:flex">
-            {navItems.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => scrollToSection(item.id)}
-                className={`rounded-full px-3.5 py-1.5 text-[14px] transition-colors ${activeSection === item.id ? "bg-ink/[0.07] text-ink" : "text-muted hover:text-ink"}`}
-              >
-                {item.label}
-              </button>
-            ))}
+function StepWalkthrough({ steps, url }: { steps: Step[]; url?: string }) {
+  const [i, setI] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { margin: "-20% 0px" });
+  const MS = 4500;
+  useEffect(() => {
+    if (paused || !inView || steps.length < 2) return;
+    const id = window.setTimeout(() => setI((n) => (n + 1) % steps.length), MS);
+    return () => window.clearTimeout(id);
+  }, [i, paused, inView, steps.length]);
+  const step = steps[i];
+  const isPhone = /-m-\d|iphone|sat-mobile/.test(step.image);
+  return (
+    <div ref={ref} onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)} className="grid grid-cols-1 gap-6 lg:grid-cols-[1.5fr_1fr] lg:gap-10">
+      <div className="relative">
+        <div className="overflow-hidden rounded-[20px] border border-line bg-[#0d0d0c] shadow-[0_40px_80px_-40px_rgba(0,0,0,0.5)]">
+          <div className="flex items-center gap-2 border-b border-white/10 px-4 py-2.5">
+            <span className="h-2 w-2 rounded-full bg-[#ff5f57]" />
+            <span className="h-2 w-2 rounded-full bg-[#febc2e]" />
+            <span className="h-2 w-2 rounded-full bg-[#28c840]" />
+            {url && <span className="ml-2 truncate font-mono text-[10.5px] text-white/50">{url.replace("https://", "")}</span>}
+            <span className="ml-auto font-mono text-[10.5px] text-white/50">{String(i + 1).padStart(2, "0")} / {String(steps.length).padStart(2, "0")}</span>
           </div>
-
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => scrollToSection("contact")}
-              className="hidden items-center gap-1.5 rounded-full bg-ink px-4 py-2 text-[13px] font-medium text-bg transition-opacity hover:opacity-85 sm:inline-flex"
-            >
-              <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-              Start a project
-              <ArrowUpRight size={14} />
-            </button>
-            <button
-              className="grid h-10 w-10 place-items-center rounded-full text-ink md:hidden"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
-              aria-expanded={mobileMenuOpen}
-            >
-              {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
-            </button>
+          <div className="relative aspect-[16/10]">
+            <AnimatePresence initial={false}>
+              <motion.div key={step.image} initial={{ opacity: 0, scale: 1.04 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.7, ease: EASE }} className="absolute inset-0">
+                {isPhone ? (
+                  <div className="flex h-full items-center justify-center bg-[radial-gradient(circle_at_50%_40%,#2a2622,#0d0d0c)] py-4">
+                    <img src={step.image} alt={step.label} className="h-full rounded-[18px] border border-white/10 object-contain shadow-2xl" />
+                  </div>
+                ) : (
+                  <img src={step.image} alt={step.label} className="h-full w-full object-cover object-top" />
+                )}
+              </motion.div>
+            </AnimatePresence>
           </div>
         </div>
+      </div>
+      <ol className="self-center border-t border-line">
+        {steps.map((s, n) => (
+          <li key={s.image + n} className="border-b border-line">
+            <button onClick={() => setI(n)} className="relative w-full overflow-hidden py-4 text-left">
+              {n === i && !paused && inView && steps.length > 1 && (
+                <motion.span key={`bar-${i}`} initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ duration: MS / 1000, ease: "linear" }} className="absolute bottom-0 left-0 h-[2px] w-full origin-left bg-accent-ink" />
+              )}
+              <div className="flex items-baseline gap-3">
+                <span className={`font-mono text-[11px] ${n === i ? "text-accent-ink" : "text-faint"}`}>{String(n + 1).padStart(2, "0")}</span>
+                <span className={`text-[16px] font-semibold tracking-[-0.01em] ${n === i ? "text-ink" : "text-muted"}`}>{s.label}</span>
+              </div>
+              <AnimatePresence initial={false}>
+                {n === i && s.caption && (
+                  <motion.p initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden pl-7 pt-1.5 text-[14px] leading-relaxed text-muted">
+                    {s.caption}
+                  </motion.p>
+                )}
+              </AnimatePresence>
+            </button>
+          </li>
+        ))}
+      </ol>
+    </div>
+  );
+}
 
-        <AnimatePresence>
-          {mobileMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0, y: -8 }}
+function ProjectPage({ slug, onInquire }: { slug: string; onInquire: () => void }) {
+  const c = caseBySlug(slug);
+  if (!c) {
+    return (
+      <section className="px-5 py-32 text-center sm:px-8">
+        <h1 className="text-4xl font-semibold text-ink">Project not found</h1>
+        <a href="/work" className="mt-6 inline-block text-ink underline decoration-accent decoration-2 underline-offset-4">See all work</a>
+      </section>
+    );
+  }
+  const idx = caseStudies.indexOf(c);
+  const next = caseStudies[(idx + 1) % caseStudies.length];
+  return (
+    <>
+      <section className="px-5 pb-10 pt-12 sm:px-8 md:pt-16">
+        <div className="mx-auto max-w-[1320px]">
+          <a href="/work" className="inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.14em] text-muted hover:text-ink">← All work</a>
+          <div className="mt-6 grid grid-cols-1 gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-end">
+            <div>
+              <Kicker className="text-accent-ink">{c.kind}</Kicker>
+              <h1 className="mt-4 text-[clamp(2.8rem,7vw,6rem)] font-semibold leading-[0.92] tracking-[-0.05em] text-ink">{c.title}</h1>
+            </div>
+            <div>
+              <p className="text-[16.5px] leading-relaxed text-muted">{c.summary}</p>
+              <div className="mt-6 flex flex-wrap gap-3">
+                {c.url && (
+                  <a href={c.url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3 text-[14.5px] font-medium text-bg transition-opacity hover:opacity-85">
+                    {c.urlLabel ?? "Open it live"} <ArrowUpRight size={15} />
+                  </a>
+                )}
+                <button onClick={onInquire} className="inline-flex items-center gap-2 rounded-full border border-line px-6 py-3 text-[14.5px] font-medium text-ink transition-colors hover:border-ink">
+                  Build something like this
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div className="relative mt-12">
+            <div className={c.hero.phoneVideo || c.hero.phoneImage ? "lg:pr-[17%]" : ""}>
+              <LaptopFrame url={c.url?.replace("https://", "")}>
+                {c.hero.video ? (
+                  <DeviceVideo src={c.hero.video} poster={c.hero.image} className="h-full w-full object-cover object-top" />
+                ) : (
+                  <img src={c.hero.image} alt={c.title} className="h-full w-full object-cover object-top" />
+                )}
+              </LaptopFrame>
+            </div>
+            {(c.hero.phoneVideo || c.hero.phoneImage) && (
+              <div className="absolute -bottom-8 right-0 hidden w-[30%] max-w-[240px] sm:block">
+                <PhoneFrame url={c.url?.replace("https://", "").replace(/\/$/, "")}>
+                  {c.hero.phoneVideo ? (
+                    <DeviceVideo src={c.hero.phoneVideo} poster={c.hero.phoneImage} className="h-full w-full object-cover object-top" />
+                  ) : (
+                    <img src={c.hero.phoneImage} alt="" className="h-full w-full object-cover object-top" />
+                  )}
+                </PhoneFrame>
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+
+      <section className="border-t border-line px-5 py-16 sm:px-8 md:py-20">
+        <div className="mx-auto max-w-[1320px]">
+          <Kicker className="text-accent-ink">Walkthrough · {c.steps.length} steps</Kicker>
+          <h2 className="mb-10 mt-3 text-[clamp(1.9rem,3.5vw,2.8rem)] font-semibold tracking-[-0.035em] text-ink">Step by step.</h2>
+          <StepWalkthrough steps={c.steps} url={c.url} />
+        </div>
+      </section>
+
+      {c.footage.length > 0 && (
+        <section className="border-t border-line px-5 py-16 sm:px-8 md:py-20">
+          <div className="mx-auto max-w-[1320px]">
+            <Kicker className="text-accent-ink">Footage · recorded live</Kicker>
+            <h2 className="mb-10 mt-3 text-[clamp(1.9rem,3.5vw,2.8rem)] font-semibold tracking-[-0.035em] text-ink">See it running.</h2>
+            <div className={`grid grid-cols-1 items-end gap-8 ${c.footage.length > 1 ? "md:grid-cols-2" : ""}`}>
+              {c.footage.map((f) => (
+                <figure key={f.video + f.label} className={f.phone ? "mx-auto w-[60%] max-w-[260px]" : c.footage.length === 1 ? "mx-auto w-full max-w-4xl" : ""}>
+                  {f.phone ? (
+                    <PhoneFrame url={c.url?.replace("https://", "").replace(/\/$/, "")}>
+                      <DeviceVideo src={f.video} poster={f.poster} className="h-full w-full object-cover object-top" />
+                    </PhoneFrame>
+                  ) : (
+                    <div className="overflow-hidden rounded-[18px] border border-line bg-[#0d0d0c]">
+                      <DeviceVideo src={f.video} poster={f.poster} className="aspect-[16/10] w-full object-cover object-top" />
+                    </div>
+                  )}
+                  <figcaption className="mt-3 text-center font-mono text-[11px] uppercase tracking-[0.12em] text-muted">{f.label}</figcaption>
+                </figure>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      <section className="border-t border-line px-5 py-16 sm:px-8">
+        <div className="mx-auto grid max-w-[1320px] grid-cols-1 gap-10 md:grid-cols-2">
+          <div>
+            <Kicker className="text-accent-ink">Features</Kicker>
+            <ul className="mt-5 space-y-3">
+              {c.features.map((f) => (
+                <li key={f} className="flex items-start gap-2.5 text-[15.5px] text-ink/90">
+                  <Check size={16} className="mt-0.5 shrink-0 text-accent-ink" />
+                  {f}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <Kicker className="text-accent-ink">What I built</Kicker>
+            <div className="mt-5 flex flex-wrap gap-2">
+              {c.built.map((b) => (
+                <span key={b} className="rounded-full border border-line px-3.5 py-1.5 font-mono text-[12px] text-ink/80">
+                  {b}
+                </span>
+              ))}
+            </div>
+            {c.platforms && <p className="mt-6 font-mono text-[11px] uppercase tracking-[0.12em] text-muted">{c.platforms}</p>}
+          </div>
+        </div>
+      </section>
+
+      <section className="px-3 pb-6 sm:px-6">
+        <a href={`/work/${next.slug}`} className="group mx-auto flex max-w-[1360px] items-center justify-between gap-6 rounded-[28px] bg-band px-6 py-10 text-band-fg sm:px-10 lg:px-14">
+          <div>
+            <Kicker className="text-band-muted">Next project</Kicker>
+            <div className="mt-3 text-[clamp(2rem,5vw,3.8rem)] font-semibold leading-none tracking-[-0.045em]">{next.title}</div>
+            <div className="mt-2 text-[14px] text-band-muted">{next.kind}</div>
+          </div>
+          <span className="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-accent text-[#111110] transition-transform group-hover:translate-x-1">
+            <ArrowUpRight size={22} />
+          </span>
+        </a>
+      </section>
+    </>
+  );
+}
+
+function ShowreelSection() {
+  const ref = useRef<HTMLVideoElement>(null);
+  const inView = useInView(ref, { margin: "100px" });
+  const [armed, setArmed] = useState(false);
+  const [t, setT] = useState(0);
+  const [playing, setPlaying] = useState(true);
+  if (inView && !armed) setArmed(true);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || !armed) return;
+    el.muted = true;
+    el.playsInline = true;
+    if (inView && playing) el.play().catch(() => {});
+    else el.pause();
+  }, [inView, armed, playing]);
+  const chapter = [...showreelChapters].reverse().find((c) => t >= c.t) ?? showreelChapters[0];
+  const ci = showreelChapters.indexOf(chapter);
+  return (
+    <section id="reel" className="px-3 pb-10 sm:px-6">
+      <div className="relative mx-auto max-w-[1360px] overflow-hidden rounded-[28px] bg-[#0d0d0c]">
+        <video
+          ref={ref}
+          src={armed ? "/videos/showreel.mp4" : undefined}
+          poster="/photos/showreel-poster.jpg"
+          muted
+          loop
+          playsInline
+          preload="none"
+          onTimeUpdate={(e) => setT(e.currentTarget.currentTime)}
+          aria-label="Showreel of apps, websites and AI media"
+          className="block aspect-[16/9] w-full object-cover md:aspect-[21/9]"
+        />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/20" />
+        <div className="absolute left-4 top-4 flex items-center gap-2 sm:left-6 sm:top-6">
+          <span className="rounded-full bg-accent px-3 py-1 font-mono text-[10.5px] font-medium uppercase tracking-[0.1em] text-[#111110]">Showreel</span>
+          <button onClick={() => setPlaying((v) => !v)} aria-label={playing ? "Pause showreel" : "Play showreel"} className="grid h-8 w-8 place-items-center rounded-full bg-black/55 text-white backdrop-blur hover:bg-black">
+            {playing ? <Pause size={14} /> : <Play size={14} />}
+          </button>
+        </div>
+        <div className="absolute inset-x-4 bottom-4 sm:inset-x-6 sm:bottom-6">
+          <AnimatePresence mode="wait">
+            <motion.a
+              key={chapter.label + chapter.t}
+              href={`/work/${chapter.slug}`}
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
-              className="mx-auto mt-2 max-w-[1320px] rounded-3xl border border-line bg-surface p-3 md:hidden"
+              transition={{ duration: 0.35 }}
+              className="inline-block text-white"
             >
-              {navItems.map((item) => (
-                <button key={item.id} onClick={() => scrollToSection(item.id)} className="block w-full rounded-2xl px-4 py-3 text-left text-[17px] text-ink hover:bg-ink/5">
-                  {item.label}
-                </button>
-              ))}
-              <button onClick={() => scrollToSection("contact")} className="mt-1 flex w-full items-center justify-between rounded-2xl bg-ink px-4 py-3 text-[17px] text-bg">
-                Start a project <ArrowUpRight size={18} />
+              <div className="font-mono text-[10.5px] uppercase tracking-[0.16em] text-accent">{chapter.sub}</div>
+              <div className="mt-1 text-[clamp(1.6rem,4vw,3rem)] font-semibold leading-none tracking-[-0.04em]">{chapter.label} <span className="text-white/50">→</span></div>
+            </motion.a>
+          </AnimatePresence>
+          <div className="mt-4 flex gap-1">
+            {showreelChapters.map((c, n) => (
+              <button
+                key={c.t}
+                onClick={() => {
+                  if (ref.current) ref.current.currentTime = c.t + 0.05;
+                  setT(c.t + 0.05);
+                }}
+                aria-label={c.label}
+                className="group h-5 flex-1"
+              >
+                <span className={`block h-[3px] w-full rounded-full transition-colors ${n < ci ? "bg-white/70" : n === ci ? "bg-accent" : "bg-white/25 group-hover:bg-white/50"}`} />
               </button>
-              <a href={STUDIO_URL} target="_blank" rel="noreferrer" className="flex items-center justify-between rounded-2xl px-4 py-3 text-[15px] text-muted">
-                thecreateco <ArrowUpRight size={16} />
-              </a>
-              <a href="#/product-radar" className="flex items-center justify-between rounded-2xl px-4 py-3 text-[15px] text-muted">
-                Product Radar <ArrowUpRight size={16} />
-              </a>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </nav>
-
-      <main className="relative">
-        {/* ── HERO ─────────────────────────────────────────── */}
-        <section id="hero" className="relative isolate px-5 sm:px-8">
-          <HeroGlow />
-          <div className="relative mx-auto max-w-[1320px] pb-16 pt-16 md:pt-24 lg:pb-24">
-            <HeroCollage onOpen={openProjectById} />
-            <div className="relative lg:max-w-[52%]">
-              <motion.button
-                onClick={() => scrollToSection("contact")}
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                className="group inline-flex items-center gap-2.5 rounded-full border border-line bg-surface py-1.5 pl-1.5 pr-4 text-[13px] text-muted transition-colors hover:border-ink/30"
-              >
-                <span className="relative flex h-2 w-2 shrink-0">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-80" />
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-[#7fb800]" />
-                </span>
-                <span className="whitespace-nowrap"><span className="font-medium text-ink">Taking new clients</span></span><span className="hidden sm:inline">— Los Angeles &amp; remote</span>
-                <ArrowUpRight size={14} className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-              </motion.button>
-
-              <motion.h1
-                initial={{ opacity: 0, y: 28 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.9, ease: EASE }}
-                className="mt-10 text-[clamp(3rem,7vw,7rem)] font-semibold leading-[0.92] tracking-[-0.05em] text-ink [perspective:600px]"
-              >
-                <RotatingWord words={heroWords} suffix="," />
-                <br />
-                you name it,
-                <br />
-                <span className="font-serif font-normal italic tracking-[-0.02em]">I create it.</span>
-              </motion.h1>
-
-              <motion.p
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.15, ease: EASE }}
-                className="mt-9 max-w-[38rem] text-[19px] leading-relaxed text-muted"
-              >
-                I&rsquo;m Armon, a digital designer and developer in Los Angeles. Apps, games, software, websites,
-                asset generation, image and video, autonomous agents: you name it, I create it. One person from
-                first sketch to launch, with {appCatalogue.length} apps and 40+ products already shipped under my own studio,{" "}
-                <a href={STUDIO_URL} target="_blank" rel="noreferrer" className="text-ink underline decoration-accent decoration-[3px] underline-offset-4">thecreateco</a>.
-              </motion.p>
-
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-                className="mt-10 flex flex-wrap items-center gap-3"
-              >
-                <button
-                  onClick={() => scrollToSection("contact")}
-                  className="group inline-flex items-center gap-2 rounded-full bg-ink px-7 py-3.5 text-[15px] font-medium text-bg transition-opacity hover:opacity-85"
-                >
-                  Start a project
-                  <ArrowUpRight size={16} className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-                </button>
-                <button
-                  onClick={() => scrollToSection("best")}
-                  className="group inline-flex items-center gap-2 rounded-full border border-line px-7 py-3.5 text-[15px] font-medium text-ink transition-colors hover:border-ink"
-                >
-                  See my best work
-                  <ArrowDown size={16} className="transition-transform group-hover:translate-y-0.5" />
-                </button>
-              </motion.div>
-            </div>
-
-          </div>
-
-          {/* stat strip */}
-          <motion.dl
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.45 }}
-            className="mx-auto grid max-w-[1320px] grid-cols-1 gap-px border-y border-line bg-line sm:grid-cols-3"
-          >
-            {[
-              { k: "Disciplines", v: "Design · Code · AI" },
-              { k: "Shipped", v: `${appCatalogue.length} apps · ${radarDirectory.length}+ builds` },
-              { k: "Platforms", v: "Web · Mac · iOS · Local" }
-            ].map((row) => (
-              <div key={row.k} className="bg-bg px-1 py-6 md:px-6 md:first:pl-0">
-                <dt className="font-mono text-[10.5px] uppercase tracking-[0.16em] text-faint">{row.k}</dt>
-                <dd className="mt-2 text-[clamp(1.4rem,2.6vw,2rem)] font-semibold tracking-[-0.03em] text-ink">{row.v}</dd>
-              </div>
             ))}
-          </motion.dl>
-        </section>
-
-        {/* ── SKILLS MARQUEE ───────────────────────────────── */}
-        <section aria-label="Tools and languages" className="marquee-pause overflow-hidden py-7">
-          <div className="marquee-mask">
-            <div className="animate-marquee flex w-max items-center gap-8 whitespace-nowrap">
-              {[...skills, ...skills].map((skill, i) => (
-                <span key={i} className="flex items-center gap-8 font-serif text-[26px] italic text-faint">
-                  {skill}
-                  <span className="not-italic text-accent-ink">✳</span>
-                </span>
-              ))}
-            </div>
           </div>
-        </section>
+        </div>
+      </div>
+    </section>
+  );
+}
 
-        <FlagshipsSection onOpenProject={openProjectById} onAnchor={scrollToSection} />
+function AllWorkBand() {
+  return (
+    <section className="px-5 pb-16 sm:px-8">
+      <div className="mx-auto grid max-w-[1320px] grid-cols-1 gap-3 md:grid-cols-[1.4fr_1fr_1fr]">
+        <div className="flex flex-col justify-center rounded-[22px] border border-line p-7">
+          <Kicker className="text-accent-ink">There&rsquo;s more</Kicker>
+          <p className="mt-3 text-[clamp(1.5rem,2.6vw,2rem)] font-semibold leading-tight tracking-[-0.03em] text-ink">{caseStudies.length} step-by-step walkthroughs, {appCatalogue.length} apps and every build.</p>
+        </div>
+        <a href="/work" className="group flex flex-col justify-between rounded-[22px] bg-ink p-7 text-bg">
+          <Kicker className="text-accent">Walkthroughs</Kicker>
+          <span className="mt-8 flex items-end justify-between text-[1.6rem] font-semibold tracking-[-0.03em]">All work <ArrowUpRight className="transition-transform group-hover:-translate-y-1 group-hover:translate-x-1" /></span>
+        </a>
+        <a href="/apps" className="group flex flex-col justify-between rounded-[22px] bg-accent p-7 text-[#111110]">
+          <Kicker className="text-[#111110]/60">Catalogue</Kicker>
+          <span className="mt-8 flex items-end justify-between text-[1.6rem] font-semibold tracking-[-0.03em]">All {appCatalogue.length} apps <ArrowUpRight className="transition-transform group-hover:-translate-y-1 group-hover:translate-x-1" /></span>
+        </a>
+      </div>
+    </section>
+  );
+}
 
-        <FullAppsSection />
+type PaletteItem = { label: string; hint: string; group: string; run: () => void };
 
-        <ToolboxSection />
+function CommandPalette({ open, onClose, go, scrollTo }: { open: boolean; onClose: () => void; go: (to: string) => void; scrollTo: (id: string) => void }) {
+  const [q, setQ] = useState("");
+  const [sel, setSel] = useState(0);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const items: PaletteItem[] = [
+    ...navItems.map((n) => ({ label: n.label, hint: "Section", group: "Go to", run: () => scrollTo(n.id) })),
+    { label: "All work", hint: "Page", group: "Go to", run: () => go("/work") },
+    { label: `All ${appCatalogue.length} apps`, hint: "Page", group: "Go to", run: () => go("/apps") },
+    ...caseStudies.map((c) => ({ label: c.title, hint: c.kind, group: "Walkthroughs", run: () => go(`/work/${c.slug}`) })),
+    ...toolbox.map((t) => ({ label: t.name, hint: `Free tool · ${t.job}`, group: "Open a tool", run: () => window.open(t.href, "_blank", "noopener") })),
+    ...appCatalogue.filter((a) => a.href !== "#").map((a) => ({ label: a.name, hint: `${a.category} · ${a.platforms}`, group: "Apps", run: () => window.open(a.href, "_blank", "noopener") })),
+    { label: "Email Armon", hint: CONTACT_EMAIL, group: "Contact", run: () => window.location.assign(`mailto:${CONTACT_EMAIL}`) },
+    { label: "Start a project", hint: "Contact form", group: "Contact", run: () => scrollTo("contact") }
+  ];
+  const ql = q.trim().toLowerCase();
+  const filtered = ql ? items.filter((it) => `${it.label} ${it.hint} ${it.group}`.toLowerCase().includes(ql)) : items.filter((it) => it.group !== "Apps");
+  const shown = filtered.slice(0, 40);
+  useEffect(() => {
+    if (open) setTimeout(() => inputRef.current?.focus(), 30);
+  }, [open]);
+  const choose = (it?: PaletteItem) => {
+    if (!it) return;
+    onClose();
+    setQ("");
+    setSel(0);
+    it.run();
+  };
+  return (
+    <AnimatePresence>
+      {open && (
+        <motion.div className="fixed inset-0 z-[90] flex items-start justify-center bg-black/50 px-4 pt-[12vh] backdrop-blur-sm" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose}>
+          <motion.div
+            role="dialog"
+            aria-modal="true"
+            aria-label="Command palette"
+            initial={{ y: -16, opacity: 0, scale: 0.98 }}
+            animate={{ y: 0, opacity: 1, scale: 1 }}
+            exit={{ y: -10, opacity: 0 }}
+            transition={{ duration: 0.25, ease: EASE }}
+            onClick={(e) => e.stopPropagation()}
+            className="w-full max-w-xl overflow-hidden rounded-[20px] border border-line bg-surface shadow-[0_40px_100px_-30px_rgba(0,0,0,0.6)]"
+          >
+            <div className="flex items-center gap-3 border-b border-line px-5 py-4">
+              <Search size={18} className="text-faint" />
+              <input
+                ref={inputRef}
+                value={q}
+                onChange={(e) => {
+                  setQ(e.target.value);
+                  setSel(0);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "ArrowDown") {
+                    e.preventDefault();
+                    setSel((n) => Math.min(n + 1, shown.length - 1));
+                  } else if (e.key === "ArrowUp") {
+                    e.preventDefault();
+                    setSel((n) => Math.max(n - 1, 0));
+                  } else if (e.key === "Enter") {
+                    e.preventDefault();
+                    choose(shown[sel]);
+                  } else if (e.key === "Escape") onClose();
+                }}
+                placeholder="Search work, apps, tools…"
+                aria-label="Search"
+                style={{ outline: "none", boxShadow: "none" }}
+                className="w-full bg-transparent text-[16px] text-ink placeholder:text-faint focus:outline-none focus-visible:outline-none"
+              />
+              <kbd className="rounded-md border border-line px-1.5 py-0.5 font-mono text-[10.5px] text-faint">esc</kbd>
+            </div>
+            <ul className="max-h-[52vh] overflow-y-auto p-2">
+              {shown.length === 0 && <li className="px-4 py-8 text-center text-[14px] text-muted">Nothing found. Maybe I should build it?</li>}
+              {shown.map((it, n) => {
+                const header = n === 0 || shown[n - 1].group !== it.group ? it.group : null;
+                return (
+                  <li key={it.group + it.label}>
+                    {header && <div className="px-3 pb-1 pt-3 font-mono text-[10px] uppercase tracking-[0.14em] text-faint">{header}</div>}
+                    <button
+                      onMouseEnter={() => setSel(n)}
+                      onClick={() => choose(it)}
+                      className={`flex w-full items-center justify-between gap-3 rounded-xl px-3 py-2.5 text-left ${n === sel ? "bg-ink text-bg" : "text-ink"}`}
+                    >
+                      <span className="truncate text-[14.5px] font-medium">{it.label}</span>
+                      <span className={`flex shrink-0 items-center gap-2 truncate text-[12px] ${n === sel ? "text-bg/60" : "text-faint"}`}>
+                        <span className="hidden max-w-[16rem] truncate sm:inline">{it.hint}</span>
+                        {n === sel && <CornerDownLeft size={13} />}
+                      </span>
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
 
-        <WebsitesSection onInquire={() => scrollToSection("contact")} />
-
-        <SattariSection onInquire={() => scrollToSection("contact")} />
-
-        <FeaturedAdSection onOpenProject={openProjectById} onInquire={() => scrollToSection("contact")} />
-
-        <AppsSection />
-
-        <AgentsSection onOpenProject={openProjectById} onInquire={() => scrollToSection("contact")} />
-
+function WorkPage({ setOpenProject }: { setOpenProject: (p: Project) => void }) {
+  const [indexFilter, setIndexFilter] = useState<string>("All");
+  const liveCount = radarDirectory.filter((d) => d.live).length;
+  const groups = ["App", "Brand", "Website", "Tool"] as const;
+  return (
+    <>
+      <section className="px-5 pb-6 pt-14 sm:px-8 md:pt-20">
+        <div className="mx-auto max-w-[1320px]">
+          <a href="/" className="inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.14em] text-muted hover:text-ink">← Home</a>
+          <h1 className="mt-6 max-w-[16ch] text-[clamp(2.8rem,7vw,6rem)] font-semibold leading-[0.92] tracking-[-0.05em] text-ink">
+            All the <span className="font-serif font-normal italic text-accent-ink">work.</span>
+          </h1>
+          <p className="mt-6 max-w-xl text-[17px] leading-relaxed text-muted">
+            {caseStudies.length} full walkthroughs recorded from the live products, then every other project, client site and build. Or browse <a href="/apps" className="text-ink underline decoration-accent decoration-2 underline-offset-4">all {appCatalogue.length} apps</a>.
+          </p>
+        </div>
+      </section>
+      {groups.map((g) => {
+        const items = caseStudies.filter((c) => c.group === g);
+        if (!items.length) return null;
+        return (
+          <section key={g} className="px-5 py-8 sm:px-8">
+            <div className="mx-auto max-w-[1320px]">
+              <div className="flex items-baseline justify-between border-b border-line pb-4">
+                <Kicker>{g === "Brand" ? "Client brands" : g === "Tool" ? "Free tools" : `${g}s`}</Kicker>
+                <Kicker>{items.length} walkthroughs</Kicker>
+              </div>
+              <div className="grid grid-cols-1 gap-4 pt-6 sm:grid-cols-2 lg:grid-cols-3">
+                {items.map((c) => (
+                  <CaseCard key={c.slug} c={c} />
+                ))}
+              </div>
+            </div>
+          </section>
+        );
+      })}
         {/* ── SELECTED WORK ────────────────────────────────── */}
         <section id="work" className="px-5 py-20 sm:px-8 md:py-28">
           <div className="mx-auto max-w-[1320px]">
             <SectionHead
-              n="08"
+              n="—"
               kicker="More work"
               title={<>Shipped, running, <span className="font-serif font-normal italic">not</span> concepts.</>}
               aside={<>{moreProjects.length} more projects across audio, apps, search and AI. Tap any card for the full breakdown.</>}
@@ -3485,7 +3721,7 @@ function App() {
             <div className="grid grid-cols-1 gap-12 px-6 pb-12 pt-12 sm:px-10 md:pt-16 lg:grid-cols-[0.9fr_1.2fr] lg:gap-14 lg:px-14 lg:pb-16">
               <div className="flex flex-col">
                 <Kicker className="text-band-muted">
-                  <span className="text-accent">09</span>
+                  <span className="text-accent">✳</span>
                   <span className="mx-2 opacity-40">/</span>
                   Founder · the studio
                 </Kicker>
@@ -3609,6 +3845,404 @@ function App() {
           </div>
         </section>
 
+        {/* ── FULL INDEX ───────────────────────────────────── */}
+        <section id="index" className="px-5 py-20 sm:px-8 md:py-28">
+          <div className="mx-auto max-w-[1320px]">
+            <SectionHead
+              n="—"
+              kicker="Full index"
+              title="Everything I've built."
+              aside={
+                <>
+                  {radarDirectory.length} entries, {liveCount} live. For roadmaps and test builds, see the{" "}
+                  <a href="#/product-radar" className="text-ink underline decoration-accent decoration-2 underline-offset-4">Product Radar</a>.
+                </>
+              }
+            />
+
+            <div className="flex flex-wrap gap-2 pb-6">
+              {["All", ...radarDirectoryGroups].map((group) => {
+                const active = indexFilter === group;
+                const count = group === "All" ? radarDirectory.length : radarDirectory.filter((d) => d.group === group).length;
+                return (
+                  <button
+                    key={group}
+                    onClick={() => setIndexFilter(group)}
+                    aria-pressed={active}
+                    className={`rounded-full border px-4 py-2 text-[14px] transition-colors ${active ? "border-ink bg-ink text-bg" : "border-line text-muted hover:border-ink/40 hover:text-ink"}`}
+                  >
+                    {group} <span className={`ml-1 font-mono text-[11px] ${active ? "opacity-60" : "text-faint"}`}>{count}</span>
+                  </button>
+                );
+              })}
+            </div>
+
+            <div className="overflow-x-auto">
+              <table className="w-full min-w-[46rem] border-collapse text-left">
+                <thead>
+                  <tr className="border-b border-ink/80 font-mono text-[10.5px] uppercase tracking-[0.16em] text-faint">
+                    <th className="w-12 py-3 font-normal">#</th>
+                    <th className="py-3 font-normal">Project</th>
+                    <th className="py-3 font-normal">Stack</th>
+                    <th className="py-3 font-normal">Type</th>
+                    <th className="py-3 text-right font-normal">Link</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {radarDirectory
+                    .filter((d) => indexFilter === "All" || d.group === indexFilter)
+                    .map((item, i) => (
+                      <tr key={item.name} className="group border-b border-line transition-colors hover:bg-ink/[0.03]">
+                        <td className="py-4 align-top font-mono text-[11px] leading-6 text-faint">{String(i + 1).padStart(2, "0")}</td>
+                        <td className="py-4 pr-6 align-top">
+                          <div className="flex items-center gap-2.5">
+                            <span className={`h-1.5 w-1.5 shrink-0 rounded-full ${item.live ? "bg-[#7fb800]" : "bg-faint/50"}`} title={item.live ? "Live" : "Not public"} />
+                            <span className="text-[16px] font-medium text-ink">{item.name}</span>
+                          </div>
+                          <p className="mt-1 max-w-[52ch] pl-4 text-[13.5px] leading-snug text-muted">{item.blurb}</p>
+                        </td>
+                        <td className="py-4 pr-6 align-top font-mono text-[11px] leading-6 text-muted">{item.stack}</td>
+                        <td className="py-4 pr-6 align-top font-mono text-[10.5px] uppercase leading-6 tracking-[0.1em] text-faint">{item.group}</td>
+                        <td className="py-4 text-right align-top">
+                          <div className="flex justify-end gap-2">
+                            {item.live && (
+                              <a href={item.live} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 rounded-full border border-line px-3 py-1 text-[12.5px] text-ink transition-colors hover:border-ink hover:bg-ink hover:text-bg">
+                                Visit <ArrowUpRight size={12} />
+                              </a>
+                            )}
+                            {item.repo && (
+                              <a href={item.repo} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 rounded-full border border-line px-3 py-1 text-[12.5px] text-muted transition-colors hover:border-ink hover:text-ink">
+                                Code
+                              </a>
+                            )}
+                            {!item.live && !item.repo && <span className="text-faint">—</span>}
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+    </>
+  );
+}
+
+function App() {
+  const [activeSection, setActiveSection] = useState("hero");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [route, setRoute] = useState(readRoute);
+  const [paletteOpen, setPaletteOpen] = useState(false);
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        setPaletteOpen((v) => !v);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+  const currentPage = route === "product-radar" ? "product-radar" : route === "/" ? "home" : "page";
+  const [openProject, setOpenProject] = useState<Project | null>(null);
+  const closeProject = useCallback(() => setOpenProject(null), []);
+  const openProjectById = useCallback((id: string) => {
+    const project = projects.find((p) => p.id === id);
+    if (project) setOpenProject(project);
+  }, []);
+  const { scrollYProgress } = useScroll();
+  const progressScaleX = useSpring(scrollYProgress, { stiffness: 120, damping: 30, restDelta: 0.001 });
+
+  useEffect(() => {
+    const sync = () => setRoute(readRoute());
+    window.addEventListener("hashchange", sync);
+    window.addEventListener("popstate", sync);
+    return () => {
+      window.removeEventListener("hashchange", sync);
+      window.removeEventListener("popstate", sync);
+    };
+  }, []);
+
+  const go = useCallback((to: string) => {
+    window.history.pushState(null, "", to);
+    setRoute(readRoute());
+    setMobileMenuOpen(false);
+    window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
+  }, []);
+
+  // Internal links (/, /work, /work/:slug, /apps) navigate without a reload
+  useEffect(() => {
+    const onClick = (e: MouseEvent) => {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      const a = (e.target as Element | null)?.closest?.("a");
+      if (!a || a.target === "_blank") return;
+      const href = a.getAttribute("href") || "";
+      if (href === "/" || /^\/(work|apps)(\/|$)/.test(href)) {
+        e.preventDefault();
+        go(href);
+      }
+    };
+    document.addEventListener("click", onClick);
+    return () => document.removeEventListener("click", onClick);
+  }, [go]);
+
+  // Page titles per route
+  useEffect(() => {
+    const base = "Armon Nasiri — Digital Designer & Developer";
+    const c = route.startsWith("/work/") ? caseBySlug(route.slice(6)) : undefined;
+    document.title = c ? `${c.title} — Armon Nasiri` : route === "/work" ? `Work — Armon Nasiri` : route === "/apps" ? `40 apps — Armon Nasiri` : base;
+  }, [route]);
+
+  // Highlight the nav item for whichever section is crossing the upper third of the viewport
+  useEffect(() => {
+    if (currentPage !== "home") return;
+    const observer = new IntersectionObserver(
+      (entries) => entries.forEach((e) => e.isIntersecting && setActiveSection(e.target.id)),
+      { rootMargin: "-30% 0px -60% 0px" }
+    );
+    ["hero", ...navItems.map((n) => n.id)].forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+    return () => observer.disconnect();
+  }, [currentPage]);
+
+  const scrollToSection = (id: string) => {
+    if (currentPage !== "home") {
+      go("/");
+      setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" }), 80);
+    } else {
+      document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    }
+    setActiveSection(id);
+    setMobileMenuOpen(false);
+  };
+
+  if (currentPage === "product-radar") {
+    return <ProductRadarPage onHome={() => scrollToSection("hero")} />;
+  }
+
+  return (
+    <div className="grain min-h-screen bg-bg text-ink antialiased">
+      <motion.div style={{ scaleX: progressScaleX }} className="fixed left-0 right-0 top-0 z-[60] h-[2px] origin-left bg-accent" />
+
+      {/* ── NAV ──────────────────────────────────────────── */}
+      <nav className="sticky top-0 z-50 px-3 pt-3 sm:px-6">
+        <div className="mx-auto flex h-14 max-w-[1320px] items-center justify-between rounded-full border border-line bg-bg/75 pl-5 pr-2 backdrop-blur-xl">
+          <button onClick={() => (currentPage === "home" ? scrollToSection("hero") : go("/"))} className="flex items-center gap-2.5 text-[15px] font-semibold tracking-[-0.01em] text-ink">
+            <span className="grid h-7 w-7 place-items-center rounded-full bg-ink font-serif text-[15px] italic text-bg">a</span>
+            Armon Nasiri
+          </button>
+
+          <div className="hidden items-center gap-1 md:flex">
+            {navItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => scrollToSection(item.id)}
+                className={`rounded-full px-3.5 py-1.5 text-[14px] transition-colors ${activeSection === item.id ? "bg-ink/[0.07] text-ink" : "text-muted hover:text-ink"}`}
+              >
+                {item.label}
+              </button>
+            ))}
+          </div>
+
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setPaletteOpen(true)}
+              aria-label="Search (Command K)"
+              className="hidden items-center gap-1.5 rounded-full border border-line px-3 py-2 text-[12.5px] text-muted transition-colors hover:border-ink hover:text-ink lg:inline-flex"
+            >
+              <Search size={13} />
+              <kbd className="font-mono text-[11px]">⌘K</kbd>
+            </button>
+            <button
+              onClick={() => setPaletteOpen(true)}
+              aria-label="Search"
+              className="grid h-10 w-10 place-items-center rounded-full text-ink lg:hidden"
+            >
+              <Search size={18} />
+            </button>
+            <button
+              onClick={() => scrollToSection("contact")}
+              className="hidden items-center gap-1.5 rounded-full bg-ink px-4 py-2 text-[13px] font-medium text-bg transition-opacity hover:opacity-85 sm:inline-flex"
+            >
+              <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+              Start a project
+              <ArrowUpRight size={14} />
+            </button>
+            <button
+              className="grid h-10 w-10 place-items-center rounded-full text-ink md:hidden"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={mobileMenuOpen}
+            >
+              {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+            </button>
+          </div>
+        </div>
+
+        <AnimatePresence>
+          {mobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              className="mx-auto mt-2 max-w-[1320px] rounded-3xl border border-line bg-surface p-3 md:hidden"
+            >
+              {navItems.map((item) => (
+                <button key={item.id} onClick={() => scrollToSection(item.id)} className="block w-full rounded-2xl px-4 py-3 text-left text-[17px] text-ink hover:bg-ink/5">
+                  {item.label}
+                </button>
+              ))}
+              <button onClick={() => scrollToSection("contact")} className="mt-1 flex w-full items-center justify-between rounded-2xl bg-ink px-4 py-3 text-[17px] text-bg">
+                Start a project <ArrowUpRight size={18} />
+              </button>
+              <a href={STUDIO_URL} target="_blank" rel="noreferrer" className="flex items-center justify-between rounded-2xl px-4 py-3 text-[15px] text-muted">
+                thecreateco <ArrowUpRight size={16} />
+              </a>
+              <a href="#/product-radar" className="flex items-center justify-between rounded-2xl px-4 py-3 text-[15px] text-muted">
+                Product Radar <ArrowUpRight size={16} />
+              </a>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </nav>
+
+      <main className="relative">
+        {route === "/work" && <WorkPage setOpenProject={setOpenProject} />}
+        {route === "/apps" && (
+          <div className="pt-6">
+            <AppsSection />
+          </div>
+        )}
+        {route.startsWith("/work/") && <ProjectPage slug={route.slice(6)} onInquire={() => scrollToSection("contact")} />}
+        {currentPage === "home" && (
+        <>
+        {/* ── HERO ─────────────────────────────────────────── */}
+        <section id="hero" className="relative isolate px-5 sm:px-8">
+          <HeroGlow />
+          <div className="relative mx-auto max-w-[1320px] pb-16 pt-16 md:pt-24 lg:pb-24">
+            <HeroCollage onOpen={openProjectById} />
+            <div className="relative lg:max-w-[52%]">
+              <motion.button
+                onClick={() => scrollToSection("contact")}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="group inline-flex items-center gap-2.5 rounded-full border border-line bg-surface py-1.5 pl-1.5 pr-4 text-[13px] text-muted transition-colors hover:border-ink/30"
+              >
+                <span className="relative flex h-2 w-2 shrink-0">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-80" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-[#7fb800]" />
+                </span>
+                <span className="whitespace-nowrap"><span className="font-medium text-ink">Taking new clients</span></span><span className="hidden sm:inline">— Los Angeles &amp; remote</span>
+                <ArrowUpRight size={14} className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+              </motion.button>
+
+              <motion.h1
+                initial={{ opacity: 0, y: 28 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.9, ease: EASE }}
+                className="mt-10 text-[clamp(3rem,7vw,7rem)] font-semibold leading-[0.92] tracking-[-0.05em] text-ink [perspective:600px]"
+              >
+                <RotatingWord words={heroWords} suffix="," />
+                <br />
+                you name it,
+                <br />
+                <span className="font-serif font-normal italic tracking-[-0.02em]">I create it.</span>
+              </motion.h1>
+
+              <motion.p
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.15, ease: EASE }}
+                className="mt-9 max-w-[38rem] text-[19px] leading-relaxed text-muted"
+              >
+                I&rsquo;m Armon, a digital designer and developer in Los Angeles. Apps, games, software, websites,
+                asset generation, image and video, autonomous agents: you name it, I create it. One person from
+                first sketch to launch, with {appCatalogue.length} apps and 40+ products already shipped under my own studio,{" "}
+                <a href={STUDIO_URL} target="_blank" rel="noreferrer" className="text-ink underline decoration-accent decoration-[3px] underline-offset-4">thecreateco</a>.
+              </motion.p>
+
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                className="mt-10 flex flex-wrap items-center gap-3"
+              >
+                <button
+                  onClick={() => scrollToSection("contact")}
+                  className="group inline-flex items-center gap-2 rounded-full bg-ink px-7 py-3.5 text-[15px] font-medium text-bg transition-opacity hover:opacity-85"
+                >
+                  Start a project
+                  <ArrowUpRight size={16} className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                </button>
+                <button
+                  onClick={() => scrollToSection("best")}
+                  className="group inline-flex items-center gap-2 rounded-full border border-line px-7 py-3.5 text-[15px] font-medium text-ink transition-colors hover:border-ink"
+                >
+                  See my best work
+                  <ArrowDown size={16} className="transition-transform group-hover:translate-y-0.5" />
+                </button>
+              </motion.div>
+            </div>
+
+          </div>
+
+          {/* stat strip */}
+          <motion.dl
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.45 }}
+            className="mx-auto grid max-w-[1320px] grid-cols-1 gap-px border-y border-line bg-line sm:grid-cols-3"
+          >
+            {[
+              { k: "Disciplines", v: "Design · Code · AI" },
+              { k: "Shipped", v: `${appCatalogue.length} apps · ${radarDirectory.length}+ builds` },
+              { k: "Platforms", v: "Web · Mac · iOS · Local" }
+            ].map((row) => (
+              <div key={row.k} className="bg-bg px-1 py-6 md:px-6 md:first:pl-0">
+                <dt className="font-mono text-[10.5px] uppercase tracking-[0.16em] text-faint">{row.k}</dt>
+                <dd className="mt-2 text-[clamp(1.4rem,2.6vw,2rem)] font-semibold tracking-[-0.03em] text-ink">{row.v}</dd>
+              </div>
+            ))}
+          </motion.dl>
+        </section>
+
+        {/* ── SKILLS MARQUEE ───────────────────────────────── */}
+        <section aria-label="Tools and languages" className="marquee-pause overflow-hidden py-7">
+          <div className="marquee-mask">
+            <div className="animate-marquee flex w-max items-center gap-8 whitespace-nowrap">
+              {[...skills, ...skills].map((skill, i) => (
+                <span key={i} className="flex items-center gap-8 font-serif text-[26px] italic text-faint">
+                  {skill}
+                  <span className="not-italic text-accent-ink">✳</span>
+                </span>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <ShowreelSection />
+
+        <FlagshipsSection onOpenProject={openProjectById} onAnchor={scrollToSection} />
+
+        <FullAppsSection />
+
+        <ToolboxSection />
+
+        <WebsitesSection onInquire={() => scrollToSection("contact")} />
+
+        <SattariSection onInquire={() => scrollToSection("contact")} />
+
+        <AllWorkBand />
+
+        <FeaturedAdSection onOpenProject={openProjectById} onInquire={() => scrollToSection("contact")} />
+
+        <AgentsSection onOpenProject={openProjectById} onInquire={() => scrollToSection("contact")} />
+
         <ServicesSection onOpenProject={openProjectById} onInquire={() => scrollToSection("contact")} />
 
         <ProcessSection />
@@ -3690,86 +4324,8 @@ function App() {
           </div>
         </section>
 
-        {/* ── FULL INDEX ───────────────────────────────────── */}
-        <section id="index" className="px-5 py-20 sm:px-8 md:py-28">
-          <div className="mx-auto max-w-[1320px]">
-            <SectionHead
-              n="13"
-              kicker="Full index"
-              title="Everything I've built."
-              aside={
-                <>
-                  {radarDirectory.length} entries, {liveCount} live. For roadmaps and test builds, see the{" "}
-                  <a href="#/product-radar" className="text-ink underline decoration-accent decoration-2 underline-offset-4">Product Radar</a>.
-                </>
-              }
-            />
-
-            <div className="flex flex-wrap gap-2 pb-6">
-              {["All", ...radarDirectoryGroups].map((group) => {
-                const active = indexFilter === group;
-                const count = group === "All" ? radarDirectory.length : radarDirectory.filter((d) => d.group === group).length;
-                return (
-                  <button
-                    key={group}
-                    onClick={() => setIndexFilter(group)}
-                    aria-pressed={active}
-                    className={`rounded-full border px-4 py-2 text-[14px] transition-colors ${active ? "border-ink bg-ink text-bg" : "border-line text-muted hover:border-ink/40 hover:text-ink"}`}
-                  >
-                    {group} <span className={`ml-1 font-mono text-[11px] ${active ? "opacity-60" : "text-faint"}`}>{count}</span>
-                  </button>
-                );
-              })}
-            </div>
-
-            <div className="overflow-x-auto">
-              <table className="w-full min-w-[46rem] border-collapse text-left">
-                <thead>
-                  <tr className="border-b border-ink/80 font-mono text-[10.5px] uppercase tracking-[0.16em] text-faint">
-                    <th className="w-12 py-3 font-normal">#</th>
-                    <th className="py-3 font-normal">Project</th>
-                    <th className="py-3 font-normal">Stack</th>
-                    <th className="py-3 font-normal">Type</th>
-                    <th className="py-3 text-right font-normal">Link</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {radarDirectory
-                    .filter((d) => indexFilter === "All" || d.group === indexFilter)
-                    .map((item, i) => (
-                      <tr key={item.name} className="group border-b border-line transition-colors hover:bg-ink/[0.03]">
-                        <td className="py-4 align-top font-mono text-[11px] leading-6 text-faint">{String(i + 1).padStart(2, "0")}</td>
-                        <td className="py-4 pr-6 align-top">
-                          <div className="flex items-center gap-2.5">
-                            <span className={`h-1.5 w-1.5 shrink-0 rounded-full ${item.live ? "bg-[#7fb800]" : "bg-faint/50"}`} title={item.live ? "Live" : "Not public"} />
-                            <span className="text-[16px] font-medium text-ink">{item.name}</span>
-                          </div>
-                          <p className="mt-1 max-w-[52ch] pl-4 text-[13.5px] leading-snug text-muted">{item.blurb}</p>
-                        </td>
-                        <td className="py-4 pr-6 align-top font-mono text-[11px] leading-6 text-muted">{item.stack}</td>
-                        <td className="py-4 pr-6 align-top font-mono text-[10.5px] uppercase leading-6 tracking-[0.1em] text-faint">{item.group}</td>
-                        <td className="py-4 text-right align-top">
-                          <div className="flex justify-end gap-2">
-                            {item.live && (
-                              <a href={item.live} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 rounded-full border border-line px-3 py-1 text-[12.5px] text-ink transition-colors hover:border-ink hover:bg-ink hover:text-bg">
-                                Visit <ArrowUpRight size={12} />
-                              </a>
-                            )}
-                            {item.repo && (
-                              <a href={item.repo} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 rounded-full border border-line px-3 py-1 text-[12.5px] text-muted transition-colors hover:border-ink hover:text-ink">
-                                Code
-                              </a>
-                            )}
-                            {!item.live && !item.repo && <span className="text-faint">—</span>}
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </section>
+        </>
+        )}
 
         {/* ── CONTACT ──────────────────────────────────────── */}
         <section id="contact" className="px-3 pb-6 sm:px-6">
@@ -3844,6 +4400,7 @@ function App() {
       </footer>
 
       <AnimatePresence>{openProject && <ProjectModal project={openProject} onClose={closeProject} />}</AnimatePresence>
+      <CommandPalette open={paletteOpen} onClose={() => setPaletteOpen(false)} go={go} scrollTo={scrollToSection} />
     </div>
   );
 }
