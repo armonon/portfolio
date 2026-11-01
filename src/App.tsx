@@ -1734,13 +1734,13 @@ const skills = [
 ];
 
 const navItems = [
-  { label: "Services", id: "services" },
   { label: "Best work", id: "best" },
   { label: "Full apps", id: "full-apps" },
   { label: "Free tools", id: "tools" },
   { label: "Websites", id: "websites" },
   { label: "Sattari", id: "sattari" },
   { label: "Agents", id: "agents" },
+  { label: "Services", id: "services" },
   { label: "Contact", id: "contact" }
 ];
 
@@ -2261,7 +2261,7 @@ function WebsitesSection({ onInquire }: { onInquire: () => void }) {
     <section id="websites" className="border-t border-line px-5 py-20 sm:px-8 md:py-28">
       <div className="mx-auto max-w-[1320px]">
         <SectionHead
-          n="05"
+          n="04"
           kicker="Website creation"
           title={<>Not pages. <span className="font-serif font-normal italic">Places</span> people explore.</>}
           aside={<>Sites built as worlds: walkable 3D showrooms, AI guides and stores woven into the experience. Here are two, room by room. Hover to pause, or tap any room.</>}
@@ -2330,7 +2330,7 @@ function AppsSection() {
     <section id="apps" className="px-5 py-20 sm:px-8 md:py-28">
       <div className="mx-auto max-w-[1320px]">
         <SectionHead
-          n="07"
+          n="06"
           kicker="Apps & software"
           title={<>{appCatalogue.length} apps and <span className="font-serif font-normal italic">counting.</span></>}
           aside={<>Every one designed and built by me: creative tools, audio, productivity, community and AI. Most run free in your browser right now. Try a few.</>}
@@ -2440,7 +2440,7 @@ function FlagshipsSection({ onOpenProject, onAnchor }: { onOpenProject: (id: str
     <section id="best" className="border-t border-line px-5 py-20 sm:px-8 md:py-28">
       <div className="mx-auto max-w-[1320px]">
         <SectionHead
-          n="02"
+          n="01"
           kicker="Best work"
           title={<>Six projects. <span className="font-serif font-normal italic">One</span> for every kind of job.</>}
           aside={<>If you only look at one thing, look here. Each one is live or recorded in action, and each one maps to a service you can hire me for.</>}
@@ -2546,7 +2546,7 @@ function ToolboxSection() {
         }}
       >
         <SectionHead
-          n="04"
+          n="03"
           kicker="Free tools"
           title={<>Useful every day. <span className="font-serif font-normal italic">Free</span> forever.</>}
           aside={
@@ -2705,7 +2705,7 @@ function FullAppsSection() {
         <div className="flex flex-col gap-6 pb-10 md:flex-row md:items-end md:justify-between">
           <div>
             <Kicker className="text-band-muted">
-              <span className="text-accent">03</span>
+              <span className="text-accent">02</span>
               <span className="mx-2 opacity-40">/</span>
               Full apps, built end to end
             </Kicker>
@@ -2840,7 +2840,7 @@ function SattariSection({ onInquire }: { onInquire: () => void }) {
     <section id="sattari" className="border-t border-line px-5 py-20 sm:px-8 md:py-28">
       <div className="mx-auto max-w-[1320px]">
         <SectionHead
-          n="06"
+          n="05"
           kicker="Case study · Sattari"
           title={<>One brand. <span className="font-serif font-normal italic">Everything</span> digital, built by me.</>}
           aside={<>For Sattari Music I built the store website, a free browser music lab, a native plugin suite and an AI video campaign. It shows what &ldquo;design, code and AI under one roof&rdquo; looks like in practice.</>}
@@ -2919,78 +2919,100 @@ function SattariSection({ onInquire }: { onInquire: () => void }) {
 }
 
 function ServicesSection({ onOpenProject, onInquire }: { onOpenProject: (id: string) => void; onInquire: () => void }) {
+  const [open, setOpen] = useState<string | null>(null);
   return (
-    <section id="services" className="px-5 py-20 sm:px-8 md:py-28">
-      <div className="mx-auto max-w-[1320px]">
-        <SectionHead
-          n="01"
-          kicker="Services"
-          title={<>Whatever you need built, <span className="font-serif font-normal italic">designed</span> or automated.</>}
-          aside={<>One point of contact for the whole job: design, development, media and AI. No hand-offs between agencies, and every service below links to work I&rsquo;ve actually shipped.</>}
-        />
-
-        <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
-          {services.map((service, i) => (
-            <motion.article
-              key={service.id}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-40px" }}
-              transition={{ duration: 0.6, delay: (i % 3) * 0.05, ease: EASE }}
-              className="flex flex-col rounded-[22px] border border-line bg-surface p-7"
-            >
-              <Kicker className="text-accent-ink">{String(i + 1).padStart(2, "0")} — {service.kicker}</Kicker>
-              <h3 className="mt-4 text-[1.6rem] font-semibold leading-tight tracking-[-0.025em] text-ink">{service.title}</h3>
-              <p className="mt-3 text-[15px] leading-relaxed text-muted">{service.line}</p>
-              <ul className="mt-5 space-y-2">
-                {service.deliverables.map((d) => (
-                  <li key={d} className="flex items-start gap-2.5 text-[14px] text-ink/85">
-                    <Check size={15} className="mt-0.5 shrink-0 text-accent-ink" />
-                    {d}
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-auto pt-6">
-                <div className="border-t border-line pt-4">
-                  <Kicker>See it in</Kicker>
-                  <div className="mt-2.5 flex flex-wrap gap-1.5">
-                    {service.proof.map((id) => {
-                      const project = projects.find((p) => p.id === id);
-                      if (!project) return null;
-                      return (
-                        <button
-                          key={id}
-                          onClick={() => onOpenProject(id)}
-                          className="rounded-full border border-line px-3 py-1 text-[12.5px] text-ink transition-colors hover:border-ink hover:bg-ink hover:text-bg"
-                        >
-                          {project.title}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              </div>
-            </motion.article>
-          ))}
-
-          {/* closing tile */}
-          <div className="flex flex-col justify-between rounded-[22px] bg-ink p-7 text-bg">
-            <div>
-              <Kicker className="text-accent">Not on the list?</Kicker>
-              <h3 className="mt-4 text-[1.6rem] font-semibold leading-tight tracking-[-0.025em]">If it&rsquo;s digital, ask.</h3>
-              <p className="mt-3 text-[15px] leading-relaxed opacity-70">
-                Audio plugins, CAD, data dashboards, odd one-off tools: I&rsquo;ve built most of it before. Tell me the
-                problem and I&rsquo;ll tell you honestly whether I&rsquo;m the right fit.
-              </p>
-            </div>
-            <button onClick={onInquire} className="mt-8 inline-flex w-fit items-center gap-2 rounded-full bg-accent px-6 py-3 text-[15px] font-medium text-[#111110] transition-transform hover:-translate-y-0.5">
-              Tell me what you need <ArrowUpRight size={16} />
-            </button>
-          </div>
+    <section id="services" className="border-t border-line px-5 py-16 sm:px-8 md:py-24">
+      <div className="mx-auto grid max-w-[1320px] grid-cols-1 gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+        <div className="lg:sticky lg:top-28 lg:self-start">
+          <Kicker>
+            <span className="text-accent-ink">10</span>
+            <span className="mx-2 text-line">/</span>
+            Services
+          </Kicker>
+          <h2 className="mt-5 max-w-[14ch] text-[clamp(2.1rem,4vw,3.3rem)] font-semibold leading-[0.98] tracking-[-0.035em] text-ink">
+            Everything you&rsquo;ve seen, <span className="font-serif font-normal italic">for hire.</span>
+          </h2>
+          <p className="mt-5 max-w-md text-[15.5px] leading-relaxed text-muted">
+            One point of contact for design, development, media and AI. No hand-offs between agencies. Not on the list? If it&rsquo;s digital, ask.
+          </p>
+          <button onClick={onInquire} className="mt-7 inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3 text-[14.5px] font-medium text-bg transition-opacity hover:opacity-85">
+            Tell me what you need <ArrowUpRight size={15} />
+          </button>
         </div>
 
-        {/* Featured generative piece */}
-        <div className="mt-16 grid grid-cols-1 gap-10 lg:grid-cols-[1.35fr_0.65fr] lg:items-center">
+        <ul className="border-t border-line">
+          {services.map((service, i) => {
+            const isOpen = open === service.id;
+            return (
+              <li key={service.id} className="border-b border-line">
+                <button
+                  onClick={() => setOpen(isOpen ? null : service.id)}
+                  aria-expanded={isOpen}
+                  className="group grid w-full grid-cols-[2.25rem_1fr_auto] items-center gap-3 py-5 text-left md:grid-cols-[2.5rem_minmax(0,0.9fr)_minmax(0,1.3fr)_auto] md:gap-6"
+                >
+                  <span className="font-mono text-[11px] text-accent-ink">{String(i + 1).padStart(2, "0")}</span>
+                  <span className="text-[17px] font-semibold tracking-[-0.015em] text-ink md:text-[19px]">{service.title}</span>
+                  <span className="hidden truncate text-[14px] text-muted md:block">{service.deliverables.join(" · ")}</span>
+                  <span className={`grid h-8 w-8 place-items-center rounded-full border transition-all duration-300 ${isOpen ? "rotate-45 border-ink bg-ink text-bg" : "border-line text-ink group-hover:border-ink"}`}>
+                    <span className="text-[18px] leading-none">+</span>
+                  </span>
+                </button>
+                <AnimatePresence initial={false}>
+                  {isOpen && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.35, ease: EASE }}
+                      className="overflow-hidden"
+                    >
+                      <div className="grid grid-cols-1 gap-5 pb-6 pl-[2.25rem] md:grid-cols-[1.2fr_1fr] md:pl-[3.1rem]">
+                        <div>
+                          <p className="text-[15px] leading-relaxed text-muted">{service.line}</p>
+                          <div className="mt-3 flex flex-wrap gap-1.5">
+                            {service.deliverables.map((d) => (
+                              <span key={d} className="rounded-full bg-ink/[0.05] px-3 py-1 text-[12.5px] text-ink/80">
+                                {d}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                        <div>
+                          <Kicker>See it in</Kicker>
+                          <div className="mt-2.5 flex flex-wrap gap-1.5">
+                            {service.proof.map((id) => {
+                              const project = projects.find((pr) => pr.id === id);
+                              if (!project) return null;
+                              return (
+                                <button
+                                  key={id}
+                                  onClick={() => onOpenProject(id)}
+                                  className="rounded-full border border-line px-3 py-1 text-[12.5px] text-ink transition-colors hover:border-ink hover:bg-ink hover:text-bg"
+                                >
+                                  {project.title}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    </section>
+  );
+}
+
+function FeaturedAdSection({ onOpenProject, onInquire }: { onOpenProject: (id: string) => void; onInquire: () => void }) {
+  return (
+    <section id="ai-video" className="px-5 pb-20 sm:px-8 md:pb-28">
+      <div className="mx-auto max-w-[1320px]">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1.35fr_0.65fr] lg:items-center">
           <ShowreelVideo src="/videos/sattari-ai-ad.mp4" poster="/photos/sattari-ai-ad-poster.jpg" label="Sattari Music AI-generated video ad" />
           <div>
             <Kicker className="text-accent-ink">Featured · AI video</Kicker>
@@ -3012,7 +3034,6 @@ function ServicesSection({ onOpenProject, onInquire }: { onOpenProject: (id: str
             </div>
           </div>
         </div>
-
         <ArtGallery />
       </div>
     </section>
@@ -3026,7 +3047,7 @@ function AgentsSection({ onOpenProject, onInquire }: { onOpenProject: (id: strin
         <div className="grid grid-cols-1 gap-12 px-6 py-12 sm:px-10 md:py-16 lg:grid-cols-[1fr_1fr] lg:gap-16 lg:px-14">
           <div>
             <Kicker className="text-band-muted">
-              <span className="text-accent">08</span>
+              <span className="text-accent">07</span>
               <span className="mx-2 opacity-40">/</span>
               Local AI agents
             </Kicker>
@@ -3344,10 +3365,10 @@ function App() {
                   <ArrowUpRight size={16} className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                 </button>
                 <button
-                  onClick={() => scrollToSection("services")}
+                  onClick={() => scrollToSection("best")}
                   className="group inline-flex items-center gap-2 rounded-full border border-line px-7 py-3.5 text-[15px] font-medium text-ink transition-colors hover:border-ink"
                 >
-                  What I can do for you
+                  See my best work
                   <ArrowDown size={16} className="transition-transform group-hover:translate-y-0.5" />
                 </button>
               </motion.div>
@@ -3389,8 +3410,6 @@ function App() {
           </div>
         </section>
 
-        <ServicesSection onOpenProject={openProjectById} onInquire={() => scrollToSection("contact")} />
-
         <FlagshipsSection onOpenProject={openProjectById} onAnchor={scrollToSection} />
 
         <FullAppsSection />
@@ -3401,6 +3420,8 @@ function App() {
 
         <SattariSection onInquire={() => scrollToSection("contact")} />
 
+        <FeaturedAdSection onOpenProject={openProjectById} onInquire={() => scrollToSection("contact")} />
+
         <AppsSection />
 
         <AgentsSection onOpenProject={openProjectById} onInquire={() => scrollToSection("contact")} />
@@ -3409,7 +3430,7 @@ function App() {
         <section id="work" className="px-5 py-20 sm:px-8 md:py-28">
           <div className="mx-auto max-w-[1320px]">
             <SectionHead
-              n="09"
+              n="08"
               kicker="More work"
               title={<>Shipped, running, <span className="font-serif font-normal italic">not</span> concepts.</>}
               aside={<>{moreProjects.length} more projects across audio, apps, search and AI. Tap any card for the full breakdown.</>}
@@ -3464,7 +3485,7 @@ function App() {
             <div className="grid grid-cols-1 gap-12 px-6 pb-12 pt-12 sm:px-10 md:pt-16 lg:grid-cols-[0.9fr_1.2fr] lg:gap-14 lg:px-14 lg:pb-16">
               <div className="flex flex-col">
                 <Kicker className="text-band-muted">
-                  <span className="text-accent">10</span>
+                  <span className="text-accent">09</span>
                   <span className="mx-2 opacity-40">/</span>
                   Founder · the studio
                 </Kicker>
@@ -3587,6 +3608,8 @@ function App() {
             </div>
           </div>
         </section>
+
+        <ServicesSection onOpenProject={openProjectById} onInquire={() => scrollToSection("contact")} />
 
         <ProcessSection />
 
