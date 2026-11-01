@@ -1,7 +1,7 @@
 import { AnimatePresence, motion, useInView, useMotionTemplate, useMotionValue, useScroll, useSpring, useTransform } from "framer-motion";
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { Menu, X, ExternalLink, Code2, Mail, Sparkles, Download, RefreshCw, ArrowUpRight, ArrowDown, Check, Bot, Search, Upload, ShieldCheck } from "lucide-react";
-import { appCatalogue, appCategories, flagships, heroWords, siteShowcases, toolbox, type Flagship, type SiteShowcase, type Tool } from "./showcase";
+import { appCatalogue, appCategories, flagships, fullApps, heroWords, sattariCase, siteShowcases, toolbox, type Flagship, type SiteShowcase, type Tool } from "./showcase";
 import { agentOffer, artPieces, engagementTypes, inquiryOptions, process, services } from "./services";
 import { radarDirectory, radarDirectoryGroups, radarEvidenceLedger, radarIdeaFeed, radarLanes, radarMetrics, radarNextBuildSteps, radarOpportunities, radarSoftwareProjects } from "./productRadarData";
 
@@ -1736,9 +1736,10 @@ const skills = [
 const navItems = [
   { label: "Services", id: "services" },
   { label: "Best work", id: "best" },
+  { label: "Full apps", id: "full-apps" },
   { label: "Free tools", id: "tools" },
   { label: "Websites", id: "websites" },
-  { label: "Apps", id: "apps" },
+  { label: "Sattari", id: "sattari" },
   { label: "Agents", id: "agents" },
   { label: "Contact", id: "contact" }
 ];
@@ -2105,9 +2106,11 @@ function HeroCollage({ onOpen }: { onOpen: (id: string) => void }) {
           <span className="absolute left-3 top-3 rounded-full bg-black/60 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.1em] text-white backdrop-blur">3D website</span>
         </motion.a>
       </motion.div>
-      <motion.div style={{ y: y3 }} className="absolute right-0 top-[58%] w-[44%]">
-        <motion.a {...float(9)} href="#websites" className="pointer-events-auto block rotate-[5deg] overflow-hidden rounded-[18px] border border-line bg-surface shadow-[0_30px_60px_-30px_rgba(0,0,0,0.5)] transition-transform hover:rotate-0">
-          <img src="/photos/walkthrough/synthesis-gallery.jpg" alt="Synthesis 3D showroom" className="block aspect-[16/10] w-full object-cover object-top" />
+      <motion.div style={{ y: y3 }} className="absolute right-[6%] top-[42%] w-[24%]">
+        <motion.a {...float(9)} href="#full-apps" aria-label="Librarian on iPhone" className="pointer-events-auto block rotate-[6deg] transition-transform hover:rotate-0">
+          <PhoneFrame url="librarian.thecreatingco.com">
+            <DeviceVideo src="/videos/librarian-iphone.mp4" poster="/photos/librarian-iphone-results.jpg" className="h-full w-full object-cover object-top" />
+          </PhoneFrame>
         </motion.a>
       </motion.div>
       <motion.a href="#apps" {...float(6)} className="pointer-events-auto absolute left-[12%] top-[6%] grid grid-cols-3 gap-2 rounded-[22px] border border-line bg-surface/90 p-3 shadow-[0_20px_50px_-25px_rgba(0,0,0,0.45)] backdrop-blur">
@@ -2258,7 +2261,7 @@ function WebsitesSection({ onInquire }: { onInquire: () => void }) {
     <section id="websites" className="border-t border-line px-5 py-20 sm:px-8 md:py-28">
       <div className="mx-auto max-w-[1320px]">
         <SectionHead
-          n="04"
+          n="05"
           kicker="Website creation"
           title={<>Not pages. <span className="font-serif font-normal italic">Places</span> people explore.</>}
           aside={<>Sites built as worlds: walkable 3D showrooms, AI guides and stores woven into the experience. Here are two, room by room. Hover to pause, or tap any room.</>}
@@ -2327,7 +2330,7 @@ function AppsSection() {
     <section id="apps" className="px-5 py-20 sm:px-8 md:py-28">
       <div className="mx-auto max-w-[1320px]">
         <SectionHead
-          n="05"
+          n="07"
           kicker="Apps & software"
           title={<>{appCatalogue.length} apps and <span className="font-serif font-normal italic">counting.</span></>}
           aside={<>Every one designed and built by me: creative tools, audio, productivity, community and AI. Most run free in your browser right now. Try a few.</>}
@@ -2543,7 +2546,7 @@ function ToolboxSection() {
         }}
       >
         <SectionHead
-          n="03"
+          n="04"
           kicker="Free tools"
           title={<>Useful every day. <span className="font-serif font-normal italic">Free</span> forever.</>}
           aside={
@@ -2618,6 +2621,298 @@ function ToolboxSection() {
         <p className="mt-10 text-center text-[13.5px] text-faint">
           Want a tool like these inside your own product or workflow? That&rsquo;s exactly the kind of thing I build.
         </p>
+      </div>
+    </section>
+  );
+}
+
+// Plays when on screen, pauses when off; muted loop, for device mockups.
+function DeviceVideo({ src, poster, className = "" }: { src: string; poster?: string; className?: string }) {
+  const ref = useRef<HTMLVideoElement>(null);
+  const inView = useInView(ref, { margin: "100px" });
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    el.muted = true;
+    el.playsInline = true;
+    if (inView) el.play().catch(() => {});
+    else el.pause();
+  }, [inView, src]);
+  return <video ref={ref} key={src} src={src} poster={poster} muted loop playsInline preload="metadata" className={className} />;
+}
+
+function LaptopFrame({ children, url }: { children: ReactNode; url?: string }) {
+  return (
+    <div className="relative">
+      <div className="rounded-[18px] border border-[#2a2826] bg-[#121110] p-2 shadow-[0_50px_100px_-40px_rgba(0,0,0,0.6)] sm:rounded-[22px] sm:p-2.5">
+        <div className="flex items-center gap-2 px-2 pb-2">
+          <span className="h-2 w-2 rounded-full bg-[#ff5f57]" />
+          <span className="h-2 w-2 rounded-full bg-[#febc2e]" />
+          <span className="h-2 w-2 rounded-full bg-[#28c840]" />
+          {url && <span className="ml-2 truncate rounded-full bg-white/[0.06] px-3 py-0.5 font-mono text-[10px] text-white/50">{url}</span>}
+        </div>
+        <div className="relative aspect-[16/10] overflow-hidden rounded-[10px] bg-black">{children}</div>
+      </div>
+      <div className="mx-auto h-3 w-[104%] -translate-x-[2%] rounded-b-[14px] bg-gradient-to-b from-[#2b2927] to-[#141312]" />
+    </div>
+  );
+}
+
+function PhoneFrame({ children, className = "", url }: { children: ReactNode; className?: string; url?: string }) {
+  return (
+    <div className={`relative rounded-[2.6rem] border border-[#2a2826] bg-[#0e0d0c] p-[9px] shadow-[0_40px_80px_-30px_rgba(0,0,0,0.65)] ${className}`}>
+      <div className="relative flex aspect-[390/844] flex-col overflow-hidden rounded-[2.1rem] bg-black">
+        {/* status bar */}
+        <div className="flex h-[5.6%] shrink-0 items-end justify-between bg-[#15110e] px-[9%] pb-[1%] text-[9px] font-semibold text-white">
+          <span>9:41</span>
+          <span className="flex items-center gap-1">
+            <span className="flex items-end gap-[1.5px]">
+              {[3, 5, 7, 9].map((h) => (
+                <span key={h} className="w-[2.5px] rounded-sm bg-white" style={{ height: h }} />
+              ))}
+            </span>
+            <span className="ml-1 h-[8px] w-[16px] rounded-[2.5px] border border-white/80 p-[1px]">
+              <span className="block h-full w-3/4 rounded-[1px] bg-white" />
+            </span>
+          </span>
+        </div>
+        <div className="relative min-h-0 flex-1 overflow-hidden">{children}</div>
+        {/* Safari-style bottom bar */}
+        {url && (
+          <div className="flex h-[15.8%] shrink-0 flex-col items-center justify-start gap-[10%] bg-[#1c1c1e] px-[6%] pt-[2.5%]">
+            <div className="flex w-full items-center justify-center gap-1.5 rounded-[10px] bg-[#2c2c2e] py-[3.5%] text-[9.5px] text-white/85">
+              <span className="text-[8px]">🔒</span>
+              {url}
+            </div>
+            <span className="mt-auto mb-[5%] h-[4px] w-[36%] rounded-full bg-white/80" />
+          </div>
+        )}
+        <span className="pointer-events-none absolute left-1/2 top-2 h-[22px] w-[34%] -translate-x-1/2 rounded-full bg-black" />
+      </div>
+      <span className="absolute -left-[3px] top-24 h-10 w-[3px] rounded-l bg-[#2a2826]" />
+      <span className="absolute -right-[3px] top-32 h-16 w-[3px] rounded-r bg-[#2a2826]" />
+    </div>
+  );
+}
+
+function FullAppsSection() {
+  const [active, setActive] = useState(0);
+  const [shot, setShot] = useState<number | null>(null);
+  const app = fullApps[active];
+  return (
+    <section id="full-apps" className="px-3 py-10 sm:px-6 md:py-16">
+      <div className="mx-auto max-w-[1360px] overflow-hidden rounded-[32px] bg-band px-5 py-12 text-band-fg sm:px-10 md:py-16 lg:px-14">
+        <div className="flex flex-col gap-6 pb-10 md:flex-row md:items-end md:justify-between">
+          <div>
+            <Kicker className="text-band-muted">
+              <span className="text-accent">03</span>
+              <span className="mx-2 opacity-40">/</span>
+              Full apps, built end to end
+            </Kicker>
+            <h2 className="mt-5 max-w-[16ch] text-[clamp(2.4rem,5vw,4.2rem)] font-semibold leading-[0.95] tracking-[-0.045em]">
+              Not mockups. <span className="font-serif font-normal italic text-accent">Real apps,</span> running right now.
+            </h2>
+          </div>
+          <p className="max-w-sm text-[15px] leading-relaxed text-band-muted">
+            Every clip below is a live recording of the shipped app: search, modelling, painting and performing. Design, engine, AI and deployment are all by me.
+          </p>
+        </div>
+
+        {/* app tabs */}
+        <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-2">
+          {fullApps.map((a, i) => (
+            <button
+              key={a.id}
+              onClick={() => {
+                setActive(i);
+                setShot(null);
+              }}
+              aria-pressed={i === active}
+              className={`shrink-0 rounded-full border px-5 py-2.5 text-[14px] transition-colors ${i === active ? "border-accent bg-accent text-[#111110]" : "border-band-line text-band-muted hover:border-band-fg/40 hover:text-band-fg"}`}
+            >
+              {a.name}
+            </button>
+          ))}
+        </div>
+
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={app.id}
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.45, ease: EASE }}
+            className="mt-8 grid grid-cols-1 gap-10 lg:grid-cols-[1.5fr_1fr] lg:gap-12"
+          >
+            {/* stage */}
+            <div className="relative">
+              <div className={app.phone ? "lg:pr-[18%]" : ""}>
+                <LaptopFrame url={app.live.replace("https://", "")}>
+                  {shot !== null ? (
+                    <img src={app.shots[shot].src} alt={app.shots[shot].label} className="h-full w-full object-cover object-top" />
+                  ) : app.phone ? (
+                    <img src={app.poster} alt={`${app.name} on desktop`} className="h-full w-full object-cover object-top" />
+                  ) : (
+                    <DeviceVideo src={app.video} poster={app.poster} className="h-full w-full object-cover object-top" />
+                  )}
+                </LaptopFrame>
+              </div>
+              {app.phone && (
+                <motion.div
+                  initial={{ opacity: 0, y: 40, rotate: 6 }}
+                  animate={{ opacity: 1, y: 0, rotate: 0 }}
+                  transition={{ duration: 0.7, ease: EASE, delay: 0.15 }}
+                  className="absolute -bottom-6 right-0 w-[34%] max-w-[230px] sm:w-[30%]"
+                >
+                  <PhoneFrame url={app.live.replace("https://", "").replace(/\/$/, "")}>
+                    <DeviceVideo src={app.phone.video} poster={app.phone.poster} className="h-full w-full object-cover object-top" />
+                  </PhoneFrame>
+                </motion.div>
+              )}
+              {/* screenshot strip */}
+              <div className={`mt-6 flex gap-2 overflow-x-auto pb-1 ${app.phone ? "pr-[36%] sm:pr-[32%]" : ""}`}>
+                <button
+                  onClick={() => setShot(null)}
+                  className={`shrink-0 rounded-xl border px-3 py-2 font-mono text-[10.5px] uppercase tracking-[0.1em] transition-colors ${shot === null ? "border-accent text-accent" : "border-band-line text-band-muted hover:text-band-fg"}`}
+                >
+                  ▶ {app.phone ? "Desktop" : "Live clip"}
+                </button>
+                {app.shots.map((sh, i) => (
+                  <button
+                    key={sh.src}
+                    onClick={() => setShot(i)}
+                    title={sh.label}
+                    className={`h-12 w-20 shrink-0 overflow-hidden rounded-lg border transition-colors ${shot === i ? "border-accent" : "border-band-line opacity-70 hover:opacity-100"}`}
+                  >
+                    <img src={sh.src} alt={sh.label} loading="lazy" className="h-full w-full object-cover object-top" />
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* details */}
+            <div className="self-center">
+              <Kicker className="text-accent">{app.kind}</Kicker>
+              <h3 className="mt-3 text-[clamp(2rem,3.4vw,2.9rem)] font-semibold leading-[1] tracking-[-0.04em]">{app.name}</h3>
+              <p className="mt-4 text-[15.5px] leading-relaxed text-band-muted">{app.pitch}</p>
+              <ul className="mt-6 space-y-2.5">
+                {app.features.map((f) => (
+                  <li key={f} className="flex items-start gap-2.5 text-[14.5px] text-band-fg/90">
+                    <Check size={15} className="mt-0.5 shrink-0 text-accent" />
+                    {f}
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-7">
+                <Kicker className="text-band-muted">What I built</Kicker>
+                <div className="mt-3 flex flex-wrap gap-1.5">
+                  {app.layers.map((l, i) => (
+                    <motion.span
+                      key={l}
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 0.1 + i * 0.06 }}
+                      className="rounded-full border border-band-line px-3 py-1 font-mono text-[11px] text-band-fg/80"
+                    >
+                      {l}
+                    </motion.span>
+                  ))}
+                </div>
+              </div>
+              <div className="mt-8 flex flex-wrap items-center gap-4">
+                <a href={app.live} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-[14.5px] font-medium text-[#111110] transition-transform hover:-translate-y-0.5">
+                  Open {app.name} <ArrowUpRight size={15} />
+                </a>
+                <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-band-muted">{app.platforms}</span>
+              </div>
+            </div>
+          </motion.div>
+        </AnimatePresence>
+      </div>
+    </section>
+  );
+}
+
+function SattariSection({ onInquire }: { onInquire: () => void }) {
+  const [tab, setTab] = useState(0);
+  const t = sattariCase.tabs[tab];
+  return (
+    <section id="sattari" className="border-t border-line px-5 py-20 sm:px-8 md:py-28">
+      <div className="mx-auto max-w-[1320px]">
+        <SectionHead
+          n="06"
+          kicker="Case study · Sattari"
+          title={<>One brand. <span className="font-serif font-normal italic">Everything</span> digital, built by me.</>}
+          aside={<>For Sattari Music I built the store website, a free browser music lab, a native plugin suite and an AI video campaign. It shows what &ldquo;design, code and AI under one roof&rdquo; looks like in practice.</>}
+        />
+
+        <div className="grid grid-cols-2 gap-px overflow-hidden rounded-[20px] border border-line bg-line md:grid-cols-4">
+          {sattariCase.stats.map((st) => (
+            <div key={st.k} className="bg-surface p-5 md:p-6">
+              <div className="text-[clamp(2rem,4vw,3rem)] font-semibold leading-none tracking-[-0.04em] text-ink">{st.v}</div>
+              <div className="mt-2 text-[13.5px] leading-snug text-muted">{st.k}</div>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-10 flex gap-2 overflow-x-auto pb-1">
+          {sattariCase.tabs.map((x, i) => (
+            <button
+              key={x.id}
+              onClick={() => setTab(i)}
+              aria-pressed={i === tab}
+              className={`shrink-0 rounded-full border px-5 py-2.5 text-[14px] transition-colors ${i === tab ? "border-ink bg-ink text-bg" : "border-line text-muted hover:border-ink/40 hover:text-ink"}`}
+            >
+              {x.label}
+            </button>
+          ))}
+        </div>
+
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={t.id}
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.4, ease: EASE }}
+            className="mt-8 grid grid-cols-1 gap-10 lg:grid-cols-[1.45fr_1fr] lg:gap-12"
+          >
+            <div className="relative">
+              <div className={t.phone ? "lg:pr-[16%]" : ""}>
+                <LaptopFrame url={t.link.href.replace("https://", "")}>
+                  <DeviceVideo src={t.video} poster={t.shots[0]} className="h-full w-full object-cover object-top" />
+                </LaptopFrame>
+              </div>
+              {t.phone && (
+                <div className="absolute -bottom-6 right-0 w-[30%] max-w-[210px]">
+                  <PhoneFrame url="sattarimusic.com">
+                    <img src={t.phone} alt="sattarimusic.com on a phone" className="h-full w-full object-cover object-top" />
+                  </PhoneFrame>
+                </div>
+              )}
+              <div className={`mt-8 grid grid-cols-4 gap-2 ${t.phone ? "pr-[34%]" : ""}`}>
+                {t.shots.map((src) => (
+                  <a key={src} href={src} target="_blank" rel="noreferrer" className="group block overflow-hidden rounded-xl border border-line">
+                    <img src={src} alt="" loading="lazy" className="aspect-[16/10] w-full object-cover object-top transition-transform duration-500 group-hover:scale-105" />
+                  </a>
+                ))}
+              </div>
+            </div>
+            <div className="self-center">
+              <Kicker className="text-accent-ink">{t.label}</Kicker>
+              <h3 className="mt-3 text-[clamp(1.9rem,3.2vw,2.7rem)] font-semibold leading-[1.02] tracking-[-0.035em] text-ink">{t.title}</h3>
+              <p className="mt-4 text-[15.5px] leading-relaxed text-muted">{t.body}</p>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <a href={t.link.href} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3 text-[14px] font-medium text-bg transition-opacity hover:opacity-85">
+                  {t.link.label} <ArrowUpRight size={15} />
+                </a>
+                <button onClick={onInquire} className="inline-flex items-center gap-2 rounded-full border border-line px-6 py-3 text-[14px] font-medium text-ink transition-colors hover:border-ink">
+                  Build this for my brand
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        </AnimatePresence>
       </div>
     </section>
   );
@@ -2731,7 +3026,7 @@ function AgentsSection({ onOpenProject, onInquire }: { onOpenProject: (id: strin
         <div className="grid grid-cols-1 gap-12 px-6 py-12 sm:px-10 md:py-16 lg:grid-cols-[1fr_1fr] lg:gap-16 lg:px-14">
           <div>
             <Kicker className="text-band-muted">
-              <span className="text-accent">06</span>
+              <span className="text-accent">08</span>
               <span className="mx-2 opacity-40">/</span>
               Local AI agents
             </Kicker>
@@ -2782,7 +3077,7 @@ function ProcessSection() {
     <section id="process" className="border-t border-line px-5 py-20 sm:px-8 md:py-28">
       <div className="mx-auto max-w-[1320px]">
         <SectionHead
-          n="09"
+          n="11"
           kicker="How we work"
           title={<>Clear steps, <span className="font-serif font-normal italic">visible</span> progress.</>}
           aside="You always know what's being built, what it costs and when it lands."
@@ -3098,9 +3393,13 @@ function App() {
 
         <FlagshipsSection onOpenProject={openProjectById} onAnchor={scrollToSection} />
 
+        <FullAppsSection />
+
         <ToolboxSection />
 
         <WebsitesSection onInquire={() => scrollToSection("contact")} />
+
+        <SattariSection onInquire={() => scrollToSection("contact")} />
 
         <AppsSection />
 
@@ -3110,7 +3409,7 @@ function App() {
         <section id="work" className="px-5 py-20 sm:px-8 md:py-28">
           <div className="mx-auto max-w-[1320px]">
             <SectionHead
-              n="07"
+              n="09"
               kicker="More work"
               title={<>Shipped, running, <span className="font-serif font-normal italic">not</span> concepts.</>}
               aside={<>{moreProjects.length} more projects across audio, apps, search and AI. Tap any card for the full breakdown.</>}
@@ -3165,7 +3464,7 @@ function App() {
             <div className="grid grid-cols-1 gap-12 px-6 pb-12 pt-12 sm:px-10 md:pt-16 lg:grid-cols-[0.9fr_1.2fr] lg:gap-14 lg:px-14 lg:pb-16">
               <div className="flex flex-col">
                 <Kicker className="text-band-muted">
-                  <span className="text-accent">08</span>
+                  <span className="text-accent">10</span>
                   <span className="mx-2 opacity-40">/</span>
                   Founder · the studio
                 </Kicker>
@@ -3297,7 +3596,7 @@ function App() {
             <div className="grid grid-cols-1 gap-14 lg:grid-cols-[1fr_1.15fr] lg:gap-20">
               <div>
                 <Kicker>
-                  <span className="text-accent-ink">10</span>
+                  <span className="text-accent-ink">12</span>
                   <span className="mx-2 text-line">/</span>
                   About
                 </Kicker>
@@ -3372,7 +3671,7 @@ function App() {
         <section id="index" className="px-5 py-20 sm:px-8 md:py-28">
           <div className="mx-auto max-w-[1320px]">
             <SectionHead
-              n="11"
+              n="13"
               kicker="Full index"
               title="Everything I've built."
               aside={
@@ -3453,7 +3752,7 @@ function App() {
         <section id="contact" className="px-3 pb-6 sm:px-6">
           <div className="mx-auto max-w-[1360px] rounded-[32px] border border-line bg-surface px-6 py-20 sm:px-10 md:py-28 lg:px-14">
             <Kicker>
-              <span className="text-accent-ink">12</span>
+              <span className="text-accent-ink">14</span>
               <span className="mx-2 text-line">/</span>
               Contact
             </Kicker>

@@ -280,3 +280,142 @@ export const toolbox: Tool[] = [
     pitch: "Found issues? I can fix them for you."
   }
 ];
+
+/** Full apps, built end to end: recorded live from the running apps. */
+export type FullApp = {
+  id: string;
+  name: string;
+  kind: string;
+  pitch: string;
+  video: string;
+  poster: string;
+  phone?: { video: string; poster: string };
+  shots: { src: string; label: string }[];
+  features: string[];
+  layers: string[];
+  platforms: string;
+  live: string;
+};
+
+export const fullApps: FullApp[] = [
+  {
+    id: "librarian",
+    name: "Librarian",
+    kind: "Reading & research · web + iPhone",
+    pitch: "A personal library that searches ten catalogs at once (Open Library, Internet Archive, the Library of Congress, Europeana and more), groups duplicate editions, scores metadata quality, and saves books for offline reading.",
+    video: "/videos/librarian-iphone.mp4",
+    poster: "/photos/librarian-desktop.jpg",
+    phone: { video: "/videos/librarian-iphone.mp4", poster: "/photos/librarian-iphone-results.jpg" },
+    shots: [
+      { src: "/photos/librarian-desktop.jpg", label: "Search across 10 catalogs" },
+      { src: "/photos/librarian-iphone-home.jpg", label: "Your reading room" },
+      { src: "/photos/librarian-iphone-results.jpg", label: "Live results on iPhone" },
+      { src: "/photos/librarian-iphone-detail.jpg", label: "Book detail & sources" }
+    ],
+    features: ["Federated search across 10 library catalogs", "Duplicate editions grouped, metadata scored", "Installs to the iPhone home screen and works offline", "Bring your own PDFs; everything stays on the device"],
+    layers: ["Product design", "Responsive UI", "Search aggregation", "Offline storage", "PWA install"],
+    platforms: "Web · iPhone · iPad · desktop",
+    live: "https://librarian.thecreatingco.com/"
+  },
+  {
+    id: "form",
+    name: "Form Studio",
+    kind: "3D & CAD · web",
+    pitch: "Precision CAD in the browser. Start from a recipe like a mounting bracket and you get exact B-Rep geometry with every dimension still editable, plus 3D sculpting and garment patterns in the same workspace.",
+    video: "/videos/form-live.mp4",
+    poster: "/photos/form-live.jpg",
+    shots: [{ src: "/photos/form-live.jpg", label: "Mounting bracket, exact geometry" }, { src: "/photos/form-studio-shot.png", label: "Start center & recipes" }],
+    features: ["Exact OpenCASCADE B-Rep modelling, not meshes", "Plain-language commands on a parametric feature tree", "Precision CAD, 3D studio and garment studio in one app", "Local-first with backups and recovery"],
+    layers: ["CAD kernel integration", "3D viewport", "Parametric engine", "AI commands", "200+ tests"],
+    platforms: "Web · native in development",
+    live: "https://form.thecreatingco.com/studio"
+  },
+  {
+    id: "luma",
+    name: "Luma Studio",
+    kind: "Image editing · web + Mac",
+    pitch: "A full image editor: layers, masks, brushes, warp, heal, smart select and editable AI, on a custom GPU renderer written in Rust. This is a real session, painting straight onto the canvas.",
+    video: "/videos/luma-live.mp4",
+    poster: "/photos/luma-live.jpg",
+    shots: [{ src: "/photos/luma-live.jpg", label: "Brush engine on a live canvas" }, { src: "/photos/luma-shot.png", label: "Workspace" }],
+    features: ["Custom wgpu renderer and document engine", "Offline AI subject select and background removal", "24-brush library, layers, blend passes, history", "Opens PSD, RAW and its own project format"],
+    layers: ["Rust engine", "GPU rendering", "On-device AI", "Pro UI", "108 tests"],
+    platforms: "Web · macOS",
+    live: "https://luma.thecreatingco.com/studio"
+  },
+  {
+    id: "hole",
+    name: "HOLE",
+    kind: "Search & discovery · web",
+    pitch: "A search engine for the rest of the internet: independent sites, archived pages, books and research, all in one feed. Then you go down the hole and keep the trail of what you found.",
+    video: "/videos/hole-live.mp4",
+    poster: "/photos/hole-live.jpg",
+    shots: [{ src: "/photos/hole-live.jpg", label: "Results from archives, books & research" }],
+    features: ["Six connected public indexes in one search", "Homepage previews for every result", "Trails to save and retrace discoveries", "No paid placement"],
+    layers: ["Search backend", "Index connectors", "Result ranking", "Visual UI"],
+    platforms: "Web",
+    live: "https://thecreatingco.com/community/hole"
+  },
+  {
+    id: "stemdeck",
+    name: "StemDeck",
+    kind: "Music performance · web + Mac",
+    pitch: "A performance instrument that records every move of a live set and turns it into an arrangement you can edit: four decks, stems, pads, FX and a mixer.",
+    video: "/videos/stemdeck-demo.mp4",
+    poster: "/photos/stemdeck-shot.png",
+    shots: [{ src: "/photos/stemdeck-shot.png", label: "Perform view" }],
+    features: ["Four decks with live stem separation", "Retrospective capture into an editable timeline", "Pads, global FX, key and tempo sync", "Browser edition plus a native C++/JUCE build"],
+    layers: ["Real-time audio", "C++ / JUCE", "Stem separation", "Performance UI"],
+    platforms: "Web · macOS",
+    live: "https://stemdeck.thecreatingco.com/studio"
+  }
+];
+
+/** Sattari: the client brand built end to end (store site, browser tools, plugin suite, AI ad). */
+export const sattariCase = {
+  stats: [
+    { v: "1", k: "full e-commerce site + local SEO pages" },
+    { v: "5+", k: "browser music tools in the Hub" },
+    { v: "4", k: "flagship plugins in development" },
+    { v: "1", k: "AI-generated video ad" }
+  ],
+  tabs: [
+    {
+      id: "site",
+      label: "The store website",
+      title: "sattarimusic.com",
+      body: "A music store in Woodland Hills with a real shop: cymbals, sticks, violins, guitars and essentials, plus checkout, service booking for repairs, rentals, lessons and rehearsal space, and local pages for Encino, Calabasas and Los Angeles.",
+      video: "/videos/sattari-site-scroll.mp4",
+      phone: "/photos/sattari/sat-mobile.jpg",
+      shots: ["/photos/sattari/sat-home.jpg", "/photos/sattari/sat-shop.jpg", "/photos/sattari/sat-cymbals.jpg", "/photos/sattari/sat-services.jpg"],
+      link: { href: "https://sattarimusic.com", label: "Visit sattarimusic.com" }
+    },
+    {
+      id: "hub",
+      label: "Sattari Hub tools",
+      title: "A free music lab, inside the store",
+      body: "The Hub turns the store into a destination: StemDeck for performing, Split for stems, Key & BPM, Vox for pitch correction and harmony, and Canvas for audio-reactive loops. All of them run in the browser, on the musician's own device.",
+      video: "/videos/stemdeck-demo.mp4",
+      shots: ["/photos/sattari/sat-hub.jpg", "/photos/sattari/sat-vox.jpg", "/photos/sattari/sat-canvas.jpg", "/photos/stemdeck-shot.png"],
+      link: { href: "https://sattarimusic.com/hub", label: "Open the Hub" }
+    },
+    {
+      id: "suite",
+      label: "Sattari Audio plugins",
+      title: "Sound without a ceiling",
+      body: "A native plugin suite in development. Modular is a chain platform with 22 native effects, layered instruments and VST3 hosting. Royal Chain is a vocal finishing chain, Auto Pitch handles tuning and harmony, and Mix proposes gain, EQ and dynamics moves. Tools and Compass round it out.",
+      video: "/videos/sattari-suite-scroll.mp4",
+      shots: ["/photos/sattari/suite-home.jpg", "/photos/sattari/suite-modular.jpg", "/photos/sattari/suite-autopitch.jpg", "/photos/sattari/suite-royal.jpg"],
+      link: { href: "https://sattari-audio-suite.netlify.app/", label: "See the suite" }
+    },
+    {
+      id: "ad",
+      label: "AI video ad",
+      title: "The campaign, generated",
+      body: "A 35-second generated spot: a cast of characters drumming through one theatrical hall, cut to the beat, with a voiceover and a scan-to-shop QR end card.",
+      video: "/videos/sattari-ai-ad.mp4",
+      shots: ["/photos/sattari-ai-ad-poster.jpg"],
+      link: { href: "https://sattarimusic.com", label: "Shop Sattari" }
+    }
+  ]
+};
