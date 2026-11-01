@@ -105,3 +105,178 @@ export const appCatalogue: AppEntry[] = [
 export const appCategories = ["All", "Creative", "Audio", "Productivity", "Community", "AI"] as const;
 
 export const heroWords = ["Apps", "Games", "Software", "Websites", "3D assets", "Images", "Video", "AI agents"];
+
+/** Best work: one flagship per service. `project` ids point at the projects list in App.tsx. */
+export type Flagship = {
+  project?: string;
+  title: string;
+  service: string;
+  hook: string;
+  forYou: string;
+  stat: string;
+  media: { video?: string; image: string };
+  live?: string;
+  liveLabel?: string;
+  anchor?: string;
+};
+
+export const flagships: Flagship[] = [
+  {
+    project: "luma-studio",
+    title: "Luma Studio",
+    service: "Apps & software",
+    hook: "A Photoshop-class image editor written in Rust on its own GPU renderer, with AI that runs fully offline.",
+    forYou: "If I can build a pro editor from the renderer up, your app is in safe hands.",
+    stat: "108 passing tests",
+    media: { video: "/videos/luma-demo.mp4", image: "/photos/luma-shot.png" },
+    live: "https://luma.thecreatingco.com",
+    liveLabel: "Try Luma"
+  },
+  {
+    project: "form-studio",
+    title: "Form Studio",
+    service: "3D & assets",
+    hook: "Describe a part in plain English (“an 80 × 50 mm bracket with 4 holes”) and get exact, editable CAD geometry.",
+    forYou: "Product models, jewelry, fixtures and garment forms, ready to render or manufacture.",
+    stat: "200+ tests",
+    media: { video: "/videos/form-studio-demo.mp4", image: "/photos/form-studio-shot.png" },
+    live: "https://form.thecreatingco.com",
+    liveLabel: "Try Form"
+  },
+  {
+    project: "sattari-ai-ad",
+    title: "ScenePilot × Sattari ad",
+    service: "AI video",
+    hook: "I built the editor and made the ad: a beat-synced video tool that renders in the browser, and a generated spot cut with it.",
+    forYou: "Campaign-grade video for your brand without a film crew's budget.",
+    stat: "Tool + finished ad",
+    media: { video: "/videos/sattari-ai-ad.mp4", image: "/photos/sattari-ai-ad-poster.jpg" },
+    live: "https://scenepilot.thecreatingco.com",
+    liveLabel: "Try ScenePilot"
+  },
+  {
+    title: "BREAKTHYRULE Eden",
+    service: "Websites",
+    hook: "A streetwear brand rebuilt as a walkable garden, with an AI librarian, an art gallery, a music amphitheater and a product vault.",
+    forYou: "A website people remember and share, with the store built into the experience.",
+    stat: "Explorable 3D world",
+    media: { image: "/photos/walkthrough/eden-eden.jpg" },
+    live: "https://breakthyrule-eden-showroom.netlify.app",
+    liveLabel: "Walk through it",
+    anchor: "websites"
+  },
+  {
+    project: "universal-computer-operator",
+    title: "Universal Computer Operator",
+    service: "AI agents",
+    hook: "A local AI agent that sees the screen, plans, asks for approval, then works inside real Mac apps.",
+    forYou: "The same approach, set up on your machine to take repetitive work off your plate.",
+    stat: "Runs 100% locally",
+    media: { video: "/videos/uco-demo.mp4", image: "/photos/uco-example.svg" },
+    anchor: "agents"
+  },
+  {
+    project: "model-studio",
+    title: "Photobooth Studio",
+    service: "Brands & e-commerce",
+    hook: "Drop in garment artwork and get polished product photos, with background removal done on-device.",
+    forYou: "Shop-ready product imagery for every drop, without a photoshoot.",
+    stat: "Free · offline",
+    media: { video: "/videos/model-studio-demo.mp4", image: "/photos/model-studio-clip.svg" },
+    live: "https://photoboothstudio-b6ac09.netlify.app",
+    liveLabel: "Try Photobooth"
+  }
+];
+
+/** Everyday free tools. Each was tested live with a real file before being featured. */
+export type Tool = {
+  name: string;
+  job: string;
+  line: string;
+  tested: string;
+  href: string;
+  accepts: ("image" | "video" | "audio" | "document" | "any" | "url")[];
+  tasks: string[];
+  logo?: string;
+  pitch?: string;
+};
+
+export const toolbox: Tool[] = [
+  {
+    name: "Converter",
+    job: "Files",
+    line: "Images, PDFs, spreadsheets, audio, video and archives, converted in your browser.",
+    tested: "PDF → Excel, JPG → PNG and WAV → MP3, all finished in seconds",
+    href: "https://thecreatingco.com/forma/",
+    accepts: ["any", "image", "video", "audio", "document"],
+    tasks: ["convert a file", "pdf to excel", "jpg to png", "wav to mp3", "change file format", "heic to jpg", "video to mp4"]
+  },
+  {
+    name: "Cutout",
+    job: "Images",
+    line: "Remove a background in one click, then refine the edge with a brush.",
+    tested: "Clean subject cut from a busy, low-light video frame",
+    href: "https://luma.thecreatingco.com/cutout",
+    accepts: ["image"],
+    tasks: ["remove background", "transparent png", "cut out a person", "product photo background"]
+  },
+  {
+    name: "Captions",
+    job: "Video",
+    line: "Auto-transcribe speech, style animated captions, export SRT or VTT.",
+    tested: "Transcribed 16 words from an ad in 16 seconds",
+    href: "https://scenepilot.thecreatingco.com/tools/captions/",
+    accepts: ["video", "audio"],
+    tasks: ["add subtitles", "transcribe video", "make captions", "srt file", "speech to text"],
+    logo: "captions"
+  },
+  {
+    name: "Reframe",
+    job: "Video",
+    line: "Turn horizontal video into 9:16, 4:5 or 1:1, and the crop follows faces.",
+    tested: "Found the subject and built a smooth 9:16 camera path",
+    href: "https://scenepilot.thecreatingco.com/tools/reframe/",
+    accepts: ["video"],
+    tasks: ["make vertical video", "crop for tiktok", "instagram reel size", "resize video for stories"]
+  },
+  {
+    name: "Split",
+    job: "Audio",
+    line: "Separate any song into vocals, drums, bass and instruments, then mix or export.",
+    tested: "Four clean stems from a 20-second track",
+    href: "https://sattarimusic.com/studio/split",
+    accepts: ["audio"],
+    tasks: ["separate vocals", "remove vocals", "karaoke track", "extract drums", "split stems", "acapella"],
+    logo: "split"
+  },
+  {
+    name: "Key & BPM",
+    job: "Audio",
+    line: "Batch-detect tempo, musical key and Camelot code for your tracks.",
+    tested: "Read tempo instantly and was honest when the key was unclear",
+    href: "https://sattarimusic.com/studio/keybpm",
+    accepts: ["audio"],
+    tasks: ["find bpm", "find song key", "camelot", "tempo of a song", "dj set prep"],
+    logo: "key-bpm"
+  },
+  {
+    name: "Reclaim",
+    job: "Mac",
+    line: "Review what's filling your Mac, quarantine it, and restore anything you change your mind about.",
+    tested: "Signed, notarized installer downloads cleanly (13.7 MB, macOS 13+)",
+    href: "https://thecreatingco.com/products/reclaim/",
+    accepts: [],
+    tasks: ["free up mac storage", "find duplicate files", "clean my mac", "disk space"],
+    logo: "reclaim"
+  },
+  {
+    name: "Website Checkup",
+    job: "Web",
+    line: "Scan any site for metadata, heading, link and form problems, with fixes listed by priority.",
+    tested: "Flagged 4 fixable issues on my own site; this redesign fixes all four",
+    href: "https://thecreatingco.com/checkup/",
+    accepts: ["url"],
+    tasks: ["check my website", "seo audit", "broken links", "meta description", "website problems"],
+    pitch: "Found issues? I can fix them for you."
+  }
+];

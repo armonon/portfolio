@@ -1,7 +1,7 @@
 import { AnimatePresence, motion, useInView, useMotionTemplate, useMotionValue, useScroll, useSpring, useTransform } from "framer-motion";
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
-import { Menu, X, ExternalLink, Code2, Mail, Sparkles, Download, RefreshCw, ArrowUpRight, ArrowDown, Check, Bot } from "lucide-react";
-import { appCatalogue, appCategories, heroWords, siteShowcases, type SiteShowcase } from "./showcase";
+import { Menu, X, ExternalLink, Code2, Mail, Sparkles, Download, RefreshCw, ArrowUpRight, ArrowDown, Check, Bot, Search, Upload, ShieldCheck } from "lucide-react";
+import { appCatalogue, appCategories, flagships, heroWords, siteShowcases, toolbox, type Flagship, type SiteShowcase, type Tool } from "./showcase";
 import { agentOffer, artPieces, engagementTypes, inquiryOptions, process, services } from "./services";
 import { radarDirectory, radarDirectoryGroups, radarEvidenceLedger, radarIdeaFeed, radarLanes, radarMetrics, radarNextBuildSteps, radarOpportunities, radarSoftwareProjects } from "./productRadarData";
 
@@ -1635,6 +1635,8 @@ const projects: Project[] = [
 ];
 
 const softwareProjects = projects.filter((p) => p.section === "software");
+const flagshipIds = new Set(flagships.map((f) => f.project).filter(Boolean));
+const moreProjects = softwareProjects.filter((p) => !flagshipIds.has(String(p.id)));
 const websiteProjects = projects.filter((p) => p.section === "website" && hasLink(p.live));
 
 const STUDIO_URL = "https://thecreatingco.com";
@@ -1733,11 +1735,11 @@ const skills = [
 
 const navItems = [
   { label: "Services", id: "services" },
+  { label: "Best work", id: "best" },
+  { label: "Free tools", id: "tools" },
   { label: "Websites", id: "websites" },
   { label: "Apps", id: "apps" },
   { label: "Agents", id: "agents" },
-  { label: "Work", id: "work" },
-  { label: "About", id: "about" },
   { label: "Contact", id: "contact" }
 ];
 
@@ -2256,7 +2258,7 @@ function WebsitesSection({ onInquire }: { onInquire: () => void }) {
     <section id="websites" className="border-t border-line px-5 py-20 sm:px-8 md:py-28">
       <div className="mx-auto max-w-[1320px]">
         <SectionHead
-          n="02"
+          n="04"
           kicker="Website creation"
           title={<>Not pages. <span className="font-serif font-normal italic">Places</span> people explore.</>}
           aside={<>Sites built as worlds: walkable 3D showrooms, AI guides and stores woven into the experience. Here are two, room by room. Hover to pause, or tap any room.</>}
@@ -2325,7 +2327,7 @@ function AppsSection() {
     <section id="apps" className="px-5 py-20 sm:px-8 md:py-28">
       <div className="mx-auto max-w-[1320px]">
         <SectionHead
-          n="03"
+          n="05"
           kicker="Apps & software"
           title={<>{appCatalogue.length} apps and <span className="font-serif font-normal italic">counting.</span></>}
           aside={<>Every one designed and built by me: creative tools, audio, productivity, community and AI. Most run free in your browser right now. Try a few.</>}
@@ -2373,6 +2375,248 @@ function AppsSection() {
         )}
         <p className="mt-8 text-center text-[13.5px] text-faint">
           Listed on <a href="https://momentous-store.netlify.app/apps" target="_blank" rel="noreferrer" className="text-ink underline decoration-accent decoration-2 underline-offset-4">Momentous</a>, the open app and shop directory I built.
+        </p>
+      </div>
+    </section>
+  );
+}
+
+function FlagshipCard({ item, index, span, onOpenProject, onAnchor }: { item: Flagship; index: number; span: string; onOpenProject: (id: string) => void; onAnchor: (id: string) => void }) {
+  const big = span.includes("col-span-4") || span.includes("col-span-6");
+  return (
+    <motion.article
+      initial={{ opacity: 0, y: 28 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.7, ease: EASE, delay: (index % 2) * 0.08 }}
+      className={`group relative flex flex-col overflow-hidden rounded-[24px] border border-line bg-surface transition-[transform,box-shadow] duration-500 hover:-translate-y-1 hover:shadow-[0_40px_80px_-40px_rgba(0,0,0,0.45)] ${span}`}
+    >
+      <div className={`relative overflow-hidden bg-[#0d0d0c] ${big ? "aspect-[16/9]" : "aspect-[16/10]"}`}>
+        {item.media.video ? (
+          <LazyVideo src={item.media.video} className="h-full w-full object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-[1.04]" />
+        ) : (
+          <img src={item.media.image} alt={item.title} loading="lazy" className="h-full w-full object-cover object-top transition-transform duration-[1.2s] ease-out group-hover:scale-[1.04]" />
+        )}
+        <div className="pointer-events-none absolute inset-x-0 top-0 flex items-start justify-between p-4">
+          <span className="rounded-full bg-black/60 px-3 py-1 font-mono text-[10.5px] uppercase tracking-[0.12em] text-white backdrop-blur-md">{item.service}</span>
+          <span className="rounded-full bg-accent px-3 py-1 font-mono text-[10.5px] font-medium uppercase tracking-[0.08em] text-[#111110]">{item.stat}</span>
+        </div>
+        <span className="pointer-events-none absolute bottom-3 right-4 font-serif text-[64px] italic leading-none text-white/25">{String(index + 1).padStart(2, "0")}</span>
+      </div>
+      <div className="flex flex-1 flex-col p-6 md:p-7">
+        <h3 className={`font-semibold leading-tight tracking-[-0.03em] text-ink ${big ? "text-[2rem]" : "text-[1.6rem]"}`}>{item.title}</h3>
+        <p className="mt-2 text-[15px] leading-relaxed text-muted">{item.hook}</p>
+        <p className="mt-4 border-l-2 border-accent pl-3 text-[14.5px] leading-snug text-ink">
+          <span className="font-mono text-[10.5px] uppercase tracking-[0.12em] text-accent-ink">For you · </span>
+          {item.forYou}
+        </p>
+        <div className="mt-auto flex flex-wrap gap-2 pt-6">
+          {item.live && (
+            <a href={item.live} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 rounded-full bg-ink px-5 py-2.5 text-[13.5px] font-medium text-bg transition-opacity hover:opacity-85">
+              {item.liveLabel ?? "Try it live"} <ArrowUpRight size={14} />
+            </a>
+          )}
+          {item.project && (
+            <button onClick={() => onOpenProject(item.project!)} className="inline-flex items-center gap-1.5 rounded-full border border-line px-5 py-2.5 text-[13.5px] font-medium text-ink transition-colors hover:border-ink">
+              Case study
+            </button>
+          )}
+          {item.anchor && (
+            <button onClick={() => onAnchor(item.anchor!)} className="inline-flex items-center gap-1.5 rounded-full border border-line px-5 py-2.5 text-[13.5px] font-medium text-ink transition-colors hover:border-ink">
+              {item.anchor === "agents" ? "Get one set up" : "See the walkthrough"} <ArrowDown size={14} />
+            </button>
+          )}
+        </div>
+      </div>
+    </motion.article>
+  );
+}
+
+function FlagshipsSection({ onOpenProject, onAnchor }: { onOpenProject: (id: string) => void; onAnchor: (id: string) => void }) {
+  return (
+    <section id="best" className="border-t border-line px-5 py-20 sm:px-8 md:py-28">
+      <div className="mx-auto max-w-[1320px]">
+        <SectionHead
+          n="02"
+          kicker="Best work"
+          title={<>Six projects. <span className="font-serif font-normal italic">One</span> for every kind of job.</>}
+          aside={<>If you only look at one thing, look here. Each one is live or recorded in action, and each one maps to a service you can hire me for.</>}
+        />
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-6 lg:gap-5">
+          {flagships.map((item, i) => (
+            <FlagshipCard key={item.title} item={item} index={i} span={spanFor(i, flagships.length)} onOpenProject={onOpenProject} onAnchor={onAnchor} />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+type FileKind = "image" | "video" | "audio" | "document";
+const kindOfFile = (f: File): FileKind => {
+  if (f.type.startsWith("image/")) return "image";
+  if (f.type.startsWith("video/")) return "video";
+  if (f.type.startsWith("audio/")) return "audio";
+  const ext = f.name.split(".").pop()?.toLowerCase() ?? "";
+  if (["heic", "psd", "webp", "tif", "tiff", "raw", "dng"].includes(ext)) return "image";
+  if (["mov", "mkv", "m4v", "webm"].includes(ext)) return "video";
+  if (["flac", "aif", "aiff", "m4a", "ogg", "opus"].includes(ext)) return "audio";
+  return "document";
+};
+
+function ToolCard({ tool, highlight }: { tool: Tool; highlight: boolean }) {
+  return (
+    <motion.a
+      layout
+      href={tool.href}
+      target="_blank"
+      rel="noreferrer"
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.95 }}
+      transition={{ duration: 0.35, ease: EASE }}
+      className={`group flex h-full flex-col rounded-[22px] border p-6 transition-[transform,box-shadow,border-color,background-color] duration-300 hover:-translate-y-1 hover:shadow-[0_24px_50px_-30px_rgba(0,0,0,0.4)] ${highlight ? "border-ink bg-accent/15" : "border-line bg-surface hover:border-ink/30"}`}
+    >
+      <div className="flex items-start justify-between gap-3">
+        {tool.logo ? (
+          <img src={`/app-logos/${tool.logo}.svg`} alt="" loading="lazy" className="h-12 w-12 rounded-[14px] transition-transform duration-500 group-hover:rotate-[-6deg] group-hover:scale-110" />
+        ) : (
+          <span
+            className="grid h-12 w-12 place-items-center rounded-[14px] text-[15px] font-semibold text-white transition-transform duration-500 group-hover:rotate-[-6deg] group-hover:scale-110"
+            style={{ background: `linear-gradient(135deg, hsl(${hueFor(tool.name)} 70% 52%), hsl(${(hueFor(tool.name) + 50) % 360} 75% 40%))` }}
+          >
+            {tool.name.split(/\s+/).map((w) => w[0]).join("").slice(0, 2)}
+          </span>
+        )}
+        <span className="rounded-full border border-line px-2.5 py-0.5 font-mono text-[10px] uppercase tracking-[0.12em] text-muted">{tool.job}</span>
+      </div>
+      <h4 className="mt-4 text-[19px] font-semibold tracking-[-0.02em] text-ink">{tool.name}</h4>
+      <p className="mt-1.5 text-[14px] leading-snug text-muted">{tool.line}</p>
+      <p className="mt-4 flex items-start gap-2 text-[12.5px] leading-snug text-ink/80">
+        <Check size={14} className="mt-0.5 shrink-0 text-accent-ink" />
+        <span><span className="font-mono text-[10px] uppercase tracking-[0.12em] text-accent-ink">Tested · </span>{tool.tested}</span>
+      </p>
+      <div className="mt-auto flex items-center justify-between pt-5">
+        <span className="text-[13.5px] font-medium text-ink">Open tool</span>
+        <span className="grid h-8 w-8 place-items-center rounded-full border border-line text-ink transition-colors group-hover:border-ink group-hover:bg-ink group-hover:text-bg">
+          <ArrowUpRight size={14} />
+        </span>
+      </div>
+      {tool.pitch && <p className="mt-3 border-t border-line pt-3 text-[12.5px] text-accent-ink">{tool.pitch}</p>}
+    </motion.a>
+  );
+}
+
+function ToolboxSection() {
+  const [query, setQuery] = useState("");
+  const [file, setFile] = useState<{ name: string; kind: FileKind } | null>(null);
+  const [dragging, setDragging] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const q = query.trim().toLowerCase();
+  const matches = (t: Tool) => {
+    if (file) return t.accepts.includes(file.kind) || (file.kind === "document" && t.accepts.includes("any"));
+    if (!q) return true;
+    return [t.name, t.line, t.job, ...t.tasks].join(" ").toLowerCase().includes(q) || t.tasks.some((task) => q.split(/\s+/).every((w) => task.includes(w)));
+  };
+  const shown = toolbox.filter(matches);
+  const pick = (f: File | undefined) => {
+    if (!f) return;
+    setQuery("");
+    setFile({ name: f.name, kind: kindOfFile(f) });
+  };
+  const suggestions = ["remove background", "add subtitles", "pdf to excel", "separate vocals", "make vertical video", "find bpm"];
+  return (
+    <section id="tools" className="px-3 py-10 sm:px-6 md:py-16">
+      <div
+        className={`relative mx-auto max-w-[1360px] overflow-hidden rounded-[32px] border-2 border-dashed px-6 py-14 transition-colors sm:px-10 md:py-20 lg:px-14 ${dragging ? "border-accent-ink bg-accent/10" : "border-transparent bg-surface"}`}
+        onDragOver={(e) => {
+          e.preventDefault();
+          setDragging(true);
+        }}
+        onDragLeave={(e) => {
+          if (e.currentTarget === e.target) setDragging(false);
+        }}
+        onDrop={(e) => {
+          e.preventDefault();
+          setDragging(false);
+          pick(e.dataTransfer.files?.[0]);
+        }}
+      >
+        <SectionHead
+          n="03"
+          kicker="Free tools"
+          title={<>Useful every day. <span className="font-serif font-normal italic">Free</span> forever.</>}
+          aside={
+            <span className="flex items-start gap-2.5">
+              <ShieldCheck size={20} className="mt-0.5 shrink-0 text-accent-ink" />
+              <span>No sign-up, no watermark, and your files never leave your device: they&rsquo;re processed right in your browser. I tested every one of these with real files.</span>
+            </span>
+          }
+        />
+
+        {/* finder */}
+        <div className="grid grid-cols-1 gap-3 lg:grid-cols-[1.4fr_1fr]">
+          <label className="flex items-center gap-3 rounded-full border border-line bg-bg px-5 py-3.5 focus-within:border-ink">
+            <Search size={18} className="shrink-0 text-faint" />
+            <input
+              type="search"
+              value={query}
+              onChange={(e) => {
+                setFile(null);
+                setQuery(e.target.value);
+              }}
+              placeholder="What do you need to do?"
+              aria-label="What do you need to do?"
+              className="w-full bg-transparent text-[16px] text-ink placeholder:text-faint focus:outline-none focus-visible:outline-none"
+            />
+          </label>
+          <button
+            onClick={() => inputRef.current?.click()}
+            className="flex items-center justify-center gap-2.5 rounded-full border border-dashed border-ink/30 px-5 py-3.5 text-[15px] text-muted transition-colors hover:border-ink hover:text-ink"
+          >
+            <Upload size={17} />
+            <span className="hidden sm:inline">Drop a file anywhere here, or</span> <span className="font-medium text-ink">choose one</span>
+          </button>
+          <input ref={inputRef} type="file" className="hidden" onChange={(e) => pick(e.target.files?.[0])} />
+        </div>
+
+        <div className="mt-4 flex min-h-[2.25rem] flex-wrap items-center gap-2">
+          {file ? (
+            <>
+              <span className="text-[14px] text-ink">
+                <span className="font-medium">{file.name}</span> looks like {file.kind === "image" ? "an image" : file.kind === "audio" ? "audio" : file.kind === "video" ? "a video" : "a document"}. These can handle it:
+              </span>
+              <button onClick={() => setFile(null)} className="rounded-full border border-line px-3 py-1 text-[12.5px] text-muted hover:border-ink hover:text-ink">
+                Clear
+              </button>
+              <span className="text-[12.5px] text-faint">(Nothing was uploaded. The page only read the file type.)</span>
+            </>
+          ) : (
+            <>
+              <span className="font-mono text-[10.5px] uppercase tracking-[0.14em] text-faint">Try</span>
+              {suggestions.map((sug) => (
+                <button key={sug} onClick={() => setQuery(sug)} className={`rounded-full border px-3 py-1 text-[13px] transition-colors ${q === sug ? "border-ink bg-ink text-bg" : "border-line text-muted hover:border-ink/40 hover:text-ink"}`}>
+                  {sug}
+                </button>
+              ))}
+            </>
+          )}
+        </div>
+
+        <motion.div layout className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <AnimatePresence mode="popLayout">
+            {shown.map((tool) => (
+              <ToolCard key={tool.name} tool={tool} highlight={Boolean(file || q)} />
+            ))}
+          </AnimatePresence>
+        </motion.div>
+        {shown.length === 0 && (
+          <p className="py-10 text-center text-[15px] text-muted">
+            No tool for that yet. <a href="#contact" className="text-ink underline decoration-accent decoration-2 underline-offset-4">Tell me what you need</a> and I might build it.
+          </p>
+        )}
+        <p className="mt-10 text-center text-[13.5px] text-faint">
+          Want a tool like these inside your own product or workflow? That&rsquo;s exactly the kind of thing I build.
         </p>
       </div>
     </section>
@@ -2487,7 +2731,7 @@ function AgentsSection({ onOpenProject, onInquire }: { onOpenProject: (id: strin
         <div className="grid grid-cols-1 gap-12 px-6 py-12 sm:px-10 md:py-16 lg:grid-cols-[1fr_1fr] lg:gap-16 lg:px-14">
           <div>
             <Kicker className="text-band-muted">
-              <span className="text-accent">04</span>
+              <span className="text-accent">06</span>
               <span className="mx-2 opacity-40">/</span>
               Local AI agents
             </Kicker>
@@ -2538,7 +2782,7 @@ function ProcessSection() {
     <section id="process" className="border-t border-line px-5 py-20 sm:px-8 md:py-28">
       <div className="mx-auto max-w-[1320px]">
         <SectionHead
-          n="07"
+          n="09"
           kicker="How we work"
           title={<>Clear steps, <span className="font-serif font-normal italic">visible</span> progress.</>}
           aside="You always know what's being built, what it costs and when it lands."
@@ -2852,6 +3096,10 @@ function App() {
 
         <ServicesSection onOpenProject={openProjectById} onInquire={() => scrollToSection("contact")} />
 
+        <FlagshipsSection onOpenProject={openProjectById} onAnchor={scrollToSection} />
+
+        <ToolboxSection />
+
         <WebsitesSection onInquire={() => scrollToSection("contact")} />
 
         <AppsSection />
@@ -2862,14 +3110,14 @@ function App() {
         <section id="work" className="px-5 py-20 sm:px-8 md:py-28">
           <div className="mx-auto max-w-[1320px]">
             <SectionHead
-              n="05"
-              kicker="Selected work"
+              n="07"
+              kicker="More work"
               title={<>Shipped, running, <span className="font-serif font-normal italic">not</span> concepts.</>}
-              aside={<>{softwareProjects.length} projects across design, video, 3D, audio, apps and AI. Tap any card for the full breakdown.</>}
+              aside={<>{moreProjects.length} more projects across audio, apps, search and AI. Tap any card for the full breakdown.</>}
             />
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-6 lg:gap-5">
-              {softwareProjects.map((project, i) => (
-                <ProjectCard key={project.id} project={project} index={i} span={spanFor(i, softwareProjects.length)} onOpen={() => setOpenProject(project)} />
+              {moreProjects.map((project, i) => (
+                <ProjectCard key={project.id} project={project} index={i} span={spanFor(i, moreProjects.length)} onOpen={() => setOpenProject(project)} />
               ))}
             </div>
           </div>
@@ -2917,7 +3165,7 @@ function App() {
             <div className="grid grid-cols-1 gap-12 px-6 pb-12 pt-12 sm:px-10 md:pt-16 lg:grid-cols-[0.9fr_1.2fr] lg:gap-14 lg:px-14 lg:pb-16">
               <div className="flex flex-col">
                 <Kicker className="text-band-muted">
-                  <span className="text-accent">06</span>
+                  <span className="text-accent">08</span>
                   <span className="mx-2 opacity-40">/</span>
                   Founder · the studio
                 </Kicker>
@@ -3049,7 +3297,7 @@ function App() {
             <div className="grid grid-cols-1 gap-14 lg:grid-cols-[1fr_1.15fr] lg:gap-20">
               <div>
                 <Kicker>
-                  <span className="text-accent-ink">08</span>
+                  <span className="text-accent-ink">10</span>
                   <span className="mx-2 text-line">/</span>
                   About
                 </Kicker>
@@ -3124,7 +3372,7 @@ function App() {
         <section id="index" className="px-5 py-20 sm:px-8 md:py-28">
           <div className="mx-auto max-w-[1320px]">
             <SectionHead
-              n="09"
+              n="11"
               kicker="Full index"
               title="Everything I've built."
               aside={
@@ -3205,7 +3453,7 @@ function App() {
         <section id="contact" className="px-3 pb-6 sm:px-6">
           <div className="mx-auto max-w-[1360px] rounded-[32px] border border-line bg-surface px-6 py-20 sm:px-10 md:py-28 lg:px-14">
             <Kicker>
-              <span className="text-accent-ink">10</span>
+              <span className="text-accent-ink">12</span>
               <span className="mx-2 text-line">/</span>
               Contact
             </Kicker>
