@@ -2127,26 +2127,29 @@ function HeroCollage({ onOpen }: { onOpen: (id: string) => void }) {
 function RotatingWord({ words, suffix = "" }: { words: string[]; suffix?: string }) {
   const [i, setI] = useState(0);
   useEffect(() => {
-    const id = window.setInterval(() => setI((n) => (n + 1) % words.length), 1700);
+    const id = window.setInterval(() => setI((n) => (n + 1) % words.length), 1800);
     return () => window.clearInterval(id);
   }, [words.length]);
+  // Every word is always mounted in the same grid cell; only the active one is shown.
   return (
-    <span className="relative inline-grid overflow-hidden align-bottom">
-      {/* invisible sizer keeps the line height stable */}
-      <span className="invisible col-start-1 row-start-1">{words.reduce((a, b) => (b.length > a.length ? b : a))}{suffix}</span>
-      <AnimatePresence mode="popLayout" initial={false}>
+    <span className="relative -mb-[0.12em] inline-grid overflow-hidden pb-[0.12em] align-bottom">
+      <span aria-hidden className="invisible col-start-1 row-start-1 whitespace-nowrap">
+        {words.reduce((a, b) => (b.length > a.length ? b : a))}
+        {suffix}
+      </span>
+      {words.map((w, k) => (
         <motion.span
-          key={words[i]}
-          initial={{ y: "100%", opacity: 0, rotateX: -60 }}
-          animate={{ y: "0%", opacity: 1, rotateX: 0 }}
-          exit={{ y: "-100%", opacity: 0, rotateX: 60 }}
+          key={w}
+          aria-hidden={k !== i}
+          initial={false}
+          animate={{ y: k === i ? "0%" : k === (i - 1 + words.length) % words.length ? "-110%" : "110%", opacity: k === i ? 1 : 0 }}
           transition={{ duration: 0.55, ease: EASE }}
           className="col-start-1 row-start-1 whitespace-nowrap text-accent-ink"
         >
-          {words[i]}
+          {w}
           <span className="text-ink">{suffix}</span>
         </motion.span>
-      </AnimatePresence>
+      ))}
     </span>
   );
 }
@@ -2457,7 +2460,7 @@ function FlagshipsSection({ onOpenProject, onAnchor }: { onOpenProject: (id: str
           title={<>Six projects. <span className="font-serif font-normal italic">One</span> for every kind of job.</>}
           aside={<>If you only look at one thing, look here. Each one is live or recorded in action, and each one maps to a service you can hire me for.</>}
         />
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-6 lg:gap-5">
+        <div className="rail grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-6 lg:gap-5">
           {flagships.map((item, i) => (
             <FlagshipCard key={item.title} item={item} index={i} span={spanFor(i, flagships.length)} onOpenProject={onOpenProject} onAnchor={onAnchor} />
           ))}
@@ -2591,7 +2594,8 @@ function ToolboxSection() {
             className="flex items-center justify-center gap-2.5 rounded-full border border-dashed border-ink/30 px-5 py-3.5 text-[15px] text-muted transition-colors hover:border-ink hover:text-ink"
           >
             <Upload size={17} />
-            <span className="hidden sm:inline">Drop a file anywhere here, or</span> <span className="font-medium text-ink">choose one</span>
+            <span className="font-medium text-ink sm:hidden">Choose a file</span>
+            <span className="hidden sm:inline">Drop a file anywhere here, or</span> <span className="hidden font-medium text-ink sm:inline">choose one</span>
           </button>
           <input ref={inputRef} type="file" className="hidden" onChange={(e) => pick(e.target.files?.[0])} />
         </div>
@@ -2611,7 +2615,7 @@ function ToolboxSection() {
             <>
               <span className="font-mono text-[10.5px] uppercase tracking-[0.14em] text-faint">Try</span>
               {suggestions.map((sug) => (
-                <button key={sug} onClick={() => setQuery(sug)} className={`rounded-full border px-3 py-1 text-[13px] transition-colors ${q === sug ? "border-ink bg-ink text-bg" : "border-line text-muted hover:border-ink/40 hover:text-ink"}`}>
+                <button key={sug} onClick={() => setQuery(sug)} className={`rounded-full border px-3.5 py-2 text-[13px] transition-colors sm:px-3 sm:py-1 ${q === sug ? "border-ink bg-ink text-bg" : "border-line text-muted hover:border-ink/40 hover:text-ink"}`}>
                   {sug}
                 </button>
               ))}
@@ -2619,7 +2623,7 @@ function ToolboxSection() {
           )}
         </div>
 
-        <motion.div layout className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <motion.div layout className="rail mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
           <AnimatePresence mode="popLayout">
             {shown.map((tool) => (
               <ToolCard key={tool.name} tool={tool} highlight={Boolean(file || q)} />
@@ -2675,7 +2679,7 @@ function LaptopFrame({ children, url }: { children: ReactNode; url?: string }) {
 
 function PhoneFrame({ children, className = "", url }: { children: ReactNode; className?: string; url?: string }) {
   return (
-    <div className={`relative rounded-[2.6rem] border border-[#2a2826] bg-[#0e0d0c] p-[9px] shadow-[0_40px_80px_-30px_rgba(0,0,0,0.65)] ${className}`}>
+    <div className={`phone-ui relative rounded-[2.6rem] border border-[#2a2826] bg-[#0e0d0c] p-[9px] shadow-[0_40px_80px_-30px_rgba(0,0,0,0.65)] ${className}`}>
       <div className="relative flex aspect-[390/844] flex-col overflow-hidden rounded-[2.1rem] bg-black">
         {/* status bar */}
         <div className="flex h-[5.6%] shrink-0 items-end justify-between bg-[#15110e] px-[9%] pb-[1%] text-[9px] font-semibold text-white">
@@ -2761,7 +2765,14 @@ function FullAppsSection() {
           >
             {/* stage */}
             <div className="relative">
-              <div className={app.phone ? "lg:pr-[18%]" : ""}>
+              {app.phone && shot === null && (
+                <div className="mx-auto w-[64%] max-w-[260px] sm:hidden">
+                  <PhoneFrame url={app.live.replace("https://", "").replace(/\/$/, "")}>
+                    <DeviceVideo src={app.phone.video} poster={app.phone.poster} className="h-full w-full object-cover object-top" />
+                  </PhoneFrame>
+                </div>
+              )}
+              <div className={app.phone ? `lg:pr-[18%] ${shot === null ? "hidden sm:block" : ""}` : ""}>
                 <LaptopFrame url={app.live.replace("https://", "")}>
                   {shot !== null ? (
                     <img src={app.shots[shot].src} alt={app.shots[shot].label} className="h-full w-full object-cover object-top" />
@@ -2777,7 +2788,7 @@ function FullAppsSection() {
                   initial={{ opacity: 0, y: 40, rotate: 6 }}
                   animate={{ opacity: 1, y: 0, rotate: 0 }}
                   transition={{ duration: 0.7, ease: EASE, delay: 0.15 }}
-                  className="absolute -bottom-6 right-0 w-[34%] max-w-[230px] sm:w-[30%]"
+                  className="absolute -bottom-6 right-0 hidden w-[30%] max-w-[230px] sm:block"
                 >
                   <PhoneFrame url={app.live.replace("https://", "").replace(/\/$/, "")}>
                     <DeviceVideo src={app.phone.video} poster={app.phone.poster} className="h-full w-full object-cover object-top" />
@@ -2785,12 +2796,12 @@ function FullAppsSection() {
                 </motion.div>
               )}
               {/* screenshot strip */}
-              <div className={`mt-6 flex gap-2 overflow-x-auto pb-1 ${app.phone ? "pr-[36%] sm:pr-[32%]" : ""}`}>
+              <div className={`mt-6 flex gap-2 overflow-x-auto pb-1 ${app.phone ? "sm:pr-[32%]" : ""}`}>
                 <button
                   onClick={() => setShot(null)}
                   className={`shrink-0 rounded-xl border px-3 py-2 font-mono text-[10.5px] uppercase tracking-[0.1em] transition-colors ${shot === null ? "border-accent text-accent" : "border-band-line text-band-muted hover:text-band-fg"}`}
                 >
-                  ▶ {app.phone ? "Desktop" : "Live clip"}
+                  ▶ {app.phone ? <><span className="sm:hidden">Phone</span><span className="hidden sm:inline">Desktop</span></> : "Live clip"}
                 </button>
                 {app.shots.map((sh, i) => (
                   <button
@@ -2904,13 +2915,13 @@ function SattariSection({ onInquire }: { onInquire: () => void }) {
                 </LaptopFrame>
               </div>
               {t.phone && (
-                <div className="absolute -bottom-6 right-0 w-[30%] max-w-[210px]">
+                <div className="absolute -bottom-6 right-0 hidden w-[30%] max-w-[210px] sm:block">
                   <PhoneFrame url="sattarimusic.com">
                     <img src={t.phone} alt="sattarimusic.com on a phone" className="h-full w-full object-cover object-top" />
                   </PhoneFrame>
                 </div>
               )}
-              <div className={`mt-8 grid grid-cols-4 gap-2 ${t.phone ? "pr-[34%]" : ""}`}>
+              <div className={`mt-6 grid grid-cols-2 gap-2 sm:mt-8 sm:grid-cols-4 ${t.phone ? "sm:pr-[34%]" : ""}`}>
                 {t.shots.map((src) => (
                   <a key={src} href={src} target="_blank" rel="noreferrer" className="group block overflow-hidden rounded-xl border border-line">
                     <img src={src} alt="" loading="lazy" className="aspect-[16/10] w-full object-cover object-top transition-transform duration-500 group-hover:scale-105" />
@@ -3126,7 +3137,7 @@ function ProcessSection() {
           title={<>Clear steps, <span className="font-serif font-normal italic">visible</span> progress.</>}
           aside="You always know what's being built, what it costs and when it lands."
         />
-        <div className="grid grid-cols-1 gap-px overflow-hidden rounded-[22px] border border-line bg-line md:grid-cols-4">
+        <div className="grid grid-cols-2 gap-px overflow-hidden rounded-[22px] border border-line bg-line md:grid-cols-4">
           {process.map((step) => (
             <div key={step.k} className="bg-surface p-7">
               <span className="font-mono text-[12px] text-accent-ink">{step.k}</span>
@@ -3135,7 +3146,7 @@ function ProcessSection() {
             </div>
           ))}
         </div>
-        <div className="mt-10 grid grid-cols-1 gap-3 md:grid-cols-3">
+        <div className="rail mt-10 grid grid-cols-1 gap-3 md:grid-cols-3">
           {engagementTypes.map((type) => (
             <div key={type.title} className="rounded-[20px] border border-line p-6">
               <Kicker className="text-accent-ink">Engagement</Kicker>
@@ -3307,7 +3318,7 @@ function ProjectPage({ slug, onInquire }: { slug: string; onInquire: () => void 
     <>
       <section className="px-5 pb-10 pt-12 sm:px-8 md:pt-16">
         <div className="mx-auto max-w-[1320px]">
-          <a href="/work" className="inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.14em] text-muted hover:text-ink">← All work</a>
+          <a href="/work" className="-my-2 inline-flex items-center gap-1.5 py-3 font-mono text-[11px] uppercase tracking-[0.14em] text-muted hover:text-ink">← All work</a>
           <div className="mt-6 grid grid-cols-1 gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-end">
             <div>
               <Kicker className="text-accent-ink">{c.kind}</Kicker>
@@ -3459,7 +3470,7 @@ function ShowreelSection() {
           preload="none"
           onTimeUpdate={(e) => setT(e.currentTarget.currentTime)}
           aria-label="Showreel of apps, websites and AI media"
-          className="block aspect-[16/9] w-full object-cover md:aspect-[21/9]"
+          className="block aspect-[4/3] w-full object-cover sm:aspect-[16/9] md:aspect-[21/9]"
         />
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/20" />
         <div className="absolute left-4 top-4 flex items-center gap-2 sm:left-6 sm:top-6">
@@ -3492,7 +3503,7 @@ function ShowreelSection() {
                   setT(c.t + 0.05);
                 }}
                 aria-label={c.label}
-                className="group h-5 flex-1"
+                className="group flex h-8 flex-1 items-center"
               >
                 <span className={`block h-[3px] w-full rounded-full transition-colors ${n < ci ? "bg-white/70" : n === ci ? "bg-accent" : "bg-white/25 group-hover:bg-white/50"}`} />
               </button>
@@ -3626,6 +3637,45 @@ function CommandPalette({ open, onClose, go, scrollTo }: { open: boolean; onClos
   );
 }
 
+// Floating "Start a project" pill for phones: appears after the hero, hides once Contact is on screen.
+function MobileCTA({ onClick }: { onClick: () => void }) {
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    const update = () => {
+      const contact = document.getElementById("contact");
+      const nearContact = contact ? contact.getBoundingClientRect().top < window.innerHeight * 0.9 : false;
+      setShow(window.scrollY > 640 && !nearContact);
+    };
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+  }, []);
+  return (
+    <AnimatePresence>
+      {show && (
+        <motion.div
+          initial={{ y: 80, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: 80, opacity: 0 }}
+          transition={{ duration: 0.35, ease: EASE }}
+          className="fixed inset-x-0 bottom-0 z-[55] flex justify-center px-4 md:hidden"
+          style={{ paddingBottom: "max(14px, env(safe-area-inset-bottom))" }}
+        >
+          <button onClick={onClick} className="inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3.5 text-[15px] font-medium text-bg shadow-[0_18px_40px_-12px_rgba(0,0,0,0.55)]">
+            <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+            Start a project
+            <ArrowUpRight size={16} />
+          </button>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+
 function WorkPage({ setOpenProject }: { setOpenProject: (p: Project) => void }) {
   const [indexFilter, setIndexFilter] = useState<string>("All");
   const liveCount = radarDirectory.filter((d) => d.live).length;
@@ -3634,7 +3684,7 @@ function WorkPage({ setOpenProject }: { setOpenProject: (p: Project) => void }) 
     <>
       <section className="px-5 pb-6 pt-14 sm:px-8 md:pt-20">
         <div className="mx-auto max-w-[1320px]">
-          <a href="/" className="inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.14em] text-muted hover:text-ink">← Home</a>
+          <a href="/" className="-my-2 inline-flex items-center gap-1.5 py-3 font-mono text-[11px] uppercase tracking-[0.14em] text-muted hover:text-ink">← Home</a>
           <h1 className="mt-6 max-w-[16ch] text-[clamp(2.8rem,7vw,6rem)] font-semibold leading-[0.92] tracking-[-0.05em] text-ink">
             All the <span className="font-serif font-normal italic text-accent-ink">work.</span>
           </h1>
@@ -3653,7 +3703,7 @@ function WorkPage({ setOpenProject }: { setOpenProject: (p: Project) => void }) 
                 <Kicker>{g === "Brand" ? "Client brands" : g === "Tool" ? "Free tools" : `${g}s`}</Kicker>
                 <Kicker>{items.length} walkthroughs</Kicker>
               </div>
-              <div className="grid grid-cols-1 gap-4 pt-6 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="rail grid grid-cols-1 gap-4 pt-6 sm:grid-cols-2 lg:grid-cols-3">
                 {items.map((c) => (
                   <CaseCard key={c.slug} c={c} />
                 ))}
@@ -4031,7 +4081,7 @@ function App() {
       {/* ── NAV ──────────────────────────────────────────── */}
       <nav className="sticky top-0 z-50 px-3 pt-3 sm:px-6">
         <div className="mx-auto flex h-14 max-w-[1320px] items-center justify-between rounded-full border border-line bg-bg/75 pl-5 pr-2 backdrop-blur-xl">
-          <button onClick={() => (currentPage === "home" ? scrollToSection("hero") : go("/"))} className="flex items-center gap-2.5 text-[15px] font-semibold tracking-[-0.01em] text-ink">
+          <button onClick={() => (currentPage === "home" ? scrollToSection("hero") : go("/"))} className="-my-2 flex items-center gap-2.5 py-2 text-[15px] font-semibold tracking-[-0.01em] text-ink">
             <span className="grid h-7 w-7 place-items-center rounded-full bg-ink font-serif text-[15px] italic text-bg">a</span>
             Armon Nasiri
           </button>
@@ -4123,7 +4173,7 @@ function App() {
         {/* ── HERO ─────────────────────────────────────────── */}
         <section id="hero" className="relative isolate px-5 sm:px-8">
           <HeroGlow />
-          <div className="relative mx-auto max-w-[1320px] pb-16 pt-16 md:pt-24 lg:pb-24">
+          <div className="relative mx-auto max-w-[1320px] pb-10 pt-8 sm:pb-16 sm:pt-16 md:pt-24 lg:pb-24">
             <HeroCollage onOpen={openProjectById} />
             <div className="relative lg:max-w-[52%]">
               <motion.button
@@ -4145,7 +4195,7 @@ function App() {
                 initial={{ opacity: 0, y: 28 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.9, ease: EASE }}
-                className="mt-10 text-[clamp(3rem,7vw,7rem)] font-semibold leading-[0.92] tracking-[-0.05em] text-ink [perspective:600px]"
+                className="mt-7 text-[clamp(3rem,7vw,7rem)] font-semibold leading-[0.92] tracking-[-0.05em] text-ink [perspective:600px] sm:mt-10"
               >
                 <RotatingWord words={heroWords} suffix="," />
                 <br />
@@ -4158,11 +4208,11 @@ function App() {
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.15, ease: EASE }}
-                className="mt-9 max-w-[38rem] text-[19px] leading-relaxed text-muted"
+                className="mt-6 max-w-[38rem] text-[17px] leading-relaxed text-muted sm:mt-9 sm:text-[19px]"
               >
-                I&rsquo;m Armon, a digital designer and developer in Los Angeles. Apps, games, software, websites,
-                asset generation, image and video, autonomous agents: you name it, I create it. One person from
-                first sketch to launch, with {appCatalogue.length} apps and 40+ products already shipped under my own studio,{" "}
+                I&rsquo;m Armon, a digital designer and developer in Los Angeles.{" "}
+                <span className="hidden sm:inline">Apps, games, software, websites, asset generation, image and video, autonomous agents: you name it, I create it. </span>
+                One person from first sketch to launch, with {appCatalogue.length} apps and 40+ products already shipped under my own studio,{" "}
                 <a href={STUDIO_URL} target="_blank" rel="noreferrer" className="text-ink underline decoration-accent decoration-[3px] underline-offset-4">thecreateco</a>.
               </motion.p>
 
@@ -4170,7 +4220,7 @@ function App() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.6, delay: 0.3 }}
-                className="mt-10 flex flex-wrap items-center gap-3"
+                className="mt-7 flex flex-wrap items-center gap-3 sm:mt-10"
               >
                 <button
                   onClick={() => scrollToSection("contact")}
@@ -4196,16 +4246,16 @@ function App() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.45 }}
-            className="mx-auto grid max-w-[1320px] grid-cols-1 gap-px border-y border-line bg-line sm:grid-cols-3"
+            className="mx-auto grid max-w-[1320px] grid-cols-3 gap-px border-y border-line bg-line"
           >
             {[
               { k: "Disciplines", v: "Design · Code · AI" },
               { k: "Shipped", v: `${appCatalogue.length} apps · ${radarDirectory.length}+ builds` },
               { k: "Platforms", v: "Web · Mac · iOS · Local" }
             ].map((row) => (
-              <div key={row.k} className="bg-bg px-1 py-6 md:px-6 md:first:pl-0">
+              <div key={row.k} className="bg-bg px-2 py-4 first:pl-0 sm:px-1 sm:py-6 md:px-6">
                 <dt className="font-mono text-[10.5px] uppercase tracking-[0.16em] text-faint">{row.k}</dt>
-                <dd className="mt-2 text-[clamp(1.4rem,2.6vw,2rem)] font-semibold tracking-[-0.03em] text-ink">{row.v}</dd>
+                <dd className="mt-1.5 text-[14px] font-semibold leading-tight tracking-[-0.02em] text-ink sm:mt-2 sm:text-[clamp(1.4rem,2.6vw,2rem)] sm:tracking-[-0.03em]">{row.v}</dd>
               </div>
             ))}
           </motion.dl>
@@ -4278,7 +4328,7 @@ function App() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 gap-3 self-start sm:grid-cols-2">
+              <div className="rail grid grid-cols-1 gap-3 self-start sm:grid-cols-2">
                 {capabilities.map((cap, i) => (
                   <motion.div
                     key={cap.title}
@@ -4367,12 +4417,12 @@ function App() {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.8, ease: EASE }}
-            className="mx-auto mb-10 w-full max-w-[18rem]"
+            className="mx-auto mb-10 w-full max-w-[11rem] sm:max-w-[18rem]"
           >
             <div className="overflow-hidden rounded-[28px] border border-line bg-surface p-2.5 shadow-[0_40px_80px_-40px_rgba(0,0,0,0.45)]">
               <img src="/photos/armon-portrait.jpg" alt="Armon Nasiri" width={1000} height={1333} className="aspect-[4/5] w-full rounded-[20px] object-cover object-[50%_35%]" />
               <figcaption className="flex items-center justify-between px-2 pb-1 pt-3">
-                <span className="text-[14px] font-medium text-ink">Armon Nasiri</span>
+                <span className="whitespace-nowrap text-[13px] font-medium text-ink sm:text-[14px]">Armon Nasiri</span>
                 <span className="flex items-center gap-2 font-mono text-[10.5px] uppercase tracking-[0.12em] text-faint">
                   <span className="relative flex h-1.5 w-1.5">
                     <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-80" />
@@ -4389,10 +4439,10 @@ function App() {
               <span className="text-ink">Armon Nasiri</span> — Digital designer &amp; developer · founder of{" "}
               <a href={STUDIO_URL} target="_blank" rel="noreferrer" className="text-ink hover:underline">thecreateco</a>
             </span>
-            <div className="flex flex-wrap gap-5">
-              <a href={STUDIO_URL} target="_blank" rel="noreferrer" className="hover:text-ink">thecreatingco.com</a>
-              <a href="#/product-radar" className="hover:text-ink">Product Radar</a>
-              <a href="https://github.com/armonon" target="_blank" rel="noreferrer" className="hover:text-ink">GitHub</a>
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-1">
+              <a href={STUDIO_URL} target="_blank" rel="noreferrer" className="inline-block py-2 hover:text-ink">thecreatingco.com</a>
+              <a href="#/product-radar" className="inline-block py-2 hover:text-ink">Product Radar</a>
+              <a href="https://github.com/armonon" target="_blank" rel="noreferrer" className="inline-block py-2 hover:text-ink">GitHub</a>
               <span>© 2026</span>
             </div>
           </div>
@@ -4400,6 +4450,7 @@ function App() {
       </footer>
 
       <AnimatePresence>{openProject && <ProjectModal project={openProject} onClose={closeProject} />}</AnimatePresence>
+      <MobileCTA onClick={() => scrollToSection("contact")} />
       <CommandPalette open={paletteOpen} onClose={() => setPaletteOpen(false)} go={go} scrollTo={scrollToSection} />
     </div>
   );
