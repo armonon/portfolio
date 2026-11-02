@@ -1,7 +1,7 @@
 import { defineConfig, type Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
-import { join } from 'node:path'
+import { dirname, join } from 'node:path'
 import { caseStudies } from './src/cases'
 import { appCatalogue } from './src/showcase'
 
@@ -74,9 +74,11 @@ function seoPages(): Plugin {
           /<div id="root">[\s\S]*?<\/div>\s*(?=<\/body>|<script)/,
           `<div id="root"><main style="font-family:system-ui,sans-serif;max-width:40rem;margin:4rem auto;padding:0 1.25rem"><p><a href="/">Armon Nasiri</a></p><h1>${esc(r.heading)}</h1>${r.body.startsWith('<li>') ? `<ul>${r.body}</ul>` : r.body}</main></div>\n    `
         )
-        const dir = join(outDir, r.path)
-        mkdirSync(dir, { recursive: true })
-        writeFileSync(join(dir, 'index.html'), html)
+        // Flat files (work/sattari.html, not work/sattari/index.html): Netlify serves them at
+        // the clean URL with no trailing-slash redirect, matching the canonical address.
+        const file = join(outDir, `${r.path.slice(1)}.html`)
+        mkdirSync(dirname(file), { recursive: true })
+        writeFileSync(file, html)
       }
       const today = new Date().toISOString().slice(0, 10)
       const urls = ['/', ...routes.map((r) => r.path)]
