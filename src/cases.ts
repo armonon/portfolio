@@ -64,8 +64,12 @@ export const caseStudies: CaseStudy[] = [
       "A creative community with a messenger built in. The Circle is the shared space: profiles, posts, music and a feed that pulls in Instagram, X and YouTube. NOW is the conversation: chatrooms, direct messages, group video and PictoChat drawing, with messages that disappear when you choose. Guests can join with just a name.",
     url: "https://thecreatingco.com/community/network",
     urlLabel: "Enter The Circle",
-    hero: { video: "/videos/walk/circle.mp4", image: "/photos/walk/circle-1.jpg", phoneVideo: "/videos/walk/now-m.mp4", phoneImage: "/photos/walk/now-m-0.jpg" },
+    hero: { video: "/videos/walk/now-chat.mp4", image: "/photos/walk/now-chat-1.jpg", phoneVideo: "/videos/walk/now-chat-m.mp4", phoneImage: "/photos/walk/now-chat-m-1.jpg" },
     steps: [
+      { image: "/photos/walk/now-chat-0.jpg", label: "A private DM", caption: "Two guests connect with a private contact code, with no email and no public profile. The timer is set to 1 hour, so every message here deletes itself." },
+      { image: "/photos/walk/now-chat-m-0.jpg", label: "On the other phone", caption: "Messages arrive on the phone a few seconds later, each one showing how long it has left." },
+      { image: "/photos/walk/now-chat-1.jpg", label: "PictoChat", caption: "Some things are better drawn: a doodle sketched on the pad and sent straight into the conversation." },
+      { image: "/photos/walk/now-chat-m-1.jpg", label: "The doodle arrives", caption: "The drawing lands as a card the other person can copy or add to." },
       { image: "/photos/walk/circle-0.jpg", label: "The Circle", caption: "A home for what you make and a room for the people you make it with: chatrooms, video chat, direct messages, music and posts." },
       { image: "/photos/walk/circle-1.jpg", label: "Discover", caption: "Posts, people, music, videos and gigs, including Instagram, X and YouTube posts brought into one feed." },
       { image: "/photos/walk/circle-2.jpg", label: "Join with just a name", caption: "No email needed to join in. Guests pick a name; sign in only to upload media." },
@@ -76,6 +80,7 @@ export const caseStudies: CaseStudy[] = [
       { image: "/photos/walk/circle-m-0.jpg", label: "On your phone", caption: "The whole community works on a phone browser." }
     ],
     footage: [
+      { video: "/videos/walk/now-chat-duo.mp4", poster: "/photos/walk/now-chat-1.jpg", label: "A real private conversation: laptop and phone, recorded live" },
       { video: "/videos/walk/circle.mp4", poster: "/photos/walk/circle-1.jpg", label: "The Circle, desktop" },
       { video: "/videos/walk/now.mp4", poster: "/photos/walk/now-0.jpg", label: "NOW, desktop" },
       { video: "/videos/walk/circle-m.mp4", poster: "/photos/walk/circle-m-0.jpg", label: "The Circle on a phone", phone: true },

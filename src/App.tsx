@@ -3735,15 +3735,18 @@ function SocialSection() {
 
           <div className="relative">
             <div className="hidden sm:block sm:pr-[20%]">
-              <LaptopFrame url="thecreatingco.com/community/network">
-                <DeviceVideo src="/videos/walk/circle.mp4" poster="/photos/walk/circle-1.jpg" className="h-full w-full object-cover object-top" />
+              <LaptopFrame url="thecreatingco.com/community/network?view=Messages">
+                <DeviceVideo src="/videos/walk/now-chat.mp4" poster="/photos/walk/now-chat-1.jpg" className="h-full w-full object-cover object-top" />
               </LaptopFrame>
             </div>
             <div className="mx-auto w-[64%] max-w-[250px] sm:absolute sm:-bottom-6 sm:right-0 sm:mx-0 sm:w-[32%]">
-              <PhoneFrame url="thecreatingco.com/products/now">
-                <DeviceVideo src="/videos/walk/now-m.mp4" poster="/photos/walk/now-m-0.jpg" className="h-full w-full object-cover object-top" />
+              <PhoneFrame url="thecreatingco.com/community/network">
+                <DeviceVideo src="/videos/walk/now-chat-m.mp4" poster="/photos/walk/now-chat-m-1.jpg" className="h-full w-full object-cover object-top" />
               </PhoneFrame>
             </div>
+            <p className="mt-10 text-center font-mono text-[11px] uppercase leading-relaxed tracking-[0.12em] text-[#5b4fa8] sm:mt-12 sm:pr-[36%] sm:text-left">
+              Recorded live · two guests, one private DM · a 1-hour message timer · a PictoChat doodle
+            </p>
           </div>
         </div>
       </div>
