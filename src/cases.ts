@@ -43,14 +43,22 @@ export const caseStudies: CaseStudy[] = [
     summary: lib.pitch,
     url: lib.live,
     urlLabel: "Open Librarian",
-    hero: { image: "/photos/librarian-desktop.jpg", phoneVideo: "/videos/librarian-iphone.mp4", phoneImage: "/photos/librarian-iphone-results.jpg" },
+    hero: { video: "/videos/walk/librarian.mp4", image: "/photos/walk/librarian-2.jpg", phoneVideo: "/videos/librarian-iphone.mp4", phoneImage: "/photos/librarian-iphone-results.jpg" },
     steps: [
+      { image: "/photos/walk/librarian-1.jpg", label: "Search ten catalogs", caption: "Type once: Open Library, Internet Archive, the Library of Congress, Europeana and more are searched together." },
+      { image: "/photos/walk/librarian-2.jpg", label: "573 results, grouped", caption: "Duplicate editions are merged, and every result shows its sources and a metadata quality score." },
+      { image: "/photos/walk/librarian-4.jpg", label: "Readable, in 10 catalogs", caption: "Frankenstein (1818): readable and borrowable, with subjects, identifiers and every source a click away." },
+      { image: "/photos/walk/librarian-5.jpg", label: "Save to shelf", caption: "One click keeps the book in your library on this device." },
+      { image: "/photos/walk/librarian-6.jpg", label: "Your shelf", caption: "Saved books stay put, ready to pick up again, even offline." },
       { image: "/photos/librarian-iphone-home.jpg", label: "Your reading room", caption: "Open it like an app from the home screen. Your library, collections and shelf are always one tap away." },
       { image: "/photos/librarian-iphone-results.jpg", label: "Search 10 catalogs", caption: "One search covers Open Library, Internet Archive, the Library of Congress, Europeana and more, with duplicate editions grouped together." },
       { image: "/photos/librarian-iphone-detail.jpg", label: "Book detail", caption: "Covers, subjects, editions and where to read or borrow it, with a metadata quality score on every result." },
       { image: "/photos/librarian-desktop.jpg", label: "Same app on desktop", caption: "The same library scales up to a full grid on a laptop or desktop." }
     ],
-    footage: [{ video: "/videos/librarian-iphone.mp4", poster: "/photos/librarian-iphone-home.jpg", label: "Full session on iPhone", phone: true }],
+    footage: [
+      { video: "/videos/walk/librarian.mp4", poster: "/photos/walk/librarian-4.jpg", label: "Search, open and save a book: desktop" },
+      { video: "/videos/librarian-iphone.mp4", poster: "/photos/librarian-iphone-home.jpg", label: "Full session on iPhone", phone: true }
+    ],
     features: lib.features,
     built: lib.layers,
     platforms: lib.platforms
@@ -321,7 +329,7 @@ export const caseStudies: CaseStudy[] = [
     url: "https://thecreatingco.com/forma/",
     urlLabel: "Open Converter",
     hero: { video: "/videos/walk/converter.mp4", image: "/photos/walk/converter-2.jpg" },
-    steps: W("converter", 4, ["Free online file converter", "Four files, four formats", "All converted on your device", "Download, nothing uploaded"], [
+    steps: W("converter", 4, ["Free file converter", "Four files, four formats", "Converted on your device", "Download your files"], [
       "Open it in any browser. No account, no install.",
       "A photo, a song, a PDF and a video, each set to its own target format.",
       "Every conversion runs locally, so files never touch a server.",
@@ -341,8 +349,15 @@ export const caseStudies: CaseStudy[] = [
     url: "https://luma.thecreatingco.com/cutout",
     urlLabel: "Open Cutout",
     hero: { video: "/videos/walk/cutout.mp4", image: "/photos/walk/cutout-2.jpg" },
-    steps: W("cutout", 4, ["Open an image", "Your photo", "Background removed", "Compare with the original"]).slice(1),
-    footage: [{ video: "/videos/walk/cutout.mp4", poster: "/photos/walk/cutout-2.jpg", label: "Removing a background" }],
+    steps: W("cutout", 6, ["Cutout", "Any photo", "Background gone in one click", "Before", "After", "Export a transparent PNG"], [
+      "Background removal that runs in the browser.",
+      "Open a photo straight from your camera roll.",
+      "On-device AI separates the subject from the background in one click.",
+      "The original photo…",
+      "…and the cutout, edges refined automatically.",
+      "Download a transparent PNG, ready for a product page, thumbnail or design."
+    ]).slice(1),
+    footage: [{ video: "/videos/walk/cutout.mp4", poster: "/photos/walk/cutout-2.jpg", label: "Removing a background, then exporting a PNG" }],
     features: ["On-device AI segmentation", "Refine with brush and feather", "Export transparent PNG"],
     built: ["ONNX inference", "Mask editing", "Image export"],
     platforms: "Web"
@@ -355,9 +370,17 @@ export const caseStudies: CaseStudy[] = [
     summary: "Transcribe speech on-device, edit the transcript, style animated captions and export SRT or VTT.",
     url: "https://scenepilot.thecreatingco.com/tools/captions/",
     urlLabel: "Open Captions",
-    hero: { video: "/videos/walk/captions.mp4", image: "/photos/walk/captions-2.jpg" },
-    steps: W("captions", 4, ["Drop in a clip", "Transcribing on-device", "Timed, editable words", "Animated captions"]),
-    footage: [{ video: "/videos/walk/captions.mp4", poster: "/photos/walk/captions-2.jpg", label: "Transcribing an ad" }],
+    hero: { video: "/videos/walk/captions.mp4", image: "/photos/walk/captions-5.jpg" },
+    steps: W("captions", 7, ["Captions", "Drop in a clip", "Transcribed on your device", "Every word, timed and editable", "Pick a caption style", "Live animated captions", "Export SRT, VTT or video"], [
+      "On-device speech to text, no account and no upload.",
+      "Here: John F. Kennedy at Rice University, 1962 (public domain).",
+      "The speech model runs in the browser tab.",
+      "Each line keeps word-level timing; edit any word and press Enter.",
+      "Bold pop, highlight box, karaoke, word reveal or a clean subtitle.",
+      "\u201cWe choose to go to the moon\u201d with the current word highlighted as it plays.",
+      "Download subtitles, word-timed VTT or a burned-in video."
+    ]).slice(1),
+    footage: [{ video: "/videos/walk/captions.mp4", poster: "/photos/walk/captions-5.jpg", label: "Captioning JFK\u2019s moon speech, live" }],
     features: ["On-device speech models: fast, accurate or multilingual", "Word-level timing", "Animated caption styles", "SRT / VTT export"],
     built: ["Speech-to-text", "WASM / WebGPU", "Caption renderer"],
     platforms: "Web"
@@ -371,7 +394,12 @@ export const caseStudies: CaseStudy[] = [
     url: "https://sattarimusic.com/studio/split",
     urlLabel: "Open Split",
     hero: { video: "/videos/walk/split.mp4", image: "/photos/walk/split-2.jpg" },
-    steps: W("split", 3, ["Add a song", "Separating on-device", "Four stems"]),
+    steps: W("split", 4, ["Split", "Running on your device", "Four stems", "Export or open in StemDeck"], [
+      "Separate any song into its parts.",
+      "The HTDemucs model runs in the browser; nothing is uploaded.",
+      "Vocals, drums, bass and instruments, each with mute, solo and level.",
+      "Download every stem as a ZIP, export for Ableton or open them in StemDeck."
+    ]),
     footage: [{ video: "/videos/walk/split.mp4", poster: "/photos/walk/split-2.jpg", label: "Separating a track" }],
     features: ["HTDemucs model in the browser", "Mute, solo and balance each stem", "ZIP and Ableton export", "Send to StemDeck"],
     built: ["Stem separation", "WebGPU / CPU", "Audio UI"],

@@ -1667,7 +1667,7 @@ function FullAppsSection() {
                 <LaptopFrame url={app.live.replace("https://", "")}>
                   {shot !== null ? (
                     <img src={app.shots[shot].src} alt={app.shots[shot].label} className="h-full w-full object-cover object-top" />
-                  ) : app.phone ? (
+                  ) : app.phone && app.video === app.phone.video ? (
                     <img loading="lazy" src={app.poster} alt={`${app.name} on desktop`} className="h-full w-full object-cover object-top" />
                   ) : (
                     <DeviceVideo src={app.video} poster={app.poster} className="h-full w-full object-cover object-top" />
