@@ -168,3 +168,6 @@ h3 {
 }
 
 html { -webkit-text-size-adjust: 100%; }
+
+/* Images are part of the UI: no long-press "open image" menu or drag-out on touch devices */
+main img, main video { -webkit-touch-callout: none; -webkit-user-drag: none; user-select: none; }
