@@ -2012,10 +2012,55 @@ function ShowreelVideo({ src, poster, label }: { src: string; poster: string; la
   );
 }
 
+// Full-screen image viewer: Esc / backdrop closes, arrow keys step through.
+function Lightbox({ items, index, onClose, onStep }: { items: { src: string; title: string; note?: string }[]; index: number | null; onClose: () => void; onStep: (dir: 1 | -1) => void }) {
+  useEffect(() => {
+    if (index === null) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+      if (e.key === "ArrowRight") onStep(1);
+      if (e.key === "ArrowLeft") onStep(-1);
+    };
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = prev;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [index, onClose, onStep]);
+  const item = index !== null ? items[index] : null;
+  return (
+    <AnimatePresence>
+      {item && (
+        <motion.div className="fixed inset-0 z-[95] flex flex-col items-center justify-center bg-black/85 p-4 backdrop-blur-sm" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose} role="dialog" aria-modal="true" aria-label={item.title}>
+          <button onClick={onClose} aria-label="Close" className="absolute right-4 top-4 grid h-11 w-11 place-items-center rounded-full bg-white/10 text-white hover:bg-white/20">
+            <X size={20} />
+          </button>
+          <motion.img key={item.src} src={item.src} alt={item.title} initial={{ scale: 0.96, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ duration: 0.3, ease: EASE }} onClick={(e) => e.stopPropagation()} className="max-h-[80vh] max-w-full rounded-xl object-contain shadow-2xl" />
+          <div className="mt-4 max-w-xl text-center text-white" onClick={(e) => e.stopPropagation()}>
+            <div className="text-[17px] font-semibold">{item.title}</div>
+            {item.note && <p className="mt-1 text-[14px] leading-relaxed text-white/70">{item.note}</p>}
+          </div>
+          {items.length > 1 && (
+            <>
+              <button onClick={(e) => { e.stopPropagation(); onStep(-1); }} aria-label="Previous" className="absolute left-3 top-1/2 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full bg-white/10 text-2xl text-white hover:bg-white/20">‹</button>
+              <button onClick={(e) => { e.stopPropagation(); onStep(1); }} aria-label="Next" className="absolute right-3 top-1/2 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full bg-white/10 text-2xl text-white hover:bg-white/20">›</button>
+            </>
+          )}
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+
 // Tiles hide themselves if the image hasn't been added yet, so a missing file never shows as broken.
 function ArtGallery() {
   const [missing, setMissing] = useState<string[]>([]);
+  const [open, setOpen] = useState<number | null>(null);
   const visible = artPieces.filter((piece) => !missing.includes(piece.src));
+  const step = useCallback((dir: 1 | -1) => setOpen((n) => (n === null ? n : (n + dir + visible.length) % visible.length)), [visible.length]);
+  const close = useCallback(() => setOpen(null), []);
   if (visible.length === 0) return null;
   return (
     <div className="mt-16">
@@ -2026,7 +2071,7 @@ function ArtGallery() {
       <div className="mt-8 columns-1 gap-4 sm:columns-2 lg:columns-3">
         {visible.map((piece) => (
           <figure key={piece.src} className="group mb-4 break-inside-avoid overflow-hidden rounded-[22px] border border-line bg-surface">
-            <a href={piece.src} target="_blank" rel="noreferrer" className="block overflow-hidden bg-[#0d0d0c]">
+            <button onClick={() => setOpen(visible.indexOf(piece))} aria-label={`View ${piece.title}`} className="block w-full overflow-hidden bg-[#0d0d0c]">
               <img
                 src={piece.src}
                 alt={piece.title}
@@ -2034,7 +2079,7 @@ function ArtGallery() {
                 onError={() => setMissing((cur) => [...cur, piece.src])}
                 className="w-full transition-transform duration-[1.2s] ease-out group-hover:scale-[1.03]"
               />
-            </a>
+            </button>
             <figcaption className="p-5">
               <h4 className="text-lg font-semibold tracking-[-0.02em] text-ink">{piece.title}</h4>
               <Kicker className="mt-1.5">{piece.medium}</Kicker>
@@ -2043,6 +2088,7 @@ function ArtGallery() {
           </figure>
         ))}
       </div>
+      <Lightbox items={visible} index={open} onClose={close} onStep={step} />
     </div>
   );
 }
@@ -2114,7 +2160,7 @@ function HeroCollage({ onOpen }: { onOpen: (id: string) => void }) {
           </PhoneFrame>
         </motion.a>
       </motion.div>
-      <motion.a href="#apps" {...float(6)} className="pointer-events-auto absolute left-[12%] top-[6%] grid grid-cols-3 gap-2 rounded-[22px] border border-line bg-surface/90 p-3 shadow-[0_20px_50px_-25px_rgba(0,0,0,0.45)] backdrop-blur">
+      <motion.a href="/apps" {...float(6)} className="pointer-events-auto absolute left-[12%] top-[6%] grid grid-cols-3 gap-2 rounded-[22px] border border-line bg-surface/90 p-3 shadow-[0_20px_50px_-25px_rgba(0,0,0,0.45)] backdrop-blur">
         {logos.map((l, i) => (
           <motion.img key={l} src={`/app-logos/${l}.svg`} alt="" className="h-10 w-10 rounded-xl" animate={{ rotate: [0, i % 2 ? 8 : -8, 0] }} transition={{ duration: 4 + i, repeat: Infinity, ease: "easeInOut" }} />
         ))}
@@ -2874,6 +2920,7 @@ function FullAppsSection() {
 
 function SattariSection({ onInquire }: { onInquire: () => void }) {
   const [tab, setTab] = useState(0);
+  const [shot, setShot] = useState<number | null>(null);
   const t = sattariCase.tabs[tab];
   return (
     <section id="sattari" className="border-t border-line px-5 py-20 sm:px-8 md:py-28">
@@ -2898,7 +2945,10 @@ function SattariSection({ onInquire }: { onInquire: () => void }) {
           {sattariCase.tabs.map((x, i) => (
             <button
               key={x.id}
-              onClick={() => setTab(i)}
+              onClick={() => {
+                setTab(i);
+                setShot(null);
+              }}
               aria-pressed={i === tab}
               className={`shrink-0 rounded-full border px-5 py-2.5 text-[14px] transition-colors ${i === tab ? "border-ink bg-ink text-bg" : "border-line text-muted hover:border-ink/40 hover:text-ink"}`}
             >
@@ -2919,7 +2969,11 @@ function SattariSection({ onInquire }: { onInquire: () => void }) {
             <div className="relative">
               <div className={t.phone ? "lg:pr-[16%]" : ""}>
                 <LaptopFrame url={t.link.href.replace("https://", "")}>
-                  <DeviceVideo src={t.video} poster={t.shots[0]} className="h-full w-full object-cover object-top" />
+                  {shot !== null && t.shots[shot] ? (
+                    <img src={t.shots[shot]} alt={`${t.title}: screenshot ${shot + 1}`} className="h-full w-full object-cover object-top" />
+                  ) : (
+                    <DeviceVideo src={t.video} poster={t.shots[0]} className="h-full w-full object-cover object-top" />
+                  )}
                 </LaptopFrame>
               </div>
               {t.phone && (
@@ -2929,11 +2983,24 @@ function SattariSection({ onInquire }: { onInquire: () => void }) {
                   </PhoneFrame>
                 </div>
               )}
-              <div className={`mt-6 grid grid-cols-2 gap-2 sm:mt-8 sm:grid-cols-4 ${t.phone ? "sm:pr-[34%]" : ""}`}>
-                {t.shots.map((src) => (
-                  <a key={src} href={src} target="_blank" rel="noreferrer" className="group block overflow-hidden rounded-xl border border-line">
+              <div className={`mt-6 grid grid-cols-3 gap-2 sm:mt-8 sm:grid-cols-5 ${t.phone ? "sm:pr-[34%]" : ""}`}>
+                <button
+                  onClick={() => setShot(null)}
+                  aria-pressed={shot === null}
+                  className={`flex aspect-[16/10] items-center justify-center rounded-xl border font-mono text-[11px] uppercase tracking-[0.1em] transition-colors ${shot === null ? "border-ink bg-ink text-bg" : "border-line text-muted hover:border-ink hover:text-ink"}`}
+                >
+                  ▶ Video
+                </button>
+                {t.shots.map((src, i) => (
+                  <button
+                    key={src}
+                    onClick={() => setShot(i)}
+                    aria-pressed={shot === i}
+                    aria-label={`Show screenshot ${i + 1}`}
+                    className={`group block overflow-hidden rounded-xl border-2 transition-colors ${shot === i ? "border-ink" : "border-transparent hover:border-line"}`}
+                  >
                     <img src={src} alt="" loading="lazy" className="aspect-[16/10] w-full object-cover object-top transition-transform duration-500 group-hover:scale-105" />
-                  </a>
+                  </button>
                 ))}
               </div>
             </div>
@@ -4084,17 +4151,33 @@ function App() {
   const progressScaleX = useSpring(scrollYProgress, { stiffness: 120, damping: 30, restDelta: 0.001 });
 
   useEffect(() => {
+    if ("scrollRestoration" in window.history) window.history.scrollRestoration = "manual";
     const sync = () => setRoute(readRoute());
+    const onPop = (e: PopStateEvent) => {
+      setRoute(readRoute());
+      // Restore where the visitor was on that page (saved by go()), once it has rendered
+      const y = (e.state as { scrollY?: number } | null)?.scrollY;
+      if (typeof y === "number") {
+        let tries = 0;
+        const restore = () => {
+          window.scrollTo({ top: y, behavior: "instant" as ScrollBehavior });
+          if (Math.abs(window.scrollY - y) > 4 && tries++ < 20) requestAnimationFrame(restore);
+        };
+        requestAnimationFrame(restore);
+      }
+    };
     window.addEventListener("hashchange", sync);
-    window.addEventListener("popstate", sync);
+    window.addEventListener("popstate", onPop);
     return () => {
       window.removeEventListener("hashchange", sync);
-      window.removeEventListener("popstate", sync);
+      window.removeEventListener("popstate", onPop);
     };
   }, []);
 
   const go = useCallback((to: string) => {
-    window.history.pushState(null, "", to);
+    // Remember the scroll position of the page we're leaving, so Back can return to it
+    window.history.replaceState({ ...(window.history.state || {}), scrollY: window.scrollY }, "");
+    window.history.pushState({ scrollY: 0 }, "", to);
     setRoute(readRoute());
     setMobileMenuOpen(false);
     window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
