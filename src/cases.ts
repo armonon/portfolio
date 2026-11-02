@@ -56,6 +56,43 @@ export const caseStudies: CaseStudy[] = [
     platforms: lib.platforms
   },
   {
+    slug: "the-circle",
+    title: "The Circle + NOW",
+    kind: "Social network & private messaging · web + mobile",
+    group: "App",
+    summary:
+      "A creative community with a messenger built in. The Circle is the shared space: profiles, posts, music and a feed that pulls in Instagram, X and YouTube. NOW is the conversation: chatrooms, direct messages, group video and PictoChat drawing, with messages that disappear when you choose. Guests can join with just a name.",
+    url: "https://thecreatingco.com/community/network",
+    urlLabel: "Enter The Circle",
+    hero: { video: "/videos/walk/circle.mp4", image: "/photos/walk/circle-1.jpg", phoneVideo: "/videos/walk/now-m.mp4", phoneImage: "/photos/walk/now-m-0.jpg" },
+    steps: [
+      { image: "/photos/walk/circle-0.jpg", label: "The Circle", caption: "A home for what you make and a room for the people you make it with: chatrooms, video chat, direct messages, music and posts." },
+      { image: "/photos/walk/circle-1.jpg", label: "Discover", caption: "Posts, people, music, videos and gigs, including Instagram, X and YouTube posts brought into one feed." },
+      { image: "/photos/walk/circle-2.jpg", label: "Join with just a name", caption: "No email needed to join in. Guests pick a name; sign in only to upload media." },
+      { image: "/photos/walk/circle-3.jpg", label: "Share what you're making", caption: "Write a post, attach a photo, track or video, or paste a link, and preview it before publishing." },
+      { image: "/photos/walk/now-0.jpg", label: "NOW messaging", caption: "\u201cYour people. Your music. Your NOW.\u201d The conversation layer of the community." },
+      { image: "/photos/walk/now-1.jpg", label: "Community, music, PictoChat", caption: "Move between people, posts, music and messages without losing the thread. Some things are better drawn." },
+      { image: "/photos/walk/now-2.jpg", label: "Disappearing messages", caption: "Choose how long new messages last, from one minute to thirty days, with invite-only rooms and blocking." },
+      { image: "/photos/walk/circle-m-0.jpg", label: "On your phone", caption: "The whole community works on a phone browser." }
+    ],
+    footage: [
+      { video: "/videos/walk/circle.mp4", poster: "/photos/walk/circle-1.jpg", label: "The Circle, desktop" },
+      { video: "/videos/walk/now.mp4", poster: "/photos/walk/now-0.jpg", label: "NOW, desktop" },
+      { video: "/videos/walk/circle-m.mp4", poster: "/photos/walk/circle-m-0.jpg", label: "The Circle on a phone", phone: true },
+      { video: "/videos/walk/now-m.mp4", poster: "/photos/walk/now-m-0.jpg", label: "NOW on a phone", phone: true }
+    ],
+    features: [
+      "Public chatrooms, invite-only rooms and direct messages",
+      "Group video chat and PictoChat-style drawing",
+      "Message timers: new messages can disappear after a minute or up to 30 days",
+      "A feed with Instagram, X and YouTube posts alongside native posts",
+      "Profiles, music, saved posts and gigs",
+      "Guest access with just a name, no email"
+    ],
+    built: ["Real-time messaging", "Video chat", "Social feed", "Embeds", "Guest identity", "Privacy controls"],
+    platforms: "Web · mobile web"
+  },
+  {
     slug: "sattari",
     title: "Sattari Music",
     kind: "Client brand · store website, music tools, plugins and an AI ad",
@@ -278,9 +315,14 @@ export const caseStudies: CaseStudy[] = [
     summary: "Convert images, PDFs, spreadsheets, audio, video and archives in the browser. Files never leave the device.",
     url: "https://thecreatingco.com/forma/",
     urlLabel: "Open Converter",
-    hero: { video: "/videos/walk/converter.mp4", image: "/photos/walk/converter-1.jpg" },
-    steps: W("converter", 3, ["Drop in any file", "Pick a format for each", "Converted on your device"]),
-    footage: [{ video: "/videos/walk/converter.mp4", poster: "/photos/walk/converter-1.jpg", label: "Converting a JPG, a WAV and a PDF" }],
+    hero: { video: "/videos/walk/converter.mp4", image: "/photos/walk/converter-2.jpg" },
+    steps: W("converter", 4, ["Free online file converter", "Four files, four formats", "All converted on your device", "Download, nothing uploaded"], [
+      "Open it in any browser. No account, no install.",
+      "A photo, a song, a PDF and a video, each set to its own target format.",
+      "Every conversion runs locally, so files never touch a server.",
+      "Download each file, or zip the whole batch."
+    ]),
+    footage: [{ video: "/videos/walk/converter.mp4", poster: "/photos/walk/converter-2.jpg", label: "Converting a JPG, a WAV, a PDF and an MP4" }],
     features: ["Images, documents, audio, video, 3D and archives", "Batch conversion", "Up to 250 MB per file", "No uploads"],
     built: ["File pipeline", "In-browser processing", "Batch UI"],
     platforms: "Web · desktop"

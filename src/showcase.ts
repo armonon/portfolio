@@ -199,20 +199,27 @@ export type Tool = {
   tasks: string[];
   logo?: string;
   pitch?: string;
+  /** Real recording of the tool in use, plus a poster frame */
+  video?: string;
+  poster?: string;
 };
 
 export const toolbox: Tool[] = [
   {
     name: "Converter",
+    video: "/videos/walk/converter.mp4",
+    poster: "/photos/walk/converter-2.jpg",
     job: "Files",
     line: "Images, PDFs, spreadsheets, audio, video and archives, converted in your browser.",
-    tested: "PDF → Excel, JPG → PNG and WAV → MP3, all finished in seconds",
+    tested: "JPG, WAV, PDF and MP4 in one batch, all converted on the device",
     href: "https://thecreatingco.com/forma/",
     accepts: ["any", "image", "video", "audio", "document"],
     tasks: ["convert a file", "pdf to excel", "jpg to png", "wav to mp3", "change file format", "heic to jpg", "video to mp4"]
   },
   {
     name: "Cutout",
+    video: "/videos/walk/cutout.mp4",
+    poster: "/photos/walk/cutout-2.jpg",
     job: "Images",
     line: "Remove a background in one click, then refine the edge with a brush.",
     tested: "Clean subject cut from a busy, low-light video frame",
@@ -222,6 +229,8 @@ export const toolbox: Tool[] = [
   },
   {
     name: "Captions",
+    video: "/videos/walk/captions.mp4",
+    poster: "/photos/walk/captions-2.jpg",
     job: "Video",
     line: "Auto-transcribe speech, style animated captions, export SRT or VTT.",
     tested: "Transcribed 16 words from an ad in 16 seconds",
@@ -232,6 +241,8 @@ export const toolbox: Tool[] = [
   },
   {
     name: "Reframe",
+    video: "/videos/walk/reframe.mp4",
+    poster: "/photos/walk/reframe-1.jpg",
     job: "Video",
     line: "Turn horizontal video into 9:16, 4:5 or 1:1, and the crop follows faces.",
     tested: "Found the subject and built a smooth 9:16 camera path",
@@ -241,6 +252,8 @@ export const toolbox: Tool[] = [
   },
   {
     name: "Split",
+    video: "/videos/walk/split.mp4",
+    poster: "/photos/walk/split-2.jpg",
     job: "Audio",
     line: "Separate any song into vocals, drums, bass and instruments, then mix or export.",
     tested: "Four clean stems from a 20-second track",
@@ -251,6 +264,8 @@ export const toolbox: Tool[] = [
   },
   {
     name: "Key & BPM",
+    video: "/videos/walk/keybpm.mp4",
+    poster: "/photos/walk/keybpm-1.jpg",
     job: "Audio",
     line: "Batch-detect tempo, musical key and Camelot code for your tracks.",
     tested: "Read tempo instantly and was honest when the key was unclear",
@@ -261,6 +276,8 @@ export const toolbox: Tool[] = [
   },
   {
     name: "Reclaim",
+    video: "/videos/walk/reclaim.mp4",
+    poster: "/photos/walk/reclaim-1.jpg",
     job: "Mac",
     line: "Review what's filling your Mac, quarantine it, and restore anything you change your mind about.",
     tested: "Signed, notarized installer downloads cleanly (13.7 MB, macOS 13+)",
@@ -271,6 +288,8 @@ export const toolbox: Tool[] = [
   },
   {
     name: "Website Checkup",
+    video: "/videos/walk/checkup.mp4",
+    poster: "/photos/walk/checkup-1.jpg",
     job: "Web",
     line: "Scan any site for metadata, heading, link and form problems, with fixes listed by priority.",
     tested: "Flagged 4 fixable issues on my own site; this redesign fixes all four",

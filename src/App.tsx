@@ -2493,8 +2493,15 @@ function ToolCard({ tool, highlight }: { tool: Tool; highlight: boolean }) {
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.95 }}
       transition={{ duration: 0.35, ease: EASE }}
-      className={`group flex h-full flex-col rounded-[22px] border p-6 transition-[transform,box-shadow,border-color,background-color] duration-300 hover:-translate-y-1 hover:shadow-[0_24px_50px_-30px_rgba(0,0,0,0.4)] ${highlight ? "border-ink bg-accent/15" : "border-line bg-surface hover:border-ink/30"}`}
+      className={`group flex h-full flex-col overflow-hidden rounded-[22px] border transition-[transform,box-shadow,border-color,background-color] duration-300 hover:-translate-y-1 hover:shadow-[0_24px_50px_-30px_rgba(0,0,0,0.4)] ${highlight ? "border-ink bg-accent/15" : "border-line bg-surface hover:border-ink/30"}`}
     >
+      {tool.video && (
+        <div className="relative aspect-[16/10] overflow-hidden border-b border-line bg-[#0d0d0c]">
+          <DeviceVideo src={tool.video} poster={tool.poster} className="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.03]" />
+          <span className="absolute left-3 top-3 rounded-full bg-black/60 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.1em] text-white backdrop-blur">Recorded live</span>
+        </div>
+      )}
+      <div className="flex flex-1 flex-col p-6">
       <div className="flex items-start justify-between gap-3">
         {tool.logo ? (
           <img src={`/app-logos/${tool.logo}.svg`} alt="" loading="lazy" className="h-12 w-12 rounded-[14px] transition-transform duration-500 group-hover:rotate-[-6deg] group-hover:scale-110" />
@@ -2521,6 +2528,7 @@ function ToolCard({ tool, highlight }: { tool: Tool; highlight: boolean }) {
         </span>
       </div>
       {tool.pitch && <p className="mt-3 border-t border-line pt-3 text-[12.5px] text-accent-ink">{tool.pitch}</p>}
+      </div>
     </motion.a>
   );
 }
@@ -3676,6 +3684,73 @@ function MobileCTA({ onClick }: { onClick: () => void }) {
   );
 }
 
+function SocialSection() {
+  const features = [
+    { t: "Chatrooms & DMs", d: "Public rooms, invite-only rooms and one-to-one messages." },
+    { t: "Group video", d: "Video chat and group cameras inside the conversation." },
+    { t: "PictoChat", d: "Draw your hello. Some things are better drawn." },
+    { t: "Disappearing messages", d: "Message timers from one minute to thirty days." },
+    { t: "Social feed", d: "Native posts plus Instagram, X and YouTube links in one feed." },
+    { t: "Join with a name", d: "Guests join without an email; sign in only to upload." }
+  ];
+  return (
+    <section id="social" className="px-3 py-10 sm:px-6 md:py-16">
+      <div className="mx-auto max-w-[1360px] overflow-hidden rounded-[32px] bg-[#ece8f7] px-5 py-12 text-[#1d1a2b] sm:px-10 md:py-16 lg:px-14">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center lg:gap-14">
+          <div>
+            <div className="font-mono text-[11px] uppercase tracking-[0.18em] text-[#5b4fa8]">
+              <span>✳</span>
+              <span className="mx-2 opacity-40">/</span>
+              Social & private messaging
+            </div>
+            <h2 className="mt-5 max-w-[14ch] text-[clamp(2.4rem,5vw,4.2rem)] font-semibold leading-[0.95] tracking-[-0.045em]">
+              A social network, <span className="font-serif font-normal italic text-[#6d5ce8]">with a messenger</span> built in.
+            </h2>
+            <p className="mt-5 max-w-md text-[16px] leading-relaxed text-[#4a4560]">
+              The Circle is the shared space: profiles, posts, music and a feed. NOW is the conversation: rooms, DMs, video and drawings. I designed and built both, and the same stack can power a community for your brand.
+            </p>
+            <div className="mt-8 grid grid-cols-2 gap-x-6 gap-y-5">
+              {features.map((f) => (
+                <div key={f.t}>
+                  <div className="flex items-center gap-2 text-[15px] font-semibold tracking-[-0.01em]">
+                    <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#6d5ce8]" />
+                    {f.t}
+                  </div>
+                  <p className="mt-1 pl-3.5 text-[13.5px] leading-snug text-[#4a4560]">{f.d}</p>
+                </div>
+              ))}
+            </div>
+            <div className="mt-9 flex flex-wrap gap-3">
+              <a href="/work/the-circle" className="inline-flex items-center gap-2 rounded-full bg-[#1d1a2b] px-6 py-3 text-[14.5px] font-medium text-white transition-opacity hover:opacity-85">
+                See the walkthrough <ArrowUpRight size={15} />
+              </a>
+              <a href="https://thecreatingco.com/community/network" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full border border-[#1d1a2b]/20 px-6 py-3 text-[14.5px] font-medium transition-colors hover:border-[#1d1a2b]">
+                Enter The Circle
+              </a>
+              <a href="https://thecreatingco.com/products/now/" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full border border-[#1d1a2b]/20 px-6 py-3 text-[14.5px] font-medium transition-colors hover:border-[#1d1a2b]">
+                Meet NOW
+              </a>
+            </div>
+          </div>
+
+          <div className="relative">
+            <div className="hidden sm:block sm:pr-[20%]">
+              <LaptopFrame url="thecreatingco.com/community/network">
+                <DeviceVideo src="/videos/walk/circle.mp4" poster="/photos/walk/circle-1.jpg" className="h-full w-full object-cover object-top" />
+              </LaptopFrame>
+            </div>
+            <div className="mx-auto w-[64%] max-w-[250px] sm:absolute sm:-bottom-6 sm:right-0 sm:mx-0 sm:w-[32%]">
+              <PhoneFrame url="thecreatingco.com/products/now">
+                <DeviceVideo src="/videos/walk/now-m.mp4" poster="/photos/walk/now-m-0.jpg" className="h-full w-full object-cover object-top" />
+              </PhoneFrame>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function WorkPage({ setOpenProject }: { setOpenProject: (p: Project) => void }) {
   const [indexFilter, setIndexFilter] = useState<string>("All");
   const liveCount = radarDirectory.filter((d) => d.live).length;
@@ -4280,6 +4355,8 @@ function App() {
         <FlagshipsSection onOpenProject={openProjectById} onAnchor={scrollToSection} />
 
         <FullAppsSection />
+
+        <SocialSection />
 
         <ToolboxSection />
 
