@@ -1,5 +1,47 @@
 @import "tailwindcss";
 
+/* ---- Fonts (self-hosted, Latin subset, SIL Open Font License; see public/fonts/README.md) ----
+   Each family is one variable file. The "Fallback" faces are local system fonts resized to the
+   web font's width, so text barely moves when the real font arrives (less layout shift). */
+@font-face {
+  font-family: "Inter Tight";
+  src: url("/fonts/inter-tight-latin.woff2") format("woff2");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Instrument Serif";
+  src: url("/fonts/instrument-serif-latin.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Instrument Serif";
+  src: url("/fonts/instrument-serif-italic-latin.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/fonts/jetbrains-mono-latin.woff2") format("woff2");
+  font-weight: 400 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Inter Tight Fallback";
+  src: local("Arial"), local("Helvetica"), local("Liberation Sans");
+  size-adjust: 94%;
+}
+@font-face {
+  font-family: "Instrument Serif Fallback";
+  src: local("Times New Roman"), local("Liberation Serif");
+  size-adjust: 89.5%;
+}
+
 /* ---- Design tokens ----
    Light "paper" by default, ink-dark when the OS asks for it.
    `band-*` is always the inverse of the page, used for the studio feature. */
@@ -50,8 +92,8 @@
   --color-band-fg: var(--band-fg);
   --color-band-muted: var(--band-muted);
   --color-band-line: var(--band-line);
-  --font-sans: "Inter Tight", ui-sans-serif, system-ui, -apple-system, sans-serif;
-  --font-serif: "Instrument Serif", ui-serif, Georgia, serif;
+  --font-sans: "Inter Tight", "Inter Tight Fallback", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-serif: "Instrument Serif", "Instrument Serif Fallback", ui-serif, Georgia, serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 

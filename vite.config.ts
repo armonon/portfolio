@@ -123,7 +123,7 @@ function seoPages(): Plugin {
           .replace(/<script type="application\/ld\+json" id="ld-site">[\s\S]*?<\/script>/, (m) => (r.ld ? `<script type="application/ld+json">${JSON.stringify(r.ld).replace(/</g, '\\u003c')}</script>` : m))
         html = html.replace(
           /<div id="root">[\s\S]*?<\/div>\s*(?=<\/body>|<script)/,
-          `<div id="root"><main style="font-family:system-ui,sans-serif;max-width:40rem;margin:4rem auto;padding:0 1.25rem"><p><a href="/">Armon Nasiri</a></p><h1>${esc(r.heading)}</h1>${r.body.startsWith('<li>') ? `<ul>${r.body}</ul>` : r.body}</main></div>\n    `
+          `<div id="root"><main style="font-family:system-ui,sans-serif;max-width:40rem;margin:0 auto;padding:4rem 1.25rem"><p><a href="/">Armon Nasiri</a></p><h1>${esc(r.heading)}</h1>${r.body.startsWith('<li>') ? `<ul>${r.body}</ul>` : r.body}</main></div>\n    `
         )
         // Flat files (work/sattari.html, not work/sattari/index.html): Netlify serves them at
         // the clean URL with no trailing-slash redirect, matching the canonical address.

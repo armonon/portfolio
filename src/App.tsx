@@ -253,7 +253,47 @@ function NotFound() {
   );
 }
 
-const PageFallback = () => <div className="min-h-[70vh]" aria-busy="true" />;
+// Contact is on every page. On lazy pages it renders with the page (inside Suspense),
+// so it never appears early and then gets pushed down when the page arrives.
+function ContactSection({ numbered }: { numbered: boolean }) {
+  return (
+      <section id="contact" aria-labelledby="contact-title" className="scroll-mt-20 px-3 pb-6 sm:px-6">
+        <div className="mx-auto max-w-[1360px] rounded-[32px] border border-line bg-surface px-6 py-20 sm:px-10 md:py-28 lg:px-14">
+          <Kicker>
+            {numbered && (
+              <>
+                <span className="text-accent-ink">06</span>
+                <span className="mx-2 text-line">/</span>
+              </>
+            )}
+            Contact
+          </Kicker>
+          <h2 id="contact-title" className="mt-6 text-[clamp(3rem,8vw,7rem)] font-semibold leading-[0.9] tracking-[-0.05em] text-ink">
+            Let&rsquo;s build
+            <br />
+            <span className="font-serif font-normal italic text-accent-ink">your thing.</span>
+          </h2>
+          <div className="mt-10 grid grid-cols-1 gap-10 md:grid-cols-[1fr_auto] md:items-end">
+            <p className="max-w-xl text-[17px] leading-relaxed text-muted">
+              Taking on design, development, AI media and agent-setup projects for founders, brands, creators and small teams. Tell me what you&rsquo;re making, and I&rsquo;ll
+              reply with next steps, usually within a day.
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <a href={`mailto:${CONTACT_EMAIL}`} className="inline-flex min-h-12 items-center gap-2.5 rounded-full border border-line px-7 py-4 text-[15px] font-medium text-ink transition-colors hover:border-ink">
+                <Mail size={16} /> {CONTACT_EMAIL}
+              </a>
+              <a href="https://github.com/armonon" target="_blank" rel="noreferrer" className="inline-flex min-h-12 items-center gap-2.5 rounded-full border border-line px-7 py-4 text-[15px] font-medium text-ink transition-colors hover:border-ink">
+                <Code2 size={16} /> GitHub
+              </a>
+            </div>
+          </div>
+          <ContactForm />
+        </div>
+      </section>
+  );
+}
+
+const PageFallback = () => <div className="min-h-[110vh]" aria-busy="true" />;
 
 const titleFor = (route: string) => {
   const base = "Armon Nasiri — Designer & Engineer: Software, Immersive Websites, AI";
@@ -526,7 +566,10 @@ function App() {
 
         <main id="main" tabIndex={-1} className="relative outline-none">
           {currentPage === "home" ? (
-            <Home scrollTo={scrollToSection} />
+            <>
+              <Home scrollTo={scrollToSection} />
+              <ContactSection numbered />
+            </>
           ) : (
             <Suspense fallback={<PageFallback />}>
               {route === "/work" ? (
@@ -544,43 +587,10 @@ function App() {
               ) : (
                 <NotFound />
               )}
+              <ContactSection numbered={false} />
             </Suspense>
           )}
 
-          {/* ── CONTACT (every page) ───────────────────────── */}
-          <section id="contact" aria-labelledby="contact-title" className="scroll-mt-20 px-3 pb-6 sm:px-6">
-            <div className="mx-auto max-w-[1360px] rounded-[32px] border border-line bg-surface px-6 py-20 sm:px-10 md:py-28 lg:px-14">
-              <Kicker>
-                {currentPage === "home" && (
-                  <>
-                    <span className="text-accent-ink">06</span>
-                    <span className="mx-2 text-line">/</span>
-                  </>
-                )}
-                Contact
-              </Kicker>
-              <h2 id="contact-title" className="mt-6 text-[clamp(3rem,8vw,7rem)] font-semibold leading-[0.9] tracking-[-0.05em] text-ink">
-                Let&rsquo;s build
-                <br />
-                <span className="font-serif font-normal italic text-accent-ink">your thing.</span>
-              </h2>
-              <div className="mt-10 grid grid-cols-1 gap-10 md:grid-cols-[1fr_auto] md:items-end">
-                <p className="max-w-xl text-[17px] leading-relaxed text-muted">
-                  Taking on design, development, AI media and agent-setup projects for founders, brands, creators and small teams. Tell me what you&rsquo;re making, and I&rsquo;ll
-                  reply with next steps, usually within a day.
-                </p>
-                <div className="flex flex-wrap gap-3">
-                  <a href={`mailto:${CONTACT_EMAIL}`} className="inline-flex min-h-12 items-center gap-2.5 rounded-full border border-line px-7 py-4 text-[15px] font-medium text-ink transition-colors hover:border-ink">
-                    <Mail size={16} /> {CONTACT_EMAIL}
-                  </a>
-                  <a href="https://github.com/armonon" target="_blank" rel="noreferrer" className="inline-flex min-h-12 items-center gap-2.5 rounded-full border border-line px-7 py-4 text-[15px] font-medium text-ink transition-colors hover:border-ink">
-                    <Code2 size={16} /> GitHub
-                  </a>
-                </div>
-              </div>
-              <ContactForm />
-            </div>
-          </section>
         </main>
 
         {/* ── FOOTER ───────────────────────────────────────── */}

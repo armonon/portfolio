@@ -2,6 +2,10 @@
 /assets/*
   Cache-Control: public, max-age=31536000, immutable
 
+# Fonts never change under the same name.
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+
 # Media is sometimes replaced under the same file name (re-shot clips), so cache it for a
 # day and revalidate in the background after that.
 /videos/*

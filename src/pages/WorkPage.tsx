@@ -24,10 +24,12 @@ function ScrollScrubVideo({ src, poster, label }: { src: string; poster: string;
   const scale = useTransform(scrollYProgress, [0, 0.35], [0.9, 1], { clamp: true });
   const rotate = useTransform(scrollYProgress, [0, 0.35], [-2.5, 0], { clamp: true });
   const barScale = useSpring(progress, { stiffness: 140, damping: 28, restDelta: 0.001 });
+  // The clip is ~4 MB, so it only starts downloading once it is within ~1.5 screens of view.
+  const near = useInView(wrapRef, { once: true, margin: "1200px" });
 
   useEffect(() => {
     const video = videoRef.current;
-    if (!video) return;
+    if (!video || !near) return;
     video.muted = true;
     video.playsInline = true;
     let target = 0;
@@ -58,11 +60,11 @@ function ScrollScrubVideo({ src, poster, label }: { src: string; poster: string;
       if (frame) cancelAnimationFrame(frame);
       video.removeEventListener("loadedmetadata", prime);
     };
-  }, [progress]);
+  }, [progress, near]);
 
   return (
     <motion.div ref={wrapRef} style={{ scale, rotate }} className="relative overflow-hidden rounded-[22px] border border-band-line bg-[#1a1714] shadow-[0_40px_80px_-40px_rgba(0,0,0,0.6)]">
-      <video ref={videoRef} src={src} poster={poster} preload="auto" muted playsInline aria-label={label} className="block aspect-[16/7] w-full object-cover" />
+      <video ref={videoRef} src={near ? src : undefined} poster={poster} preload={near ? "auto" : "none"} muted playsInline aria-label={label} className="block aspect-[16/7] w-full object-cover" />
       <div className="pointer-events-none absolute inset-x-4 bottom-4 flex items-center gap-3">
         <span className="rounded-full bg-[#111110]/80 px-3 py-1.5 font-mono text-[10.5px] uppercase tracking-[0.12em] text-white backdrop-blur">Scroll to play</span>
         <div className="h-[3px] flex-1 overflow-hidden rounded-full bg-white/25">
