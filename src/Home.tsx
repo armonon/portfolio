@@ -143,7 +143,7 @@ function Evidence() {
 
         <dl className="mb-12 grid grid-cols-2 gap-px overflow-hidden rounded-[20px] border border-band-line bg-band-line md:grid-cols-4">
           {proofStats.map((s) => (
-            <div key={s.k} className="flex flex-col-reverse bg-band p-5 md:p-6">
+            <div key={s.k} className="flex flex-col-reverse justify-end bg-band p-5 md:p-6">
               <dt className="mt-2 text-[13.5px] leading-snug text-band-muted">{s.k}</dt>
               <dd className="text-[clamp(1.9rem,3.6vw,2.8rem)] font-semibold leading-none tracking-[-0.04em] text-band-fg">{s.v}</dd>
             </div>
@@ -485,7 +485,7 @@ function Hero({ scrollTo }: { scrollTo: (id: string) => void }) {
           { k: "Disciplines", v: "Design · Code · AI" },
           { k: "Studio", v: "thecreateco", href: STUDIO_URL }
         ].map((row) => (
-          <div key={row.k} className="flex flex-col-reverse bg-bg px-2 py-4 first:pl-0 sm:px-1 sm:py-6 md:px-6">
+          <div key={row.k} className="flex flex-col-reverse justify-end bg-bg px-2 py-4 first:pl-0 sm:px-1 sm:py-6 md:px-6">
             <dd className="mt-1.5 text-[14px] font-semibold leading-tight tracking-[-0.02em] text-ink sm:mt-2 sm:text-[clamp(1.15rem,2vw,1.6rem)] sm:tracking-[-0.03em]">
               {row.href ? (
                 <a href={row.href} target="_blank" rel="noreferrer" className="underline decoration-accent decoration-2 underline-offset-4 hover:decoration-ink">
@@ -520,8 +520,8 @@ function WorkCard({ item, index, span }: { item: Flagship; index: number; span: 
         ) : (
           <img src={item.media.image} alt={`${item.title} screenshot`} loading="lazy" decoding="async" width={1280} height={800} className="h-full w-full object-cover object-top transition-transform duration-[1.2s] ease-out group-hover:scale-[1.03]" />
         )}
-        <div className="pointer-events-none absolute inset-x-0 top-0 flex flex-wrap items-start justify-between gap-2 p-4">
-          <span className="rounded-full bg-black/60 px-3 py-1 font-mono text-[10.5px] uppercase tracking-[0.12em] text-white backdrop-blur-md">{item.service}</span>
+        <div className="pointer-events-none absolute inset-x-0 top-0 flex items-start justify-between gap-2 p-4">
+          <span className="min-w-0 truncate rounded-full bg-black/60 px-3 py-1 font-mono text-[10.5px] uppercase tracking-[0.12em] text-white backdrop-blur-md">{item.service}</span>
           <StatusBadge id={item.slug} tone="dark" />
         </div>
       </div>

@@ -335,7 +335,7 @@ function Outcomes({ d }: { d: CaseDetail }) {
         </h2>
         <dl className={`mt-6 grid grid-cols-2 gap-px overflow-hidden rounded-[22px] border border-line bg-line ${d.outcomes.length > 3 ? "md:grid-cols-4" : "md:grid-cols-3"}`}>
           {d.outcomes.map((o) => (
-            <div key={o.k} className="flex flex-col-reverse bg-surface p-6">
+            <div key={o.k} className="flex flex-col-reverse justify-end bg-surface p-6">
               <dt className="mt-2 text-[14px] leading-snug text-muted">{o.k}</dt>
               <dd className="text-[clamp(1.8rem,3.4vw,2.6rem)] font-semibold leading-none tracking-[-0.04em] text-ink">{o.v}</dd>
             </div>
