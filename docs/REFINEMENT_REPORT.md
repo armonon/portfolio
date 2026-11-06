@@ -1,6 +1,6 @@
 # Portfolio refinement — delivery report
 
-Branch: `refine/portfolio-v2` (based on `main` at `f76d633`). Nothing has been published to production and no DNS has been changed.
+Branch: `refine/portfolio-v2` (based on `main` at `f76d633`). Pull request: https://github.com/armonon/portfolio/pull/1. Preview: https://deploy-preview-1--armonnasiri.netlify.app Nothing has been published to production and no DNS has been changed.
 
 ## 1. What was implemented
 
@@ -124,7 +124,9 @@ Untouched: `netlify/functions/product-sweep.mjs`, Product Radar and all existing
 | `npm test`: registry consistency | passes (53 entries, counts agree) |
 | `npm test`: contact function (11 cases, network mocked) | 11/11 |
 | Interactive browser suite (60 checks: hero actions, section order and numbering, nav and current state, legacy redirects, filters and search, tabs, case pages, ⌘K, modal focus trap, form validation, error, success and payload, Back scroll restore, posters, reduced motion, mobile menu, touch targets, every internal link, page errors) | 60/60 |
-| Route smoke test at 5 widths (one h1, heading order, overflow, console errors, failed requests) | all clean |
+| Route smoke test at 5 widths (one h1, heading order, overflow, console errors, failed requests) | all clean (unknown URLs correctly return 404 with the site's own page) |
+| Same interactive suite against the live deploy preview | 60/60 |
+| Contact function on the preview: wrong method / invalid fields | 405 / 422 with field errors (no valid submission sent) |
 | External links (59) | all resolve except: Digital Human demo on Render returns 503 (existing link, service appears down); GitHub profile returns 403 only from this sandbox's proxy |
 
 ## 4. Performance (Lighthouse 12, local production build, simulated throttling)
@@ -138,10 +140,21 @@ Mobile figures are the median of 3 runs.
 | /work, mobile | 5.9 MB transferred (earlier build: the 4 MB scroll video loaded up front) | **1.7 MB** · Perf 82 · CLS 0 |
 | /apps, mobile | not measured before | Perf 93 · A11y 100 · CLS 0 |
 
-Best Practices and SEO score 100 on every page measured.
+Best Practices and SEO score 100 on every page measured locally.
+
+**On the deploy preview** (real Netlify CDN; Netlify's preview-only feedback toolbar was blocked, because it adds 1.6 MB that production never loads):
+
+| Page | Perf | A11y | BP | LCP | CLS | Transferred |
+|---|---|---|---|---|---|---|
+| Home, mobile (3 runs) | 95–96 | 100 | 100 | 2.4 s | 0 | 1.1 MB |
+| Home, desktop | 100 | 100 | 100 | 0.6 s | 0 | 1.5 MB |
+| /work/sattari, mobile (2 runs) | 95–96 | 100 | 100 | 2.5–2.7 s | 0 | 1.9 MB |
+| /apps, mobile | 96 | 100 | 100 | 2.6 s | 0 | 0.3 MB |
+
+SEO shows 69 on the preview only because Netlify serves previews with `x-robots-tag: noindex`. That is intended, and production is not affected.
 
 ## 5. Remaining limitations
-- **Mobile LCP is about 3.5 s** under Lighthouse's throttled phone profile. The hero headline is rendered by React, so it waits for JavaScript. Prerendering the homepage hero into the HTML would be the next step.
+- **Mobile LCP is about 3.5 s locally and 2.4 s on the Netlify CDN** under Lighthouse's throttled phone profile. The hero headline is rendered by React, so it waits for JavaScript. Prerendering the homepage hero into the HTML would be the next step.
 - **No responsive `srcset` and no AV1/WebM.** Images are still single-size JPEGs and videos are still the existing H.264 MP4s. Off-screen posters and videos are deferred instead.
 - **The contact function was only tested with a mocked network.** I did not submit to Netlify, because that would store a real submission and could email you.
 - **The rate limit is per function instance** (best effort). Netlify Forms adds its own spam filter.
@@ -153,7 +166,7 @@ Best Practices and SEO score 100 on every page measured.
    - In Netlify, go to *Site configuration → Forms* and enable **form detection**.
    - After the next deploy, the `contact` form appears there. Add an **email notification** to the address you want.
    - Until form detection is on, the site's form shows its error state with the email fallback, so nothing is lost.
-2. **Netlify secrets scan:** rotate `PRODUCT_SWEEP_ADMIN_TOKEN` (its old value collides with text in the repo). This blocked the last production deploy and may also block deploy previews.
+2. **Netlify secrets scan:** rotate `PRODUCT_SWEEP_ADMIN_TOKEN` (its old value collides with text in the repo). This blocked the last production deploy. It did not block this deploy preview, but rotate it before merging so the production build isn't stopped again.
 3. **Résumé:** add `public/resume.pdf` and the download button appears on `/hire`.
 4. Optionally, check the **Digital Human** demo on Render.
 
