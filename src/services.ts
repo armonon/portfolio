@@ -118,3 +118,53 @@ export const artPieces = [
     note: "Dozens of generated figures (angels, cherubs, a jester, a golden monkey, all-seeing eyes) composited into one maximalist, hyper-saturated poster with hand-set script type."
   }
 ];
+
+/** The three capability families shown on the homepage and detailed on /services. */
+export type CapabilityFamily = {
+  id: "products" | "creative" | "ai";
+  title: string;
+  kicker: string;
+  line: string;
+  items: string[];
+  /** Case-study slugs (or /apps, /tools) that demonstrate the family */
+  proof: { label: string; href: string }[];
+};
+
+export const families: CapabilityFamily[] = [
+  {
+    id: "products",
+    kicker: "01 · Digital products",
+    title: "Digital Products",
+    line: "Web apps, native software and stores, designed and engineered end to end, from data model to the last pixel.",
+    items: ["Web applications", "Native software (macOS, desktop, mobile web)", "UI/UX and product design", "E-commerce", "APIs, databases and integrations"],
+    proof: [
+      { label: "Sattari Music", href: "/work/sattari" },
+      { label: "Luma Studio", href: "/work/luma-studio" },
+      { label: "Librarian", href: "/work/librarian" }
+    ]
+  },
+  {
+    id: "creative",
+    kicker: "02 · Creative technology",
+    title: "Creative Technology",
+    line: "Interactive and immersive work where design and engineering are the same job: 3D worlds, games, audio tools and motion.",
+    items: ["Interactive websites", "WebGL and Three.js", "Game development", "3D assets", "Audio software", "Motion, image and video production"],
+    proof: [
+      { label: "BREAKTHYRULE Eden", href: "/work/breakthyrule-eden" },
+      { label: "Form Studio", href: "/work/form-studio" },
+      { label: "ScenePilot", href: "/work/scenepilot" }
+    ]
+  },
+  {
+    id: "ai",
+    kicker: "03 · AI & automation",
+    title: "AI & Automation",
+    line: "AI that does real work: on-device models, AI features inside products, and agents that operate safely on your own machine.",
+    items: ["Local AI systems", "AI-powered applications", "Autonomous agents", "Workflow automation", "Custom AI integrations"],
+    proof: [
+      { label: "Universal Computer Operator", href: "/work/universal-computer-operator" },
+      { label: "Cutout", href: "/work/cutout" },
+      { label: "Captions", href: "/work/captions" }
+    ]
+  }
+];

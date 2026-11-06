@@ -8,7 +8,7 @@
   --surface: #fbfbf8;
   --ink: #111110;
   --muted: #55554f;
-  --faint: #8b8b83;
+  --faint: #6b6b64; /* 4.8:1 on --bg (WCAG AA) */
   --line: rgba(17, 17, 16, 0.11);
   --accent: #c8f03c;
   --accent-ink: #4a6b06;
@@ -25,7 +25,7 @@
     --surface: #151513;
     --ink: #f2f1ea;
     --muted: #a6a59c;
-    --faint: #6e6d66;
+    --faint: #8a8981; /* 5.2:1 on --surface */
     --line: rgba(242, 241, 234, 0.1);
     --accent: #c8f03c;
     --accent-ink: #c8f03c;
@@ -130,10 +130,43 @@ h3 {
   animation-play-state: paused;
 }
 
+/* Hero ambience: transform/opacity only, so it runs on the compositor
+   and costs no main-thread time (these used to be infinite JS animations). */
+@keyframes glow-drift-a {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(-40px, 30px, 0) scale(1.08); }
+}
+@keyframes glow-drift-b {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(50px, -24px, 0) scale(1.1); }
+}
+.glow-a { animation: glow-drift-a 18s ease-in-out infinite; }
+.glow-b { animation: glow-drift-b 22s ease-in-out infinite; }
+
+@keyframes float-y {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -10px; }
+}
+.float-a { animation: float-y 7s ease-in-out infinite; }
+.float-b { animation: float-y 8s ease-in-out -2s infinite; }
+.float-c { animation: float-y 6.5s ease-in-out -4s infinite; }
+.float-d { animation: float-y 9s ease-in-out -1s infinite; }
+
+@keyframes pulse-ring {
+  0% { transform: scale(1); opacity: 0.8; }
+  75%, 100% { transform: scale(2.2); opacity: 0; }
+}
+.pulse-dot { animation: pulse-ring 2s cubic-bezier(0, 0, 0.2, 1) infinite; }
+
 /* Respect users who prefer less motion */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .animate-marquee {
+  .animate-marquee,
+  .glow-a, .glow-b,
+  .float-a, .float-b, .float-c, .float-d,
+  .pulse-dot,
+  .animate-ping,
+  .animate-spin {
     animation: none !important;
   }
 }
