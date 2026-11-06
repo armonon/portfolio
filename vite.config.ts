@@ -131,6 +131,13 @@ function seoPages(): Plugin {
         mkdirSync(dirname(file), { recursive: true })
         writeFileSync(file, html)
       }
+      // Netlify serves 404.html (with a 404 status) for unknown URLs; the app then shows its own not-found page.
+      writeFileSync(
+        join(outDir, '404.html'),
+        template
+          .replace(/<title>[\s\S]*?<\/title>/, '<title>Page not found — Armon Nasiri</title>')
+          .replace(/<link rel="canonical"[^>]*>/, '<meta name="robots" content="noindex" />')
+      )
       const today = new Date().toISOString().slice(0, 10)
       const urls = ['/', ...routes.map((r) => r.path)]
       writeFileSync(
