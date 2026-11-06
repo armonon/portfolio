@@ -23,9 +23,11 @@ function PlayOverlay({ onPlay, playing }: { onPlay: () => void; playing: boolean
  * always shows a poster frame first (never an empty black box), and does not autoplay
  * for visitors who prefer reduced motion.
  */
-export function LazyVideo({ src, poster, className, label }: { src: string; poster?: string; className?: string; label?: string }) {
+export function LazyVideo({ src, poster, className, label, eagerPoster = false }: { src: string; poster?: string; className?: string; label?: string; eagerPoster?: boolean }) {
   const ref = useRef<HTMLVideoElement>(null);
   const isInView = useInView(ref, { once: false, margin: "120px" });
+  // The poster frame loads once the clip is within ~a screen of the viewport (always, for above-the-fold clips)
+  const near = useInView(ref, { once: true, margin: "900px" });
   const reduce = useReducedMotion();
   const [userPlay, setUserPlay] = useState(false);
   const allowed = !reduce || userPlay;
@@ -54,7 +56,7 @@ export function LazyVideo({ src, poster, className, label }: { src: string; post
   }, [isInView, src, allowed]);
   return (
     <span className="relative block h-full w-full">
-      <video ref={ref} poster={poster ?? posterFor(src)} preload="none" aria-label={label} className={`bg-[#1a1714] ${className ?? ""}`} />
+      <video ref={ref} poster={eagerPoster || near ? poster ?? posterFor(src) : undefined} preload="none" aria-label={label} className={`bg-[#1a1714] ${className ?? ""}`} />
       {reduce && <PlayOverlay playing={userPlay} onPlay={() => setUserPlay(true)} />}
     </span>
   );
@@ -328,7 +330,7 @@ export function LaptopFrame({ children, url }: { children: ReactNode; url?: stri
           <span className="h-2 w-2 rounded-full bg-[#ff5f57]" />
           <span className="h-2 w-2 rounded-full bg-[#febc2e]" />
           <span className="h-2 w-2 rounded-full bg-[#28c840]" />
-          {url && <span className="ml-2 truncate rounded-full bg-white/[0.06] px-3 py-0.5 font-mono text-[10px] text-white/50">{url}</span>}
+          {url && <span aria-hidden className="ml-2 truncate rounded-full bg-white/[0.06] px-3 py-0.5 font-mono text-[10px] text-white/50">{url}</span>}
         </div>
         <div className="relative aspect-[16/10] overflow-hidden rounded-[10px] bg-black">{children}</div>
       </div>
@@ -358,7 +360,7 @@ export function PhoneFrame({ children, className = "", url }: { children: ReactN
         <div className="relative min-h-0 flex-1 overflow-hidden">{children}</div>
         {/* Safari-style bottom bar */}
         {url && (
-          <div className="flex h-[15.8%] shrink-0 flex-col items-center justify-start gap-[10%] bg-[#1c1c1e] px-[6%] pt-[2.5%]">
+          <div aria-hidden className="flex h-[15.8%] shrink-0 flex-col items-center justify-start gap-[10%] bg-[#1c1c1e] px-[6%] pt-[2.5%]">
             <div className="flex w-full items-center justify-center gap-1.5 rounded-[10px] bg-[#2c2c2e] py-[3.5%] text-[9.5px] text-white/85">
               <span className="text-[8px]">🔒</span>
               {url}

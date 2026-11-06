@@ -441,7 +441,7 @@ function App() {
         {/* ── NAV ──────────────────────────────────────────── */}
         <header className="sticky top-0 z-50 px-3 pt-3 sm:px-6">
           <nav aria-label="Main" className="mx-auto flex h-14 max-w-[1320px] items-center justify-between rounded-full border border-line bg-bg/75 pl-5 pr-2 backdrop-blur-xl">
-            <a href="/" aria-label="Armon Nasiri, home" className="-my-2 flex items-center gap-2.5 py-2 text-[15px] font-semibold tracking-[-0.01em] text-ink">
+            <a href="/" className="-my-2 flex items-center gap-2.5 py-2 text-[15px] font-semibold tracking-[-0.01em] text-ink">
               <span aria-hidden className="grid h-7 w-7 place-items-center rounded-full bg-ink font-serif text-[15px] italic text-bg">
                 a
               </span>
@@ -620,7 +620,7 @@ function App() {
             <div className="flex flex-col gap-4 text-[13px] text-muted sm:flex-row sm:items-center sm:justify-between">
               <span>
                 <span className="text-ink">Armon Nasiri</span> — Designer &amp; engineer · founder of{" "}
-                <a href={STUDIO_URL} target="_blank" rel="noreferrer" className="text-ink hover:underline">
+                <a href={STUDIO_URL} target="_blank" rel="noreferrer" className="text-ink underline decoration-accent decoration-2 underline-offset-4 hover:decoration-ink">
                   thecreateco
                 </a>
               </span>

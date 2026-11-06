@@ -43,14 +43,15 @@ function HeroCollage() {
   return (
     <div className="pointer-events-none absolute right-0 top-28 h-[620px] w-[46%]">
       <a href="/work/sattari" aria-label="Sattari Music: AI video ad and website" className="float-a pointer-events-auto absolute right-[4%] top-0 block w-[78%] rotate-[2.5deg] overflow-hidden rounded-[20px] border border-line bg-[#1a1714] shadow-[0_40px_80px_-30px_rgba(0,0,0,0.5)] transition-transform hover:rotate-0">
-        <LazyVideo src="/videos/hero-ad.mp4" label="AI-generated video ad for Sattari Music" className="block aspect-video w-full object-cover" />
+        <LazyVideo src="/videos/hero-ad.mp4" eagerPoster label="AI-generated video ad for Sattari Music" className="block aspect-video w-full object-cover" />
         <span className="absolute left-3 top-3 rounded-full bg-black/60 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.1em] text-white backdrop-blur">AI video ad</span>
       </a>
       <a href="/work/breakthyrule-eden" aria-label="BREAKTHYRULE Eden, an explorable 3D website" className="float-b pointer-events-auto absolute left-0 top-[44%] block w-[52%] -rotate-[4deg] overflow-hidden rounded-[18px] border border-line bg-surface shadow-[0_30px_60px_-30px_rgba(0,0,0,0.5)] transition-transform hover:rotate-0">
         <img src="/photos/walkthrough/eden-eden.jpg" alt="" width={1280} height={800} decoding="async" className="block aspect-[16/10] w-full object-cover object-top" />
         <span className="absolute left-3 top-3 rounded-full bg-black/60 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.1em] text-white backdrop-blur">3D website</span>
       </a>
-      <a href="/work/librarian" aria-label="Librarian running on an iPhone" className="float-c pointer-events-auto absolute right-[6%] top-[42%] block w-[24%] rotate-[6deg] transition-transform hover:rotate-0">
+      <a href="/work/librarian" className="float-c pointer-events-auto absolute right-[6%] top-[42%] block w-[24%] rotate-[6deg] transition-transform hover:rotate-0">
+        <span className="sr-only">Librarian running on an iPhone</span>
         <PhoneFrame url="librarian.thecreatingco.com">
           <DeviceVideo src="/videos/hero-librarian.mp4" poster="/photos/librarian-iphone-results.jpg" label="Librarian on iPhone" className="h-full w-full object-cover object-top" />
         </PhoneFrame>
@@ -416,7 +417,8 @@ function Hero({ scrollTo }: { scrollTo: (id: string) => void }) {
       <HeroGlow />
       <div className="relative mx-auto max-w-[1320px] pb-10 pt-8 sm:pb-16 sm:pt-16 md:pt-24 lg:pb-24">
         <HeroCollage />
-        <div className="relative lg:max-w-[52%]">
+        {/* min-height: the fallback font wraps taller than Inter Tight; reserving the space stops the stats strip shifting when fonts load */}
+        <div className="relative lg:min-h-[640px] lg:max-w-[52%]">
           <a
             href="#contact"
             onClick={(e) => {
