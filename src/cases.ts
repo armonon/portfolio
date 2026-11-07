@@ -47,7 +47,7 @@ export const caseStudies: CaseStudy[] = [
     steps: [
       { image: "/photos/walk/librarian-1.jpg", label: "Search ten catalogs", caption: "Type once: Open Library, Internet Archive, the Library of Congress, Europeana and more are searched together." },
       { image: "/photos/walk/librarian-2.jpg", label: "573 results, grouped", caption: "Duplicate editions are merged, and every result shows its sources and a metadata quality score." },
-      { image: "/photos/walk/librarian-4.jpg", label: "Readable, in 10 catalogs", caption: "Frankenstein (1818): readable and borrowable, with subjects, identifiers and every source a click away." },
+      { image: "/photos/walk/librarian-4.jpg", label: "Found in 10 catalogs", caption: "A classic novel's detail page: where to read it or borrow it, its metadata, and a link to each catalog it came from." },
       { image: "/photos/walk/librarian-5.jpg", label: "Save to shelf", caption: "One click keeps the book in your library on this device." },
       { image: "/photos/walk/librarian-6.jpg", label: "Your shelf", caption: "Saved books stay put, ready to pick up again, even offline." },
       { image: "/photos/librarian-iphone-home.jpg", label: "Your reading room", caption: "Open it like an app from the home screen. Your library, collections and shelf are always one tap away." },
