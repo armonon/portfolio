@@ -7,35 +7,42 @@
     <meta name="theme-color" content="#f3f2ec" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#0c0c0b" media="(prefers-color-scheme: dark)" />
 
-    <title>Armon Nasiri — Digital Designer &amp; Developer</title>
+    <title>Armon Nasiri — Designer &amp; Engineer: Software, Immersive Websites, AI</title>
     <link rel="canonical" href="https://armonnasiri.com/" />
-    <meta name="description" content="Apps, games, websites, 3D assets, AI image &amp; video and local AI agents. You name it, I create it. Digital designer &amp; developer in Los Angeles." />
+    <meta name="description" content="I design and build ambitious software, immersive websites and AI-powered experiences, from the first concept to a working launch. Designer and engineer in Los Angeles." />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <!-- Self-hosted fonts: the two used by the hero headline are preloaded -->
+    <link rel="preload" href="/fonts/inter-tight-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/instrument-serif-italic-latin.woff2" as="font" type="font/woff2" crossorigin />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://armonnasiri.com" />
-    <meta property="og:title" content="Armon Nasiri — Digital Designer &amp; Developer" />
-    <meta property="og:description" content="Apps, games, websites, 3D assets, AI image &amp; video and local AI agents. You name it, I create it. Digital designer &amp; developer in Los Angeles." />
+    <meta property="og:url" content="https://armonnasiri.com/" />
+    <meta property="og:site_name" content="Armon Nasiri" />
+    <meta property="og:title" content="Armon Nasiri — Designer &amp; Engineer: Software, Immersive Websites, AI" />
+    <meta property="og:description" content="I design and build ambitious software, immersive websites and AI-powered experiences, from the first concept to a working launch. Designer and engineer in Los Angeles." />
     <meta property="og:image" content="https://armonnasiri.com/og-image.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
 
     <!-- Twitter / X -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Armon Nasiri — Digital Designer &amp; Developer" />
-    <meta name="twitter:description" content="Apps, games, websites, 3D assets, AI image &amp; video and local AI agents. You name it, I create it. Digital designer &amp; developer in Los Angeles." />
+    <meta name="twitter:title" content="Armon Nasiri — Designer &amp; Engineer: Software, Immersive Websites, AI" />
+    <meta name="twitter:description" content="I design and build ambitious software, immersive websites and AI-powered experiences, from the first concept to a working launch. Designer and engineer in Los Angeles." />
     <meta name="twitter:image" content="https://armonnasiri.com/og-image.jpg" />
+    <!-- Structured data (the per-page HTML files get page-specific data at build time) -->
+    <script type="application/ld+json" id="ld-site">{"@context":"https://schema.org","@graph":[{"@type":"Person","@id":"https://armonnasiri.com/#person","name":"Armon Nasiri","url":"https://armonnasiri.com/","image":"https://armonnasiri.com/photos/armon-portrait.jpg","jobTitle":"Designer and engineer","email":"mailto:armonnasiri@gmail.com","address":{"@type":"PostalAddress","addressLocality":"Los Angeles","addressRegion":"CA","addressCountry":"US"},"sameAs":["https://github.com/armonon","https://thecreatingco.com"],"knowsAbout":["Product design","Web development","TypeScript","React","Rust","C++","three.js","Applied AI","Local AI agents"]},{"@type":"ProfessionalService","@id":"https://armonnasiri.com/#service","name":"Armon Nasiri — design and engineering","url":"https://armonnasiri.com/","founder":{"@id":"https://armonnasiri.com/#person"},"areaServed":"Worldwide","address":{"@type":"PostalAddress","addressLocality":"Los Angeles","addressRegion":"CA","addressCountry":"US"},"serviceType":["Digital products","Websites and web apps","Creative technology and 3D","AI and automation","Local AI agent setup"]},{"@type":"WebSite","@id":"https://armonnasiri.com/#website","url":"https://armonnasiri.com/","name":"Armon Nasiri","publisher":{"@id":"https://armonnasiri.com/#person"}}]}</script>
   </head>
   <body>
+    <!-- Netlify Forms: declares the "contact" form so Netlify stores submissions forwarded by /api/contact. Never shown. -->
+    <form name="contact" data-netlify="true" netlify-honeypot="bot-field" hidden>
+      <input name="bot-field" /><input name="name" /><input name="email" /><input name="category" /><textarea name="description"></textarea><input name="budget" /><input name="timeline" />
+    </form>
     <div id="root">
-      <main style="font-family:system-ui,sans-serif;max-width:40rem;margin:4rem auto;padding:0 1.25rem">
-        <h1>Armon Nasiri — apps, games, websites, AI media &amp; agents. You name it, I create it.</h1>
-        <p>Digital designer and developer in Los Angeles. Services: brand &amp; UI design, websites, apps &amp; software, game design, 3D asset creation, AI image &amp; video generation, automation and local autonomous AI agent setup.</p>
-        <p><a href="https://thecreatingco.com">thecreateco</a> · <a href="https://momentous-store.netlify.app/apps">40 apps</a> · <a href="https://github.com/armonon">GitHub</a> · <a href="mailto:armonnasiri@gmail.com">armonnasiri@gmail.com</a></p>
+      <main style="font-family:system-ui,sans-serif;max-width:40rem;margin:0 auto;padding:4rem 1.25rem">
+        <h1>Armon Nasiri — Ideas into working products.</h1>
+        <p>I design and build ambitious software, immersive websites and AI-powered experiences, from the first concept to a working launch. Designer and engineer in Los Angeles.</p>
+        <p><a href="/work">Selected work</a> · <a href="/services">Services</a> · <a href="/apps">Apps</a> · <a href="/hire">For employers</a> · <a href="https://github.com/armonon">GitHub</a> · <a href="mailto:armonnasiri@gmail.com">armonnasiri@gmail.com</a></p>
       </main>
     </div>
     <script type="module" src="/src/main.tsx"></script>

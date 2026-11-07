@@ -1,0 +1,23 @@
+# Hashed build assets never change, so they can be cached forever.
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Fonts never change under the same name.
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Media is sometimes replaced under the same file name (re-shot clips), so cache it for a
+# day and revalidate in the background after that.
+/videos/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+/photos/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+/app-logos/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+/og/*
+  Cache-Control: public, max-age=86400
+
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()

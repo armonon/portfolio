@@ -106,85 +106,79 @@ export const appCategories = ["All", "Creative", "Audio", "Productivity", "Commu
 
 export const heroWords = ["Apps", "Games", "Software", "Websites", "3D assets", "Images", "Video", "AI agents"];
 
-/** Best work: one flagship per service. `project` ids point at the projects list in App.tsx. */
+/** Selected work on the homepage: the six priority case studies. Status comes from the registry. */
 export type Flagship = {
-  project?: string;
+  slug: string;
   title: string;
   service: string;
+  role: string;
   hook: string;
   forYou: string;
-  stat: string;
+  /** A verifiable fact only (counted from the source, or visible on the live product) */
+  proof: string;
   media: { video?: string; image: string };
-  live?: string;
-  liveLabel?: string;
-  anchor?: string;
 };
 
 export const flagships: Flagship[] = [
   {
-    project: "luma-studio",
+    slug: "sattari",
+    title: "Sattari Music",
+    service: "Client · e-commerce & brand",
+    role: "Design, engineering, AI video",
+    hook: "A music store's whole digital presence: a Stripe-powered shop, service booking, local landing pages, a free in-browser music lab and a generated ad campaign.",
+    forYou: "One partner for your site, store, tools and campaign.",
+    proof: "1,370 automated tests in the repo",
+    media: { video: "/videos/sattari-site-scroll.mp4", image: "/photos/sattari/sat-home.jpg" }
+  },
+  {
+    slug: "luma-studio",
     title: "Luma Studio",
-    service: "Apps & software",
-    hook: "A Photoshop-class image editor written in Rust on its own GPU renderer, with AI that runs fully offline.",
-    forYou: "If I can build a pro editor from the renderer up, your app is in safe hands.",
-    stat: "108 passing tests",
-    media: { video: "/videos/luma-demo.mp4", image: "/photos/luma-shot.png" },
-    live: "https://luma.thecreatingco.com",
-    liveLabel: "Try Luma"
+    service: "Product · image editor",
+    role: "Product design & engineering",
+    hook: "A local-first, nondestructive image editor for the web and a Tauri desktop edition: 27 blend modes, PSD round-trips, RAW development and on-device AI selection.",
+    forYou: "Complex, high-performance creative software, built to a professional bar.",
+    proof: "1,200+ automated tests in the public repo",
+    media: { video: "/videos/luma-live.mp4", image: "/photos/luma-live.jpg" }
   },
   {
-    project: "form-studio",
+    slug: "form-studio",
     title: "Form Studio",
-    service: "3D & assets",
-    hook: "Describe a part in plain English (“an 80 × 50 mm bracket with 4 holes”) and get exact, editable CAD geometry.",
-    forYou: "Product models, jewelry, fixtures and garment forms, ready to render or manufacture.",
-    stat: "200+ tests",
-    media: { video: "/videos/form-studio-demo.mp4", image: "/photos/form-studio-shot.png" },
-    live: "https://form.thecreatingco.com",
-    liveLabel: "Try Form"
+    service: "Product · precision CAD",
+    role: "Product design & engineering",
+    hook: "Precision product, jewelry and garment design with exact Open CASCADE geometry, editable generators and native cloth simulation on macOS.",
+    forYou: "Engineering-grade tools with a design-grade interface.",
+    proof: "1,500+ automated tests in the repo",
+    media: { video: "/videos/form-live.mp4", image: "/photos/form-live.jpg" }
   },
   {
-    project: "sattari-ai-ad",
-    title: "ScenePilot × Sattari ad",
-    service: "AI video",
-    hook: "I built the editor and made the ad: a beat-synced video tool that renders in the browser, and a generated spot cut with it.",
-    forYou: "Campaign-grade video for your brand without a film crew's budget.",
-    stat: "Tool + finished ad",
-    media: { video: "/videos/sattari-ai-ad.mp4", image: "/photos/sattari-ai-ad-poster.jpg" },
-    live: "https://scenepilot.thecreatingco.com",
-    liveLabel: "Try ScenePilot"
+    slug: "breakthyrule-eden",
+    title: "BREAKTHYRULE — Eden",
+    service: "Client · immersive website",
+    role: "3D world, pipeline & front end",
+    hook: "A streetwear label rebuilt as an explorable three.js garden, with an AI librarian, an art gallery, a music amphitheater and a product vault.",
+    forYou: "A website people remember, with the store inside the experience.",
+    proof: "three.js world with a Blender asset pipeline",
+    media: { image: "/photos/walkthrough/eden-eden.jpg" }
   },
   {
-    title: "BREAKTHYRULE Eden",
-    service: "Websites",
-    hook: "A streetwear brand rebuilt as a walkable garden, with an AI librarian, an art gallery, a music amphitheater and a product vault.",
-    forYou: "A website people remember and share, with the store built into the experience.",
-    stat: "Explorable 3D world",
-    media: { image: "/photos/walkthrough/eden-eden.jpg" },
-    live: "https://breakthyrule-eden-showroom.netlify.app",
-    liveLabel: "Walk through it",
-    anchor: "websites"
+    slug: "scenepilot",
+    title: "ScenePilot",
+    service: "Product · video editing",
+    role: "Product design & engineering",
+    hook: "A beat-aware music-video editor: it analyses the track, places cuts against the music and renders MP4 in the browser, with a desktop edition that auto-updates.",
+    forYou: "Media tools that do the tedious part automatically.",
+    proof: "Web + Electron desktop, MP4 rendered in-browser",
+    media: { video: "/videos/walk/scenepilot.mp4", image: "/photos/walk/scenepilot-0.jpg" }
   },
   {
-    project: "universal-computer-operator",
+    slug: "universal-computer-operator",
     title: "Universal Computer Operator",
-    service: "AI agents",
-    hook: "A local AI agent that sees the screen, plans, asks for approval, then works inside real Mac apps.",
-    forYou: "The same approach, set up on your machine to take repetitive work off your plate.",
-    stat: "Runs 100% locally",
-    media: { video: "/videos/uco-demo.mp4", image: "/photos/uco-example.svg" },
-    anchor: "agents"
-  },
-  {
-    project: "model-studio",
-    title: "Photobooth Studio",
-    service: "Brands & e-commerce",
-    hook: "Drop in garment artwork and get polished product photos, with background removal done on-device.",
-    forYou: "Shop-ready product imagery for every drop, without a photoshoot.",
-    stat: "Free · offline",
-    media: { video: "/videos/model-studio-demo.mp4", image: "/photos/model-studio-clip.svg" },
-    live: "https://photoboothstudio-b6ac09.netlify.app",
-    liveLabel: "Try Photobooth"
+    service: "Prototype · local AI agent",
+    role: "Agent design & native engineering",
+    hook: "A macOS agent that captures the screen, plans, asks for approval and then acts in real apps, running on local models or a cloud API.",
+    forYou: "Agents and automation you can trust on your own machine.",
+    proof: "Approval tiers for safe, reversible and sensitive actions",
+    media: { video: "/videos/uco-demo.mp4", image: "/videos/posters/uco-demo.jpg" }
   }
 ];
 
@@ -346,7 +340,7 @@ export const fullApps: FullApp[] = [
     poster: "/photos/form-live.jpg",
     shots: [{ src: "/photos/form-live.jpg", label: "Mounting bracket, exact geometry" }, { src: "/photos/form-studio-shot.png", label: "Start center & recipes" }],
     features: ["Exact OpenCASCADE B-Rep modelling, not meshes", "Plain-language commands on a parametric feature tree", "Precision CAD, 3D studio and garment studio in one app", "Local-first with backups and recovery"],
-    layers: ["CAD kernel integration", "3D viewport", "Parametric engine", "AI commands", "200+ tests"],
+    layers: ["CAD kernel integration", "3D viewport", "Parametric engine", "AI commands", "1,500+ tests"],
     platforms: "Web · native in development",
     live: "https://form.thecreatingco.com/studio"
   },
@@ -354,12 +348,12 @@ export const fullApps: FullApp[] = [
     id: "luma",
     name: "Luma Studio",
     kind: "Image editing · web + Mac",
-    pitch: "A full image editor: layers, masks, brushes, warp, heal, smart select and editable AI, on a custom GPU renderer written in Rust. This is a real session, painting straight onto the canvas.",
+    pitch: "A local-first, nondestructive image editor: layers, masks, brushes, healing, smart selection and on-device AI. One TypeScript engine runs on the web and in a Tauri desktop app with a threaded Rust compositor. This is a real session, painting straight onto the canvas.",
     video: "/videos/luma-live.mp4",
     poster: "/photos/luma-live.jpg",
     shots: [{ src: "/photos/luma-live.jpg", label: "Brush engine on a live canvas" }, { src: "/photos/luma-shot.png", label: "Workspace" }],
-    features: ["Custom wgpu renderer and document engine", "Offline AI subject select and background removal", "24-brush library, layers, blend passes, history", "Opens PSD, RAW and its own project format"],
-    layers: ["Rust engine", "GPU rendering", "On-device AI", "Pro UI", "108 tests"],
+    features: ["All 27 Photoshop blend modes, multiple blend passes per layer", "On-device subject selection and matting models", "Pressure-aware brushes, healing, clone and captured brush tips", "PSD/PSB preservation, DNG decode and ICC colour management"],
+    layers: ["TypeScript engine", "Rust compositor", "On-device AI", "Pro UI", "1,200+ tests"],
     platforms: "Web · macOS",
     live: "https://luma.thecreatingco.com/studio"
   },

@@ -1,3 +1,12 @@
-/work      /index.html   200
-/work/*    /index.html   200
-/apps      /index.html   200
+# Consolidate the Netlify subdomain onto the custom domain. Deploy previews and branch
+# deploys use other hostnames (deploy-preview-N--armonnasiri.netlify.app) and are unaffected.
+https://armonnasiri.netlify.app/*  https://armonnasiri.com/:splat  301!
+
+# Client-rendered pages. Each also has a prerendered HTML file (work.html, apps.html,
+# work/<slug>.html …) that Netlify serves first; these rules only catch unknown sub-paths.
+/work       /index.html   200
+/work/*     /index.html   200
+/apps       /index.html   200
+/tools      /index.html   200
+/services   /index.html   200
+/hire       /index.html   200

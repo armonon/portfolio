@@ -173,7 +173,7 @@ export const caseStudies: CaseStudy[] = [
     hero: { video: luma.video, image: luma.poster },
     steps: [
       { image: "/photos/luma-shot.png", label: "Workspace", caption: "A full pro layout: tools, layers, blend passes, properties and a brush library." },
-      { image: "/photos/luma-live.jpg", label: "Painting", caption: "The brush engine running on a custom GPU renderer, with strokes landing in real time." },
+      { image: "/photos/luma-live.jpg", label: "Painting", caption: "The pressure-aware brush engine, with strokes landing on the canvas in real time." },
       { image: "/photos/walk/cutout-2.jpg", label: "Cutout, built on Luma", caption: "Luma's on-device AI also powers Cutout, a one-click background remover." }
     ],
     footage: [
@@ -298,6 +298,29 @@ export const caseStudies: CaseStudy[] = [
     features: ["Tempo and downbeat detection", "Beat-locked cuts", "GPU colour grading", "MP4 rendered in the browser"],
     built: ["WebGL", "Web Audio", "Beat detection", "Video pipeline"],
     platforms: "Web · Mac in development"
+  },
+  {
+    slug: "universal-computer-operator",
+    title: "Universal Computer Operator",
+    kind: "Local AI agent · macOS · private build",
+    group: "App",
+    summary:
+      "An agent that reads the Mac screen, narrates the plan it intends to follow, waits for approval on anything sensitive, then carries the steps out inside real apps. It can run on a local model through Ollama.",
+    hero: { video: "/videos/uco-demo.mp4", image: "/photos/uco-shot.jpg" },
+    steps: [
+      { image: "/photos/uco-shot.jpg", label: "Operator", caption: "Ask in plain English. The agent reads the screen and proposes a plan before acting." },
+      { image: "/photos/uco-example.svg", label: "Approval", caption: "Steps are tiered safe, reversible or sensitive; sensitive steps wait for you." }
+    ],
+    footage: [{ video: "/videos/uco-demo.mp4", poster: "/videos/posters/uco-demo.jpg", label: "Operator demo, recorded on macOS" }],
+    features: [
+      "Plans first, then acts inside real macOS apps",
+      "Approval tiers for safe, reversible and sensitive actions",
+      "Typed terminal commands instead of raw shell strings",
+      "Task templates: Photoshop background removal, batch resize, folder organising",
+      "Session history in SQLite and an emergency stop"
+    ],
+    built: ["Agent design", "Safety model", "Tauri + Rust", "React UI", "Local models"],
+    platforms: "macOS · private build"
   },
   {
     slug: "stemdeck",

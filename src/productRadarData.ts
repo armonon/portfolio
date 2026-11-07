@@ -1052,11 +1052,11 @@ export const radarDirectory: DirectoryEntry[] = [
   },
   {
     name: "Luma Studio",
-    blurb: "Native Photoshop-class editor in Rust — layer focus, multi-pass blending, capture brushes, branching history, and editable AI.",
+    blurb: "Local-first, nondestructive image editor for web and desktop: 27 blend modes, multi-pass blending, captured brushes, PSD/PSB preservation, branching history and on-device AI selection.",
     group: "Products",
-    stack: "Rust · wgpu · ONNX Runtime",
+    stack: "TypeScript · Tauri · Rust compositor · ONNX",
     live: "https://luma.thecreatingco.com",
-    repo: "https://github.com/armonon/sweet-suite",
+    repo: "https://github.com/armonon/luma-studio",
   },
   {
     name: "Form Studio",
