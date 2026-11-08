@@ -57,7 +57,7 @@ function routeMeta(): RouteMeta[] {
       description: 'Background, specialties, engineering case studies and public repositories of Armon Nasiri, a product designer and engineer in Los Angeles.',
       image: '/og-image.jpg',
       heading: 'For engineering teams',
-      body: '<p>Product engineer working across TypeScript and React, Rust and C++, serverless back-ends and on-device AI.</p><p><a href="https://github.com/armonon">GitHub</a></p>'
+      body: '<p>Product engineer working across TypeScript and React, Rust and C++, serverless back-ends and on-device AI.</p><h2>Core skills</h2><p>TypeScript, JavaScript, Python, SQL, Rust, C++, React, Next.js, Tailwind CSS, three.js, REST APIs, Node.js serverless functions, Stripe, PostgreSQL, SQLite, LLM integration, AI agents, pandas, scikit-learn, TensorFlow, Tauri, Electron, automated testing, CI/CD.</p><h2>TrackFlow · Talent Pipeline Tracker</h2><p>Applicant-tracking dashboard built with Next.js, React 19, TypeScript and Tailwind CSS, with full REST API CRUD (4Geeks Academy project).</p><p><a href="https://github.com/armonon/talent-pipeline-tracker">TrackFlow source</a> · <a href="https://github.com/armonon">GitHub</a></p>'
     }
   ]
   for (const c of caseStudies) {

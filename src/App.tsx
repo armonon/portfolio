@@ -598,7 +598,7 @@ function App() {
           <div className="mx-auto max-w-[1320px]">
             <figure className="mx-auto mb-10 w-full max-w-[11rem] sm:max-w-[18rem]">
               <div className="overflow-hidden rounded-[28px] border border-line bg-surface p-2.5 shadow-[0_40px_80px_-40px_rgba(0,0,0,0.45)]">
-                <img src="/photos/armon-portrait.jpg" alt="Armon Nasiri" width={640} height={853} loading="lazy" decoding="async" className="aspect-[4/5] w-full rounded-[20px] object-cover object-[50%_35%]" />
+                <img src="/photos/armon-nasiri.jpg" alt="Armon Nasiri" width={800} height={1000} loading="lazy" decoding="async" className="aspect-[4/5] w-full rounded-[20px] object-cover object-[50%_30%]" />
                 <figcaption className="flex items-center justify-between px-2 pb-1 pt-3">
                   <span className="whitespace-nowrap text-[13px] font-medium text-ink sm:text-[14px]">Armon Nasiri</span>
                   <span className="flex items-center gap-2 font-mono text-[10.5px] uppercase tracking-[0.12em] text-muted">
