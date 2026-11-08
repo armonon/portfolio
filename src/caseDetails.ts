@@ -174,6 +174,37 @@ export const caseDetails: Record<string, CaseDetail> = {
     source: { href: "https://github.com/armonon/scenepilot-studio", label: "scenepilot-studio on GitHub" }
   },
 
+  skybound: {
+    problem:
+      "Most browser games either feel weightless or need a big engine download. SKYBOUND aims for real physical comedy, bodies that tumble, bounce and fly, in a game that opens instantly from a link on a laptop or a phone.",
+    role: ["Game design and rules", "Physics and ragdoll engine", "three.js rendering and stadium", "Bot opponents", "Controls for keyboard, gamepad and touch", "Trailer and launch site"],
+    process: [
+      { title: "Rules as code", body: "Gameplay math lives in plain modules with no browser dependencies, so the same rules run in the game and in Node tests." },
+      { title: "Bodies that react", body: "Players are articulated ragdolls, so every hit and landing plays out physically rather than as a canned animation." },
+      { title: "Everywhere", body: "A full three.js renderer, plus a Canvas2D renderer with the same rules for devices without WebGL 2." },
+      { title: "Launch", body: "A 21-second trailer and a public build anyone can play from a link." }
+    ],
+    decisions: [
+      { title: "Deterministic physics", body: "Gravity, bounce and projectile maths are deterministic and shared by the browser and Node tests, so gameplay can be checked without a screen." },
+      { title: "XPBD ragdolls", body: "Each player is 15 weighted particles held together by XPBD bones and torso braces, with soft joint limits, self-collision and per-joint trampoline contacts." },
+      { title: "Two renderers, one game", body: "three.js powers the full game; if WebGL 2 is missing or fails, it falls back to a Canvas2D renderer with the same playable rules." },
+      { title: "Fair difficulty", body: "Rookie, Pro and Elite change how the bots aim, time and catch; the physics is identical at every level." }
+    ],
+    challenges: [
+      { challenge: "Ragdolls that are fun, not floppy.", solution: "Soft flex limits, torso braces and a single whole-body rebound per landing keep bodies readable while still tumbling." },
+      { challenge: "Phones and older machines.", solution: "Automatic fallback to the Canvas2D renderer, remembered for the session if 3D fails to start." },
+      { challenge: "One set of controls for every input.", solution: "A single steer-and-act gesture shared by both renderers: drag to strafe, second finger to throw, flick to flip; keyboard, mouse and gamepad map to the same actions." }
+    ],
+    outcomes: [
+      { v: "Public", k: "build, free to play in the browser" },
+      { v: "3", k: "arenas, plus 3 bot difficulty levels" },
+      { v: "2", k: "renderers: three.js and Canvas2D fallback" },
+      { v: "15", k: "simulated particles in every ragdoll" }
+    ],
+    tech: ["three.js", "JavaScript (ES modules)", "XPBD physics", "WebGL 2", "Canvas2D", "Web Audio", "Gamepad API"],
+    sourceNote: "No public repository. The game is free to play at skybound-ragdoll-arena.netlify.app."
+  },
+
   "universal-computer-operator": {
     problem:
       "AI assistants can describe what to do on a computer, but leave the doing to you. Universal Computer Operator is an agent that sees the Mac screen, proposes a plan, and carries it out inside real apps, with approval before anything sensitive.",

@@ -1,7 +1,8 @@
 import { AnimatePresence, motion, useInView, useReducedMotion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { ArrowDown, ArrowUpRight, Check, Pause, Play } from "lucide-react";
-import { flagships, fullApps, heroWords, type Flagship } from "./showcase";
+import { flagships, fullApps, heroWords, siteShowcases, type Flagship } from "./showcase";
+import SiteWalkthrough from "./SiteWalkthrough";
 import { showreelChapters } from "./cases";
 import { engagementTypes, families, process } from "./services";
 import { appCounts, clientCount, entry } from "./registry";
@@ -36,30 +37,56 @@ function useIsDesktop() {
 }
 
 // Collage of real work beside the headline. Only mounted on desktop, so phones never download its media.
+// Layered parallax: each card drifts with the pointer by its own depth (transform only, rAF-throttled).
+const depth = (n: number) => ({ transform: `translate3d(calc(var(--px, 0) * ${n}px), calc(var(--py, 0) * ${n * 0.7}px), 0)`, transition: "transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)" });
+
 function HeroCollage() {
   const desktop = useIsDesktop();
+  const ref = useRef<HTMLDivElement>(null);
+  const reduce = useReducedMotion();
+  useEffect(() => {
+    const el = ref.current;
+    if (!desktop || reduce || !el) return;
+    let raf = 0;
+    const onMove = (e: PointerEvent) => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        el.style.setProperty("--px", ((e.clientX / window.innerWidth) * 2 - 1).toFixed(3));
+        el.style.setProperty("--py", ((e.clientY / window.innerHeight) * 2 - 1).toFixed(3));
+      });
+    };
+    window.addEventListener("pointermove", onMove, { passive: true });
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("pointermove", onMove);
+    };
+  }, [desktop, reduce]);
   if (!desktop) return null;
   const logos = ["form", "luma", "stemdeck", "glyph-studio", "autocut", "vox"];
   return (
-    <div className="pointer-events-none absolute right-0 top-28 h-[620px] w-[46%]">
-      <a href="/work/sattari" aria-label="Sattari Music: AI video ad and website" className="float-a pointer-events-auto absolute right-[4%] top-0 block w-[78%] rotate-[2.5deg] overflow-hidden rounded-[20px] border border-line bg-[#1a1714] shadow-[0_40px_80px_-30px_rgba(0,0,0,0.5)] transition-transform hover:rotate-0">
+    <div ref={ref} className="pointer-events-none absolute right-0 top-28 h-[620px] w-[46%]">
+      <a href="/work/sattari" aria-label="Sattari Music: AI video ad and website" style={depth(10)} className="float-a pointer-events-auto absolute right-[4%] top-0 block w-[78%] rotate-[2.5deg] overflow-hidden rounded-[20px] border border-line bg-[#1a1714] shadow-[0_40px_80px_-30px_rgba(0,0,0,0.5)] transition-transform hover:rotate-0">
         <LazyVideo src="/videos/hero-ad.mp4" eagerPoster label="AI-generated video ad for Sattari Music" className="block aspect-video w-full object-cover" />
         <span className="absolute left-3 top-3 rounded-full bg-black/60 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.1em] text-white backdrop-blur">AI video ad</span>
       </a>
-      <a href="/work/breakthyrule-eden" aria-label="BREAKTHYRULE Eden, an explorable 3D website" className="float-b pointer-events-auto absolute left-0 top-[44%] block w-[52%] -rotate-[4deg] overflow-hidden rounded-[18px] border border-line bg-surface shadow-[0_30px_60px_-30px_rgba(0,0,0,0.5)] transition-transform hover:rotate-0">
+      <a href="/work/breakthyrule-eden" aria-label="BREAKTHYRULE Eden, an explorable 3D website" style={depth(22)} className="float-b pointer-events-auto absolute left-0 top-[44%] block w-[52%] -rotate-[4deg] overflow-hidden rounded-[18px] border border-line bg-surface shadow-[0_30px_60px_-30px_rgba(0,0,0,0.5)] transition-transform hover:rotate-0">
         <img src="/photos/walkthrough/eden-eden.jpg" alt="" width={1280} height={800} decoding="async" className="block aspect-[16/10] w-full object-cover object-top" />
         <span className="absolute left-3 top-3 rounded-full bg-black/60 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.1em] text-white backdrop-blur">3D website</span>
       </a>
-      <a href="/work/librarian" className="float-c pointer-events-auto absolute right-[6%] top-[42%] block w-[24%] rotate-[6deg] transition-transform hover:rotate-0">
+      <a href="/work/librarian" style={depth(30)} className="float-c pointer-events-auto absolute right-[6%] top-[42%] block w-[24%] rotate-[6deg] transition-transform hover:rotate-0">
         <span className="sr-only">Librarian running on an iPhone</span>
         <PhoneFrame url="librarian.thecreatingco.com">
           <DeviceVideo src="/videos/hero-librarian.mp4" poster="/photos/librarian-iphone-results.jpg" label="Librarian on iPhone" className="h-full w-full object-cover object-top" />
         </PhoneFrame>
       </a>
-      <a href="/apps" aria-label={`Browse all ${appCounts.total} apps`} className="float-d pointer-events-auto absolute left-[12%] top-[6%] grid grid-cols-3 gap-2 rounded-[22px] border border-line bg-surface/90 p-3 shadow-[0_20px_50px_-25px_rgba(0,0,0,0.45)] backdrop-blur">
+      <a href="/apps" aria-label={`Browse all ${appCounts.total} apps`} style={depth(16)} className="float-d pointer-events-auto absolute left-[12%] top-[6%] grid grid-cols-3 gap-2 rounded-[22px] border border-line bg-surface/90 p-3 shadow-[0_20px_50px_-25px_rgba(0,0,0,0.45)] backdrop-blur">
         {logos.map((l) => (
           <img key={l} src={`/app-logos/${l}.svg`} alt="" width={40} height={40} className="h-10 w-10 rounded-xl" />
         ))}
+      </a>
+      <a href="/work/skybound" aria-label="SKYBOUND, a physics browser game" style={depth(38)} className="float-b pointer-events-auto absolute left-[26%] top-[76%] block w-[40%] rotate-[3deg] overflow-hidden rounded-[16px] border border-line bg-[#0d1530] shadow-[0_30px_60px_-30px_rgba(0,0,0,0.55)] transition-transform hover:rotate-0">
+        <LazyVideo src="/videos/hero-skybound.mp4" label="SKYBOUND gameplay trailer" className="block aspect-video w-full object-cover" />
+        <span className="absolute left-2.5 top-2.5 rounded-full bg-black/60 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.1em] text-white backdrop-blur">Browser game</span>
       </a>
     </div>
   );
@@ -411,6 +438,44 @@ function ProcessSection() {
   );
 }
 
+// Phones and tablets (no collage): a moving strip of real work, each tile opening its case study.
+const tickerItems = [
+  { slug: "sattari", img: "sattari-ad", label: "AI video ad" },
+  { slug: "skybound", img: "skybound", label: "Browser game" },
+  { slug: "breakthyrule-eden", img: "eden", label: "3D website" },
+  { slug: "luma-studio", img: "luma", label: "Image editor" },
+  { slug: "synthesis", img: "synthesis", label: "3D store" },
+  { slug: "form-studio", img: "form", label: "CAD" },
+  { slug: "scenepilot", img: "scenepilot", label: "Video editor" },
+  { slug: "librarian", img: "librarian", label: "Research app" }
+];
+
+function WorkTicker() {
+  const tile = (t: (typeof tickerItems)[number], copy: boolean) => (
+    <a
+      key={`${copy ? "b" : "a"}-${t.slug}`}
+      href={`/work/${t.slug}`}
+      tabIndex={copy ? -1 : undefined}
+      aria-hidden={copy || undefined}
+      className="group relative block w-[46vw] max-w-[220px] shrink-0 overflow-hidden rounded-[14px] border border-line bg-[#1a1714] shadow-[0_16px_30px_-18px_rgba(0,0,0,0.45)]"
+    >
+      <img src={`/photos/thumbs/${t.img}.jpg`} alt="" width={360} height={225} decoding="async" className="aspect-[16/10] w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+      <span className="absolute bottom-2 left-2 rounded-full bg-black/60 px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.08em] text-white backdrop-blur">{t.label}</span>
+      {!copy && <span className="sr-only">Open the case study</span>}
+    </a>
+  );
+  return (
+    <nav aria-label="Recent work" className="ticker marquee-pause -mx-5 mt-10 overflow-hidden sm:-mx-8 lg:hidden">
+      <div className="marquee-mask">
+        <div className="ticker-track flex w-max gap-3 px-5 sm:px-8">
+          {tickerItems.map((t) => tile(t, false))}
+          {tickerItems.map((t) => tile(t, true))}
+        </div>
+      </div>
+    </nav>
+  );
+}
+
 function Hero({ scrollTo }: { scrollTo: (id: string) => void }) {
   return (
     <section id="hero" className="relative isolate px-5 sm:px-8">
@@ -438,7 +503,13 @@ function Hero({ scrollTo }: { scrollTo: (id: string) => void }) {
           <h1 className="mt-7 text-[clamp(3rem,7vw,7rem)] font-semibold leading-[0.92] tracking-[-0.05em] text-ink sm:mt-10">
             Ideas into
             <br />
-            working <span className="font-serif font-normal italic tracking-[-0.02em] text-accent-ink">products.</span>
+            working{" "}
+            <span className="relative inline-block">
+              <span className="shine font-serif font-normal italic tracking-[-0.02em] text-accent-ink">products.</span>
+              <svg aria-hidden viewBox="0 0 300 24" preserveAspectRatio="none" className="swash pointer-events-none absolute -bottom-[0.06em] left-[2%] h-[0.22em] w-[96%] overflow-visible">
+                <path d="M3 17 C 60 5, 140 4, 297 12" fill="none" stroke="var(--accent)" strokeWidth="7" strokeLinecap="round" />
+              </svg>
+            </span>
           </h1>
 
           <p className="mt-6 max-w-[38rem] text-[17px] leading-relaxed text-muted sm:mt-8 sm:text-[19px]">
@@ -477,6 +548,7 @@ function Hero({ scrollTo }: { scrollTo: (id: string) => void }) {
             </a>
           </div>
         </div>
+        <WorkTicker />
       </div>
 
       <dl className="mx-auto grid max-w-[1320px] grid-cols-3 gap-px border-y border-line bg-line">
@@ -552,6 +624,21 @@ function WorkCard({ item, index, span }: { item: Flagship; index: number; span: 
   );
 }
 
+// The Synthesis site, room by room: an explorable store as a website example.
+function WebsiteSpotlight() {
+  const site = siteShowcases.find((x) => x.id === "synthesis");
+  if (!site) return null;
+  return (
+    <div id="website-spotlight" className="mt-16 border-t border-line pt-12 md:mt-20 md:pt-16">
+      <div className="mb-8 flex flex-wrap items-baseline justify-between gap-3">
+        <Kicker className="text-accent-ink">Website spotlight · walk through it</Kicker>
+        <a href="/work#websites" className="font-mono text-[11px] uppercase tracking-[0.12em] text-muted hover:text-ink">More websites →</a>
+      </div>
+      <SiteWalkthrough site={site} index={0} />
+    </div>
+  );
+}
+
 function SelectedWork() {
   return (
     <section id="work" className="border-t border-line px-5 py-20 sm:px-8 md:py-28">
@@ -571,6 +658,7 @@ function SelectedWork() {
             <WorkCard key={item.slug} item={item} index={i} span={bentoSpans[i % bentoSpans.length]} />
           ))}
         </div>
+        <WebsiteSpotlight />
         <div className="mt-10 flex flex-col gap-4 rounded-[22px] border border-line p-6 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-[15.5px] text-ink">
             Plus {appCounts.total} apps and tools, client websites, plugins and AI media.

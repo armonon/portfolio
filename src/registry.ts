@@ -89,6 +89,7 @@ export const registry: Entry[] = [
   { id: "website-checkup", name: "Website Checkup", status: "beta", family: "products", type: "app", live: "https://thecreatingco.com/checkup/" },
 
   // ── Other builds ─────────────────────────────────────────────────
+  { id: "skybound", name: "SKYBOUND", status: "beta", family: "creative", type: "work", live: "https://skybound-ragdoll-arena.netlify.app", aliases: ["Skybound Ragdoll Arena"], evidence: "Free and playable in the browser; carries no release label, so kept at Public Beta until confirmed." },
   { id: "entropy", name: "Entropy", status: "prototype", family: "creative", type: "work", source: `${GH}mk-ultra`, evidence: "'Working build' of a VST3/AU plugin; no public installer." },
   { id: "sattari-suite", name: "Sattari Audio", status: "development", family: "creative", type: "work", live: "https://sattari-audio-suite.netlify.app", aliases: ["Sattari Audio plugins"], evidence: "Suite site labels each flagship 'Development preview'." },
   { id: "digital-human-mvp", name: "Digital Human", status: "prototype", family: "ai", type: "work", evidence: "'Working demo'; private repo." },
