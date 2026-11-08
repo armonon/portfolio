@@ -8,7 +8,7 @@ export type CaseStudy = {
   slug: string;
   title: string;
   kind: string;
-  group: "App" | "Website" | "Tool" | "Brand";
+  group: "App" | "Game" | "Website" | "Tool" | "Brand";
   summary: string;
   url?: string;
   urlLabel?: string;
@@ -298,6 +298,35 @@ export const caseStudies: CaseStudy[] = [
     features: ["Tempo and downbeat detection", "Beat-locked cuts", "GPU colour grading", "MP4 rendered in the browser"],
     built: ["WebGL", "Web Audio", "Beat detection", "Video pipeline"],
     platforms: "Web · Mac in development"
+  },
+  {
+    slug: "skybound",
+    title: "SKYBOUND",
+    kind: "Browser game · trampoline dodgeball · three.js",
+    group: "Game",
+    summary:
+      "A fast, physics-driven trampoline dodgeball game that runs in the browser. Bounce, throw, catch and flip; hits send rivals flying off the court. Play against bots or a friend on the same machine.",
+    url: "https://skybound-ragdoll-arena.netlify.app",
+    urlLabel: "Play SKYBOUND",
+    hero: { video: "/videos/skybound-trailer.mp4", image: "/videos/posters/skybound-trailer.jpg" },
+    steps: [
+      { image: "/photos/walk/skybound-0.jpg", label: "Lobby", caption: "Pick the match length, 1P vs bots or 2P local, one of three arenas and a bot level, then launch." },
+      { image: "/photos/walk/skybound-1.jpg", label: "How to play", caption: "Strafe, aim and counter. A perfect throw at two seconds becomes uncatchable and triggers a SKYBREAK." },
+      { image: "/photos/walk/skybound-2.jpg", label: "In the air", caption: "Every player is a physics ragdoll on a trampoline court; the camera follows the action." },
+      { image: "/photos/walk/skybound-3.jpg", label: "Instant replay", caption: "Knockouts play back automatically as an instant replay." },
+      { image: "/photos/walk/skybound-4.jpg", label: "Dodgeball with altitude", caption: "Two clubs, Azure and Coral, first to three rounds." }
+    ],
+    footage: [{ video: "/videos/skybound-trailer.mp4", poster: "/videos/posters/skybound-trailer.jpg", label: "Official trailer · 21 seconds" }],
+    features: [
+      "1P vs bots (Rookie, Pro, Elite) or 2P on one machine",
+      "Three arenas: Skycourt, Ricochet and Reactor",
+      "Catches, flips, clean landings and the SKYBREAK meter",
+      "Instant replays of every knockout",
+      "Keyboard, mouse, gamepad and touch controls",
+      "Reduced-motion and sound settings"
+    ],
+    built: ["Game design", "three.js rendering", "Custom physics", "Ragdoll solver", "Bot AI", "Trailer"],
+    platforms: "Web · desktop and mobile"
   },
   {
     slug: "universal-computer-operator",

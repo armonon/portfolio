@@ -408,7 +408,7 @@ const jump = [
 export default function WorkPage({ setOpenProject, onInquire }: { setOpenProject: (p: Project) => void; onInquire: () => void }) {
   const [indexFilter, setIndexFilter] = useState<string>("All");
   const liveCount = radarDirectory.filter((d) => d.live).length;
-  const groups = ["App", "Brand", "Website", "Tool"] as const;
+  const groups = ["App", "Game", "Brand", "Website", "Tool"] as const;
   const openById = (id: string) => {
     const p = projects.find((x) => x.id === id);
     if (p) setOpenProject(p);

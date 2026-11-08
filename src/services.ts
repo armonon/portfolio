@@ -151,6 +151,7 @@ export const families: CapabilityFamily[] = [
     items: ["Interactive websites", "WebGL and Three.js", "Game development", "3D assets", "Audio software", "Motion, image and video production"],
     proof: [
       { label: "BREAKTHYRULE Eden", href: "/work/breakthyrule-eden" },
+      { label: "SKYBOUND", href: "/work/skybound" },
       { label: "Form Studio", href: "/work/form-studio" },
       { label: "ScenePilot", href: "/work/scenepilot" }
     ]
